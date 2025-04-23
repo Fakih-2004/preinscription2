@@ -8,8 +8,8 @@ class Administrateur extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nom', 'prenom', 'email', 'password',
+    protected $guarded = [
+        'id',
     ];
 
     public function formations()
