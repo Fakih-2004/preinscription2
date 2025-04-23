@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('stages', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('candidat_id');
+            $table->foreign('candidat_id')->references('id')->on('candidats');
+            $table->string('fonction');
+            $table->date('periode');
+            $table->string('attestation');
+            $table->string('etablissement');
+            $table->string('secteur_activite');
+            $table->string('discription');
             $table->timestamps();
         });
     }

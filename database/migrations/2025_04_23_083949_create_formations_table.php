@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('formations', function (Blueprint $table) {
             $table->id();
+            $table->enum('type_formation',['licence', 'master']);
+            $table->date('date_debut');
+            $table->date('date_fin');
+            $table->unsignedBigInteger('administrateur_id');
+            $table->foreign('administrateur_id')->references('id')->on('administrateurs');
             $table->timestamps();
         });
     }
