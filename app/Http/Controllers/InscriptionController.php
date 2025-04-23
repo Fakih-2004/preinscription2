@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class InscriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $inscriptions = Inscription::all();
+        return view('inscriptions.index', compact('inscriptions'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('inscriptions.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Inscription::create($request->all());
+        return redirect()->route('inscriptions.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Inscription $inscription)
+    public function show($id)
     {
-        //
+        $inscription = Inscription::findOrFail($id);
+        return view('inscriptions.show', compact('inscription'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Inscription $inscription)
+    public function edit($id)
     {
-        //
+        $inscription = Inscription::findOrFail($id);
+        return view('inscriptions.edit', compact('inscription'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Inscription $inscription)
+    public function update(Request $request, $id)
     {
-        //
+        $inscription = Inscription::findOrFail($id);
+        $inscription->update($request->all());
+        return redirect()->route('inscriptions.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Inscription $inscription)
+    public function destroy($id)
     {
-        //
+        $inscription = Inscription::findOrFail($id);
+        $inscription->delete();
+        return redirect()->route('inscriptions.index');
     }
 }

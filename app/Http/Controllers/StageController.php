@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class StageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $stages = Stage::all();
+        return view('stages.index', compact('stages'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('stages.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Stage::create($request->all());
+        return redirect()->route('stages.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Stage $stage)
+    public function show($id)
     {
-        //
+        $stage = Stage::findOrFail($id);
+        return view('stages.show', compact('stage'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Stage $stage)
+    public function edit($id)
     {
-        //
+        $stage = Stage::findOrFail($id);
+        return view('stages.edit', compact('stage'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Stage $stage)
+    public function update(Request $request, $id)
     {
-        //
+        $stage = Stage::findOrFail($id);
+        $stage->update($request->all());
+        return redirect()->route('stages.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Stage $stage)
+    public function destroy($id)
     {
-        //
+        $stage = Stage::findOrFail($id);
+        $stage->delete();
+        return redirect()->route('stages.index');
     }
 }

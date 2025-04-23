@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class AdministrateurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $administrateurs = Administrateur::all();
+        return view('administrateurs.index', compact('administrateurs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('administrateurs.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Administrateur::create($request->all());
+        return redirect()->route('administrateurs.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Administrateur $administrateur)
+    public function show($id)
     {
-        //
+        $administrateur = Administrateur::findOrFail($id);
+        return view('administrateurs.show', compact('administrateur'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Administrateur $administrateur)
+    public function edit($id)
     {
-        //
+        $administrateur = Administrateur::findOrFail($id);
+        return view('administrateurs.edit', compact('administrateur'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Administrateur $administrateur)
+    public function update(Request $request, $id)
     {
-        //
+        $administrateur = Administrateur::findOrFail($id);
+        $administrateur->update($request->all());
+        return redirect()->route('administrateurs.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Administrateur $administrateur)
+    public function destroy($id)
     {
-        //
+        $administrateur = Administrateur::findOrFail($id);
+        $administrateur->delete();
+        return redirect()->route('administrateurs.index');
     }
 }

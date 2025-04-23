@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class CandidatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $candidats = Candidat::all();
+        return view('candidats.index', compact('candidats'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('candidats.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Candidat::create($request->all());
+        return redirect()->route('candidats.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Candidat $candidat)
+    public function show($id)
     {
-        //
+        $candidat = Candidat::findOrFail($id);
+        return view('candidats.show', compact('candidat'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Candidat $candidat)
+    public function edit($id)
     {
-        //
+        $candidat = Candidat::findOrFail($id);
+        return view('candidats.edit', compact('candidat'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Candidat $candidat)
+    public function update(Request $request, $id)
     {
-        //
+        $candidat = Candidat::findOrFail($id);
+        $candidat->update($request->all());
+        return redirect()->route('candidats.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Candidat $candidat)
+    public function destroy($id)
     {
-        //
+        $candidat = Candidat::findOrFail($id);
+        $candidat->delete();
+        return redirect()->route('candidats.index');
     }
 }

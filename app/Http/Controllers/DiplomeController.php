@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class DiplomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $diplomes = Diplome::all();
+        return view('diplomes.index', compact('diplomes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('diplomes.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Diplome::create($request->all());
+        return redirect()->route('diplomes.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Diplome $diplome)
+    public function show($id)
     {
-        //
+        $diplome = Diplome::findOrFail($id);
+        return view('diplomes.show', compact('diplome'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Diplome $diplome)
+    public function edit($id)
     {
-        //
+        $diplome = Diplome::findOrFail($id);
+        return view('diplomes.edit', compact('diplome'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Diplome $diplome)
+    public function update(Request $request, $id)
     {
-        //
+        $diplome = Diplome::findOrFail($id);
+        $diplome->update($request->all());
+        return redirect()->route('diplomes.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Diplome $diplome)
+    public function destroy($id)
     {
-        //
+        $diplome = Diplome::findOrFail($id);
+        $diplome->delete();
+        return redirect()->route('diplomes.index');
     }
 }

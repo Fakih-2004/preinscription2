@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class AttestationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $attestations = Attestation::all();
+        return view('attestations.index', compact('attestations'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('attestations.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Attestation::create($request->all());
+        return redirect()->route('attestations.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Attestation $attestation)
+    public function show($id)
     {
-        //
+        $attestation = Attestation::findOrFail($id);
+        return view('attestations.show', compact('attestation'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Attestation $attestation)
+    public function edit($id)
     {
-        //
+        $attestation = Attestation::findOrFail($id);
+        return view('attestations.edit', compact('attestation'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Attestation $attestation)
+    public function update(Request $request, $id)
     {
-        //
+        $attestation = Attestation::findOrFail($id);
+        $attestation->update($request->all());
+        return redirect()->route('attestations.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Attestation $attestation)
+    public function destroy($id)
     {
-        //
+        $attestation = Attestation::findOrFail($id);
+        $attestation->delete();
+        return redirect()->route('attestations.index');
     }
 }

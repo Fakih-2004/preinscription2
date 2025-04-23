@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class ExperienceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $experiences = Experience::all();
+        return view('experiences.index', compact('experiences'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('experiences.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Experience::create($request->all());
+        return redirect()->route('experiences.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Experience $experience)
+    public function show($id)
     {
-        //
+        $experience = Experience::findOrFail($id);
+        return view('experiences.show', compact('experience'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Experience $experience)
+    public function edit($id)
     {
-        //
+        $experience = Experience::findOrFail($id);
+        return view('experiences.edit', compact('experience'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Experience $experience)
+    public function update(Request $request, $id)
     {
-        //
+        $experience = Experience::findOrFail($id);
+        $experience->update($request->all());
+        return redirect()->route('experiences.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Experience $experience)
+    public function destroy($id)
     {
-        //
+        $experience = Experience::findOrFail($id);
+        $experience->delete();
+        return redirect()->route('experiences.index');
     }
 }
