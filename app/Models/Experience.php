@@ -9,11 +9,11 @@ class Experience extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['function', 'secteur_activite', 'periode', 'attestation', 'candidate_id', 'etablissement', 'discretion'];
+    protected $guarded = ['id'];
 
 
-    public function candidate()
+    public function candidat()
     {
-        return $this->belongsTo(Candidat::class, 'candidate_id');
+        return $this->belongsTo(Candidat::class, 'candidat_id');
     }
 }

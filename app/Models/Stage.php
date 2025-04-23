@@ -9,10 +9,10 @@ class Stage extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['function', 'periode', 'attestation', 'candidate_id', 'etablissement', 'secteur_activite', 'discretion'];
+    protected $guarded = ['id'];
 
-    public function candidate()
+    public function candidat()
     {
-        return $this->belongsTo(Candidat::class, 'candidate_id');
+        return $this->belongsTo(Candidat::class, 'candidat_id');
     }
 }

@@ -8,7 +8,7 @@ class Inscription extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['candidat_id', 'formation_id', 'annee'];
+    protected $guarded = ['id'];
 
     public function candidat()
     {

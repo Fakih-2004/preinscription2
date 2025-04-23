@@ -9,11 +9,11 @@ class Attestation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['attestation', 'candidate_id', 'discretion', 'type_attestation'];
+    protected $guarded = ['id'];
 
-    public function candidate()
+    public function candidat()
     {
-        return $this->belongsTo(Candidat::class, 'candidate_id');
+        return $this->belongsTo(Candidat::class, 'candidat_id');
     }
 }
 

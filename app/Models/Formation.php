@@ -8,9 +8,7 @@ class Formation extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'type_formation', 'administrateur_id', 'date_debut', 'date_fin',
-    ];
+    protected $guarded = ['id'];
 
     public function administrateur()
     {
