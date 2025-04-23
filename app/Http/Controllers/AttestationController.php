@@ -9,7 +9,11 @@ class AttestationController extends Controller
 {
     public function index()
     {
+<<<<<<< HEAD
         $attestations = Attestation::all();
+=======
+        $attestations = Diplome::all();
+>>>>>>> ddc0b60c9c6d5705d48c7aadbc944a689c6f0e81
         return view('attestations.index', compact('attestations'));
     }
 
