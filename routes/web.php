@@ -15,13 +15,13 @@ use App\Http\Controllers\FormationController;
 */
 use App\Http\Controllers\AdministrateurController;
 
-<<<<<<< HEAD
+ 
 Route::resource('administrateurs', AdministrateurController::class);
-=======
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 
 Route::resource('formations', FormationController::class);
->>>>>>> ddc0b60c9c6d5705d48c7aadbc944a689c6f0e81
+ 

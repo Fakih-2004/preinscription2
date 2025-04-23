@@ -9,11 +9,7 @@ class CandidatController extends Controller
 {
     public function index()
     {
-<<<<<<< HEAD
         $candidats = Candidat::all();
-=======
-        $candidats = Diplome::all();
->>>>>>> ddc0b60c9c6d5705d48c7aadbc944a689c6f0e81
         return view('candidats.index', compact('candidats'));
     }
 
@@ -49,13 +45,8 @@ class CandidatController extends Controller
 
     public function destroy($id)
     {
-<<<<<<< HEAD
         $candidat = Candidat::findOrFail($id);
         $candidat->delete();
         return redirect()->route('candidats.index');
-=======
-        $candidat->delete();
-        return redirect()->route('candidats.index')->with('destroy', 'candidat a été supprimée avec succès.');
->>>>>>> ddc0b60c9c6d5705d48c7aadbc944a689c6f0e81
     }
 }
