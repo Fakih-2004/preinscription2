@@ -13,6 +13,32 @@ return new class extends Migration
     {
         Schema::create('candidats', function (Blueprint $table) {
             $table->id();
+            $table->string('nom');
+            $table->string('prenom');
+            $table->string('nom_ar');
+            $table->string('prenom_ar');
+            $table->string('CNE');
+            $table->string('CIN');
+            $table->date('date_naissance');
+            $table->string('ville_naissance');
+            $table->string('ville_naissance_ar');
+            $table->string('province');
+            $table->string('pay_naissance');
+            $table->string('nationalite');
+            $table->enum('sexe', ['M', 'F']);
+            $table->string('telephone_mob');
+            $table->string('telephone_fix');
+            $table->text('adresse');
+            $table->string('email');
+            $table->string('ville');
+            $table->string('pays');
+            $table->string('cv');
+            $table->string('demand');
+            $table->string('scan_cartid');
+            $table->string('photo');
+            $table->string('serie_bac');
+            $table->date('annee_bac');
+            $table->string('scan_bac');
             $table->timestamps();
         });
     }
