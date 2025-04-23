@@ -12,7 +12,9 @@ class ExperienceController extends Controller
      */
     public function index()
     {
-        //
+        
+        $experiences = Experience::all();
+        return view('experiences.index', compact('experiences'));
     }
 
     /**
@@ -20,7 +22,7 @@ class ExperienceController extends Controller
      */
     public function create()
     {
-        //
+        return view('experiences.create');
     }
 
     /**
@@ -28,7 +30,8 @@ class ExperienceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Experience::create($request->all());
+        return redirect()->route('experiences.index')->with('success', 'Expérience ajoutée avec succès.');
     }
 
     /**
@@ -44,7 +47,7 @@ class ExperienceController extends Controller
      */
     public function edit(Experience $experience)
     {
-        //
+        return view('experiences.edit', compact('experience'));
     }
 
     /**
@@ -52,7 +55,8 @@ class ExperienceController extends Controller
      */
     public function update(Request $request, Experience $experience)
     {
-        //
+        $experience->update($request->all());
+        return redirect()->route('experiences.index')->with('update', 'Expérience mise à jour avec succès.');
     }
 
     /**
@@ -60,6 +64,8 @@ class ExperienceController extends Controller
      */
     public function destroy(Experience $experience)
     {
-        //
+        $experience->delete();
+        return redirect()->route('experiences.index')->with('destroy', 'Expérience supprimée avec succès.');
     }
+    
 }

@@ -12,7 +12,8 @@ class StageController extends Controller
      */
     public function index()
     {
-        //
+        $stages = Diplome::all();
+        return view('stages.index', compact('stages'));
     }
 
     /**

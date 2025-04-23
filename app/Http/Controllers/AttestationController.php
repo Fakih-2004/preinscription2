@@ -12,7 +12,8 @@ class AttestationController extends Controller
      */
     public function index()
     {
-        //
+        $attestations = Diplome::all();
+        return view('attestations.index', compact('attestations'));
     }
 
     /**

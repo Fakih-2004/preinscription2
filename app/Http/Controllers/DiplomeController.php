@@ -12,7 +12,8 @@ class DiplomeController extends Controller
      */
     public function index()
     {
-        //
+        $diplomes = Diplome::all();
+        return view('diplomes.index', compact('diplomes'));
     }
 
     /**
@@ -20,7 +21,7 @@ class DiplomeController extends Controller
      */
     public function create()
     {
-        //
+        return view('diplomes.create');
     }
 
     /**

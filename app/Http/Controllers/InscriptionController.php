@@ -12,7 +12,8 @@ class InscriptionController extends Controller
      */
     public function index()
     {
-        //
+        $inscriptions=Inscription::all();
+        return view('inscriptions.index',compact('inscriptions'));
     }
 
     /**
@@ -20,7 +21,7 @@ class InscriptionController extends Controller
      */
     public function create()
     {
-        //
+        return view('inscription.create');
     }
 
     /**
@@ -28,7 +29,8 @@ class InscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Inscription::create($request->all());
+        return redirect()->route('inscriptions.index');
     }
 
     /**
@@ -44,7 +46,7 @@ class InscriptionController extends Controller
      */
     public function edit(Inscription $inscription)
     {
-        //
+        return view('inscriptions.edit' , compact('inscriptions'));
     }
 
     /**
@@ -52,7 +54,9 @@ class InscriptionController extends Controller
      */
     public function update(Request $request, Inscription $inscription)
     {
-        //
+        
+        $inscription=update($request->all());
+        return redirect()->route('inscriptions.index');
     }
 
     /**
@@ -60,6 +64,7 @@ class InscriptionController extends Controller
      */
     public function destroy(Inscription $inscription)
     {
-        //
+        $inscription->delete();
+        return redirect()->route('inscriptions.index')->with('destroy', 'L\'inscription a été supprimée avec succès.');
     }
 }

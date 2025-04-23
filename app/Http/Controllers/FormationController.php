@@ -10,17 +10,20 @@ class FormationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    
+        public function index()
     {
-        //
+        $formations=Formation::all();
+        return view('formations.index',compact('formations'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('formation.create');
     }
 
     /**
@@ -28,7 +31,8 @@ class FormationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Formation::create($request->all());
+        return redirect()->route('formations.index');
     }
 
     /**
@@ -44,7 +48,7 @@ class FormationController extends Controller
      */
     public function edit(Formation $formation)
     {
-        //
+        return view('formations.edit' , compact('formations'));
     }
 
     /**
@@ -52,7 +56,10 @@ class FormationController extends Controller
      */
     public function update(Request $request, Formation $formation)
     {
-        //
+        
+        $formation=update($request->all());
+        return redirect()->route('formations.index');
+        
     }
 
     /**
@@ -60,6 +67,8 @@ class FormationController extends Controller
      */
     public function destroy(Formation $formation)
     {
-        //
+        
+        $formation->delete();  
+        return redirect()->route("formations.index")->with("destroy", "La formation a été supprimée avec succès.");
     }
 }

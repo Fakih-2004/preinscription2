@@ -12,7 +12,8 @@ class CandidatController extends Controller
      */
     public function index()
     {
-        //
+        $candidats = Diplome::all();
+        return view('candidats.index', compact('candidats'));
     }
 
     /**
@@ -60,6 +61,7 @@ class CandidatController extends Controller
      */
     public function destroy(Candidat $candidat)
     {
-        //
+        $candidat->delete();
+        return redirect()->route('candidats.index')->with('destroy', 'candidat a été supprimée avec succès.');
     }
 }
