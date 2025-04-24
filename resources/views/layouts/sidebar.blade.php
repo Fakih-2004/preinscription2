@@ -11,7 +11,7 @@
         />
         <!--end::Brand Image-->
         <!--begin::Brand Text-->
-        <span class="brand-text fw-light">Gestion</span>
+        <span class="brand-text fw-light">préinscription</span>
         <!--end::Brand Text-->
       </a>
       <!--end::Brand Link-->
@@ -88,22 +88,8 @@
 
                 
 
-                <li class="nav-item">
-                    <a href="{{route('attestations.index')}}" class="nav-link">
-                        <i class="nav-icon bi bi-folder"></i>
-                        <p>attestation</p>
-                    </a>
-                </li>
 
-                <li class="nav-item">
-                    <a href="{{route('stages.index')}}" class="nav-link">
-                        <i class="nav-icon bi bi-folder"></i>
-                        <p>stage</p>
-                    </a>
-                </li>
-
-            
-              
+               
 
 
                 </a>
