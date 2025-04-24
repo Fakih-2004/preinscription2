@@ -3,6 +3,8 @@
 @section('title', 'Ajouter un formation')
 
 @section('content')
+
+
 <div class="container mt-5">
     <h1 class="mb-4 text-primary text-center">Ajouter un nouveau formation</h1>
 
@@ -21,20 +23,17 @@
         <div class="row">
 
             
-            <div class="col-md-6 mb-3">
+            <div class="mb-3">
                 <label>type formation</label>
-                <select name="type_formation" class="form-control" required>
-                    <option value="licence">licence</option>
-                    <option value="master">master</option>
-                </select>
+                <input type="text" name="type formation" required>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="mb-3">
                 <label>date debut</label>
                 <input type="date" name="date debut" class="form-control" required>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class=" mb-3">
                 <label>date fin</label>
                 <input type="date" name="date fin" class="form-control" required>
             </div>

@@ -36,4 +36,8 @@ class Candidat extends Model
     {
         return $this->hasMany(Experience::class);
     }
+    public function formations()
+{
+    return $this->hasManyThrough(Formation::class, Inscription::class, 'candidat_id', 'id', 'id', 'formation_id');
+}
 }

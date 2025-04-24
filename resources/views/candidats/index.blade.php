@@ -19,6 +19,8 @@
                     <thead class="table-light">
                         <tr>
                             <th class="text-center">ID</th>
+                            <th class="text-nowrap">Type formation</th>
+
                             <th  class="px-3 py-2">Nom</th>
             <th class="text-nowrap">Prénom</th>
             <th class="text-nowrap">Nom AR</th>
@@ -54,6 +56,11 @@
                 <tr>
 
         <td class="text-nowrap">{{ $candidat->id }}</td>
+        <td class="text-nowrap">
+            {{ $candidat->inscriptions->first()->formation->type_formation ?? '—' }}
+        </td>
+        
+        
         <td class="text-nowrap">{{ $candidat->nom }}</td>
         <td class="text-nowrap">{{ $candidat->prenom }}</td>
         <td class="text-nowrap">{{ $candidat->nom_ar }}</td>

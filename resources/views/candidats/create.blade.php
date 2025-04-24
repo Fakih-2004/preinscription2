@@ -20,7 +20,16 @@
         @csrf
         <div class="row">
 
-            {{-- Infos personnelles --}}
+            <div class="mb-3">
+                <label for="formation_id" class="form-label">Type de formation</label>
+                <select name="formation_id" id="formation_id" class="form-select" required>
+                    <option value="">-- Choisir --</option>
+                    @foreach ($formations as $formation)
+                        <option value="{{ $formation->id }}">{{ ucfirst($formation->type_formation) }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
             <div class="col-md-6 mb-3">
                 <label>Nom</label>
                 <input type="text" name="nom" class="form-control" required>
