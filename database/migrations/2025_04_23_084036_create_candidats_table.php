@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('pays');            
             $table->text('adresse');
             $table->string('cv');
-            $table->string('demand');
+            $table->string('demande');
             $table->string('scan_cartid');
             $table->string('photo');
             $table->string('serie_bac');

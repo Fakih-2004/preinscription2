@@ -38,49 +38,49 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('administrateurs.index')}}" class="nav-link">
-                    <i class="nav-icon bi bi-folder"></i>
+                <i class="bi bi-person-circle"></i>
                     <p>Administrateurs</p>
                 </a>
             </li>
             <li class="nav-item">
               <a href="{{route('formations.index')}}" class="nav-link">
-                  <i class="nav-icon bi bi-folder"></i>
+              <i class="bi bi-journal-check"></i>
                   <p>Formations</p>
               </a>
           </li>
           <li class="nav-item">
             <a href="{{route('inscriptions.index')}}" class="nav-link">
-                <i class="nav-icon bi bi-folder"></i>
+            <i class="bi bi-journal-check"></i>
                 <p>Insciptions</p>
             </a>
         </li>
         <li class="nav-item">
           <a href="{{route('candidats.index')}}" class="nav-link">
-            <i class="nav-icon bi bi-folder"></i>
+          <i class="bi bi-people"></i>
             <p>Candidat</p>
           </a>
         </li>
         <li class="nav-item">
           <a href="{{route('diplomes.index')}}" class="nav-link">
-              <i class="nav-icon bi bi-folder"></i>
+          <i class="bi bi-folder2"></i>
               <p>diplome</p>
           </a>
         </li>
         <li class="nav-item">
           <a href="{{route('experiences.index')}}" class="nav-link">
-              <i class="nav-icon bi bi-folder"></i>
+          <i class="bi bi-folder2"></i>
               <p>Experiences</p>
           </a>
       </li>
       <li class="nav-item">
         <a href="{{route('stages.index')}}" class="nav-link">
-            <i class="nav-icon bi bi-folder"></i>
+        <i class="bi bi-folder2"></i>
             <p>Stages</p>
         </a>
       </li>
       <li class="nav-item">
         <a href="{{route('attestations.index')}}" class="nav-link">
-            <i class="nav-icon bi bi-folder"></i>
+        <i class="bi bi-folder2"></i>
             <p>Attestations</p>
         </a>
       </li>
