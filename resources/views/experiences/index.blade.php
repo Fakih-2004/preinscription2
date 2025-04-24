@@ -45,7 +45,7 @@
                 <td>{{ $experience->fonction }}</td>
                 <td>{{ $experience->secteur_activite }}</td>
                 <td>{{ $experience->periode }}</td>
-                <td><a href="{{ asset('storage/' . $experience->attestation }}" target="_blank">scan bac+2</a></td>
+                <td><a href="{{ asset('storage/' . $experience->attestation) }}" target="_blank">scan bac+2</a></td>
                 <td>{{ $experience->etablissement}}</td>
                 <td>{{ $experience->description }}</td>
                
