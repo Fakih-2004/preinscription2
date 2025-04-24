@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\DiplomeController;
+use App\Http\Controllers\AttestationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,5 @@ Route::resource('formations', FormationController::class);
  
 Route::resource('candidats', CandidatController::class);
 Route::resource('diplomes', DiplomeController::class);
+
+Route::resource('attestations', AttestationController::class);
