@@ -41,7 +41,7 @@
             <div class="mb-3">
          <label>Administrateur</label>
         <select name="administrateur_id" class="form-control" required>
-            <option value="">-- Choisir --</option>
+            <option value="">selectionner</option>
             @foreach ($administrateurs as $administrateur)
                 <option value="{{ $administrateur->id }}">
                     {{ $administrateur->prenom }} {{ $administrateur->nom }}

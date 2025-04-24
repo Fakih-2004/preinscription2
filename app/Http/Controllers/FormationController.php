@@ -42,10 +42,15 @@ class FormationController extends Controller
     }
 
     public function edit($id)
-    {
-        $formation = Formation::findOrFail($id);
-        return view('formations.edit', compact('formation'));
-    }
+{
+    
+    $formation = Formation::findOrFail($id);
+    $administrateurs = Administrateur::all();
+    return view('formations.edit', compact('formation', 'administrateurs'));
+}
+
+
+
 
     public function update(Request $request, $id)
     {
