@@ -18,12 +18,10 @@ use App\Http\Controllers\DiplomeController;
 use App\Http\Controllers\AdministrateurController;
 
  
+
+
+
 Route::resource('administrateurs', AdministrateurController::class);
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 Route::resource('formations', FormationController::class);
  

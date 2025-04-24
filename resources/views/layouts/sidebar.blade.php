@@ -36,6 +36,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('administrateurs.index')}}" class="nav-link">
+                    <i class="nav-icon bi bi-folder"></i>
+                    <p>Admin</p>
+                </a>
+            </li>
             <li class="nav-item">
                     <a href="{{route('formations.index')}}" class="nav-link">
                         <i class="nav-icon bi bi-folder"></i>

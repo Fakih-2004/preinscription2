@@ -1,27 +1,41 @@
-@extends('layouts')
-
-@section('title', 'Create Administrator')
+@extends('Layouts.app')
+@section('title', 'Ajouter un administrateur')
 
 @section('content')
-    <form action="{{ route('administrateurs.store') }}" method="POST">
-        @csrf
-        <div class="form-group">
-            <label for="nom">nom</label>
-            <input type="text" nom="nom" class="form-control" required>
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-success fw-bold">Ajouter un nouvel administrateur</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <form action="{{ route('administrateurs.store') }}" method="POST">
+                @csrf
+
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Nom</label>
+                    <input type="text" name="nom" id="nom" class="form-control" placeholder="Entrez le nom" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="prenom" class="form-label">Prénom</label>
+                    <input type="text" name="prenom" id="prenom" class="form-control" placeholder="Entrez le prénom" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Adresse email</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="exemple@email.com" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Mot de passe" required>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success px-4">Enregistrer</button>
+                    <a href="{{ route('administrateurs.index') }}" class="btn btn-secondary ms-2">Annuler</a>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="prenom">prenom</label>
-            <input type="text" prenom="prenom" class="form-control" required>
-        </div><div class="form-group">
-            <label for="password">password</label>
-            <input type="text" password="password" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Create</button>
-        </div>
-    </form>
+    </div>
+</div>
 @endsection
