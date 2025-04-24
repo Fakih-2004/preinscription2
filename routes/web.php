@@ -19,12 +19,10 @@ use App\Http\Controllers\AttestationController;
 use App\Http\Controllers\AdministrateurController;
 
  
+
+
+
 Route::resource('administrateurs', AdministrateurController::class);
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 Route::resource('formations', FormationController::class);
  
