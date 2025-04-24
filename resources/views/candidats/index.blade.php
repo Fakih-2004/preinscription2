@@ -82,7 +82,6 @@
         <td class="text-nowrap"><a href="{{ asset('storage/' . $candidat->scan_bac) }}" target="_blank">Scan Bac</a></td>
 
         <td class="text-nowrap" class="text-center">
-                                <a href="{{ route('candidats.show', $candidat->id) }}" class="btn btn-sm btn-outline-info me-1">Voir</a>
                                 <a href="{{ route('candidats.edit', $candidat->id) }}" class="btn btn-sm btn-outline-warning me-1"><i class="bi bi-pencil-square"></i></a>
                                 <form action="{{ route('candidats.destroy', $candidat->id) }}" method="POST" style="display:inline;">
                                     @csrf
