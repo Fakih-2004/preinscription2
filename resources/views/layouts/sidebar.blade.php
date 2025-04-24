@@ -49,7 +49,7 @@
               </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('insciptions.index')}}" class="nav-link">
+            <a href="{{route('inscriptions.index')}}" class="nav-link">
                 <i class="nav-icon bi bi-folder"></i>
                 <p>Insciptions</p>
             </a>
