@@ -17,11 +17,11 @@
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th class="text-center">ID</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Email</th>
-                            <th>Mot de passe</th>
+                            <th class="text-nowrap text-center">ID</th>
+                            <th class="text-nowrap">Nom</th>
+                            <th class="text-nowrap">Prénom</th>
+                            <th class="text-nowrap">Email</th>
+                            <th class="text-nowrap">Mot de passe</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -29,11 +29,11 @@
                         @foreach ($administrateurs as $administrateur)
                         <tr>
                             <td class="text-center">{{ $administrateur->id }}</td>
-                            <td>{{ $administrateur->nom }}</td>
-                            <td>{{ $administrateur->prenom }}</td>
-                            <td>{{ $administrateur->email }}</td>
-                            <td>{{ $administrateur->password }}</td>
-                            <td class="text-center">
+                            <td class="text-nowrap">{{ $administrateur->nom }}</td>
+                            <td class="text-nowrap">{{ $administrateur->prenom }}</td>
+                            <td class="text-nowrap">{{ $administrateur->email }}</td>
+                            <td class="text-nowrap">{{ $administrateur->password }}</td>
+                            <td class="text-nowrap text-center">
                                 <a href="{{ route('administrateurs.show', $administrateur->id) }}" class="btn btn-sm btn-outline-info me-1">Voir</a>
                                 <a href="{{ route('administrateurs.edit', $administrateur->id) }}" class="btn btn-sm btn-outline-warning me-1">Modifier</a>
                                 <form action="{{ route('administrateurs.destroy', $administrateur->id) }}" method="POST" style="display:inline;">

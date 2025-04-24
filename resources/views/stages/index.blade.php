@@ -29,7 +29,7 @@
             <th>periode</th>
             <th>attestation</th>
             <th>établissement</th>
-            <th>secteur activite</th>
+            <th class="text-nowrap">secteur activite</th>
             <th>description</th>
             <th>Actions</th>
         </tr>
@@ -40,18 +40,18 @@
                     @foreach ($stages as $stage)
                         <tr>
 
-                <td>{{ $stage->id }}</td>
-                <td>{{ $stage->candidat->nom  ?? 'Non défini'}}</td>
-                <td>{{ $stage->candidat->CIN  ?? 'Non défini'}}</td>
-                <td>{{ $stage->fonction}}</td>
-                <td>{{ $stage->periode}}</td>
-                <td><a href="{{ asset('storage/' . $stage->attestation) }}" target="_blank">attestation</a></td>
-                <td>{{ $stage->etablissement}}</td>
-                <td>{{ $stage->secteur_activite}}</td>
-                <td>{{ $stage->description}}</td>
+                <td class="text-nowrap">{{ $stage->id }}</td>
+                <td class="text-nowrap">{{ $stage->candidat->nom  ?? 'Non défini'}}</td>
+                <td class="text-nowrap">{{ $stage->candidat->CIN  ?? 'Non défini'}}</td>
+                <td class="text-nowrap">{{ $stage->fonction}}</td>
+                <td class="text-nowrap">{{ $stage->periode}}</td>
+                <td class="text-nowrap"><a href="{{ asset('storage/' . $stage->attestation) }}" target="_blank">attestation</a></td>
+                <td class="text-nowrap">{{ $stage->etablissement}}</td>
+                <td class="text-nowrap">{{ $stage->secteur_activite}}</td>
+                <td class="text-nowrap">{{ $stage->description}}</td>
                 
              
-                            <td>
+                            <td class="text-nowrap">
                                 <div class="d-flex gap-2">
                                     
                                     <form action="{{ route('stages.destroy', $stage->id) }}" method="POST"

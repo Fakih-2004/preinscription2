@@ -10,64 +10,60 @@
             <i class="bi bi-plus-circle me-1"></i> Ajouter un diplome
         </a>
     </div>
-       
-                        @php
-                            $diplomes = \App\Models\Diplome::all();
-                        @endphp
-        
-                        <div class="card shadow-sm border-0">
+@php
+    $diplomes = \App\Models\Diplome::all();
+@endphp   
+    <div class="card shadow-sm border-0">
         <div class="card-body p-0">            
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                     <tr>
-                    <th>ID</th>
-            <th>type de diplome_bac+2</th>
-            <th>Année de bac+2</th>
-            <th>Filier de bac+2</th>
-            <th>scan de bac+2</th>
-            <th>établissement (bac+2)</th>
-            <th>type de diplome bac+3</th>
-            <th>Année de bac+3</th>
-            <th>filier de bac+3</th>
-            <th>établissement (bac+3)</th>
-            <th>scan de bac+3</th>
-            <th>Actions</th>
-        </tr>
+                    <th class="text-nowrap">ID</th>
+                    <th class="text-nowrap">type de diplome_bac+2</th>
+                    <th class="text-nowrap">Année de bac+2</th>
+                    <th class="text-nowrap">Filier de bac+2</th>
+                    <th class="text-nowrap">scan de bac+2</th>
+                    <th class="text-nowrap">établissement (bac+2)</th>
+                    <th class="text-nowrap">type de diplome bac+3</th>
+                    <th class="text-nowrap">Année de bac+3</th>
+                    <th class="text-nowrap">filier de bac+3</th>
+                    <th class="text-nowrap">établissement (bac+3)</th>
+                    <th class="text-nowrap">scan de bac+3</th>
+                    <th class="text-nowrap">Actions</th>
+                </tr>
 
-                    </tr>
+                    
                 </thead>
                 <tbody>
                     @foreach ($diplomes as $diplome)
                         <tr>
 
-                <td>{{ $diplome->id }}</td>
-                <td>{{ $diplome->candidat->nom  ?? 'Non défini'}}</td>
-                <td>{{ $diplome->type_diplome_bac+2 }}</td>
-                <td>{{ $diplome->annee_bac+2 }}</td>
-                <td>{{ $diplome->filier_bac+2 }}</td>
-                <td><a href="{{ asset('storage/' . $diplome->scan_bac+2) }}" target="_blank">scan bac+2</a></td>
-                <td>{{ $diplome->etablissement}}</td>
-                <td>{{ $diplome->type_diplome_bac+3 }}</td>
-                <td>{{ $diplome->annee_bac+3 }}</td>
-                <td>{{ $diplome->filier_bac+3 }}</td>
-                <td><a href="{{ asset('storage/' . $diplome->scan_bac+3) }}" target="_blank">scan bac+3</a></td>
-                <td>{{ $diplome->etablissement}}</td>
-             
-                            <td>
-                                <div class="d-flex gap-2">
-                                    
-                                    <form action="{{ route('diplomes.destroy', $diplome->id) }}" method="POST"
-                                        onsubmit="confirmDelete(event, this)">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')">Supprimer</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
+                <td class="text-nowrap">{{ $diplome->id }}</td>
+                <td class="text-nowrap">{{ $diplome->candidat->nom  ?? 'Non défini'}}</td>
+                <td class="text-nowrap">{{ $diplome->type_diplome_bac+2 }}</td>
+                <td class="text-nowrap">{{ $diplome->annee_bac+2 }}</td>
+                <td class="text-nowrap">{{ $diplome->filier_bac+2 }}</td>
+                <td class="text-nowrap"><a href="{{ asset('storage/' . $diplome->scan_bac+2) }}" target="_blank">scan bac+2</a></td>
+                <td class="text-nowrap">{{ $diplome->etablissement}}</td>
+                <td class="text-nowrap">{{ $diplome->type_diplome_bac+3 }}</td>
+                <td class="text-nowrap">{{ $diplome->annee_bac+3 }}</td>
+                <td class="text-nowrap">{{ $diplome->filier_bac+3 }}</td>
+                <td class="text-nowrap"><a href="{{ asset('storage/' . $diplome->scan_bac+3) }}" target="_blank">scan bac+3</a></td>
+                <td class="text-nowrap">{{ $diplome->etablissement}}</td>                
+                <td class="text-nowrap">
+                    <div class="d-flex gap-2">
+                        <form action="{{ route('diplomes.destroy', $diplome->id) }}" method="POST"
+                        onsubmit="confirmDelete(event, this)">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')">Supprimer</button>
+                        </form>
+                    </div>
+                 </td>
+            </tr>
+            @endforeach
+            </tbody>
             </table>
         </div>
        

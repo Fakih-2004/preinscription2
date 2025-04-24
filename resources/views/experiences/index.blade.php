@@ -24,7 +24,7 @@ $candidats = \App\Models\Candidat::all();
                             <th>nom</th>
                             <th>CIN</th>
                             <th>fonction</th>
-                            <th>secteur activite</th>
+                            <th class="text-nowrap">secteur activite</th>
                             <th>periode</th>
                             <th>attestation</th>
                             <th>établissement </th>
@@ -35,16 +35,16 @@ $candidats = \App\Models\Candidat::all();
                     <tbody>
                     @foreach ($experiences as $experience)
                         <tr>
-                        <td>{{ $experience->id }}</td>
-                        <td>{{ $experience->candidat->nom  ?? 'Non défini'}}</td>
-                        <td>{{ $experience->candidat->CIN ?? 'Non défini'}}</td>
-                        <td>{{ $experience->fonction }}</td>
-                        <td>{{ $experience->secteur_activite }}</td>
-                        <td>{{ $experience->periode }}</td>
-                        <td><a href="{{ asset('storage/' . $experience->attestation) }}" target="_blank">scan bac+2</a></td>
-                        <td>{{ $experience->etablissement}}</td>
-                        <td>{{ $experience->description }}</td>                    
-                        <td class="text-center">
+                        <td class="text-nowrap">{{ $experience->id }}</td>
+                        <td class="text-nowrap">{{ $experience->candidat->nom  ?? 'Non défini'}}</td>
+                        <td class="text-nowrap">{{ $experience->candidat->CIN ?? 'Non défini'}}</td>
+                        <td class="text-nowrap">{{ $experience->fonction }}</td>
+                        <td class="text-nowrap">{{ $experience->secteur_activite }}</td>
+                        <td class="text-nowrap">{{ $experience->periode }}</td>
+                        <td class="text-nowrap"><a href="{{ asset('storage/' . $experience->attestation) }}" target="_blank">scan bac+2</a></td>
+                        <td class="text-nowrap">{{ $experience->etablissement}}</td>
+                        <td class="text-nowrap">{{ $experience->description }}</td>                    
+                        <td class="text-nowrap" class="text-center">
                                 <a href="{{ route('experiences.show', $experiences->id) }}" class="btn btn-sm btn-outline-info me-1">Voir</a>
                                 <a href="{{ route('experiences.edit', $experiences->id) }}" class="btn btn-sm btn-outline-warning me-1">Modifier</a>
                                 <form action="{{ route('experiences.destroy', $experiences->id) }}" method="POST" style="display:inline;">
