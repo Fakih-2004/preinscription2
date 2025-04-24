@@ -1,5 +1,5 @@
 @extends('Layouts.app') 
-@section('title', 'les candidat') 
+@section('title', 'les Admins') 
 
 @section('content') 
 <div class="container mt-5">
