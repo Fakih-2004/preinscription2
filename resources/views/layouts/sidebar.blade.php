@@ -39,30 +39,54 @@
               <li class="nav-item">
                 <a href="{{route('administrateurs.index')}}" class="nav-link">
                     <i class="nav-icon bi bi-folder"></i>
-                    <p>Admin</p>
+                    <p>Administrateurs</p>
                 </a>
             </li>
             <li class="nav-item">
-                    <a href="{{route('formations.index')}}" class="nav-link">
-                        <i class="nav-icon bi bi-folder"></i>
-                        <p>Formation</p>
-                    </a>
-                </li>
+              <a href="{{route('formations.index')}}" class="nav-link">
+                  <i class="nav-icon bi bi-folder"></i>
+                  <p>Formations</p>
+              </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('insciptions.index')}}" class="nav-link">
+                <i class="nav-icon bi bi-folder"></i>
+                <p>Insciptions</p>
+            </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{route('candidats.index')}}" class="nav-link">
+            <i class="nav-icon bi bi-folder"></i>
+            <p>Candidat</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{route('diplomes.index')}}" class="nav-link">
+              <i class="nav-icon bi bi-folder"></i>
+              <p>diplome</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{route('experiences.index')}}" class="nav-link">
+              <i class="nav-icon bi bi-folder"></i>
+              <p>Experiences</p>
+          </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{route('stages.index')}}" class="nav-link">
+            <i class="nav-icon bi bi-folder"></i>
+            <p>Stages</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{route('attestations.index')}}" class="nav-link">
+            <i class="nav-icon bi bi-folder"></i>
+            <p>Attestations</p>
+        </a>
+      </li>
 
-                <li class="nav-item">
-                    <a href="{{route('candidats.index')}}" class="nav-link">
-                        <i class="nav-icon bi bi-folder"></i>
-                        <p>Candidat</p>
-                    </a>
-                </li>
 
-
-                <li class="nav-item">
-                    <a href="{{route('diplomes.index')}}" class="nav-link">
-                        <i class="nav-icon bi bi-folder"></i>
-                        <p>diplome</p>
-                    </a>
-                </li>
+                
 
 
             
