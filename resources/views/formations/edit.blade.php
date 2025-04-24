@@ -1,9 +1,9 @@
 @extends('Layouts.app')
-@section('title', 'Modifier formation')
+
 
 @section('content')
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary fw-bold">Modifier l’formation</h2>
+    <h2 class="text-center mb-4 text-primary fw-bold">Modifier formation</h2>
 
     <div class="card shadow-sm border-0">
         <div class="card-body">
@@ -12,7 +12,7 @@
                 @method('PUT')
 
                 <div class="mb-3">
-                    <label for="type formation" class="form-label">type formation</label>
+                    <label for="type_formation" class="form-label">type formation</label>
                     <input type="text" name="type_formation" id="type_formation" class="form-control" value="{{ $formation->type_formation }}" required>
                 </div>
 

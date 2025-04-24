@@ -50,6 +50,8 @@ class FormationController extends Controller
 }
 
 
+
+
     public function update(Request $request, $id)
     {
         $formation = Formation::findOrFail($id);
