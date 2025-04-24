@@ -8,9 +8,11 @@
                          @php
                             $formations = \App\Models\Formation::all();
                         @endphp
-        <div class="mb-3">
-            <a href="{{ route('formations.create') }}" class="btn btn-primary">Add formation</a>
-        </div>
+                        <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('formations.create') }}" class="btn btn-sm text-white" style="background-color:blue;">
+            <i class="bi bi-plus-circle me-1"></i> Ajouter un formation
+        </a>
+    </div>
 
         
         <div class="table-responsive">
@@ -47,7 +49,7 @@
                                         onsubmit="confirmDelete(event, this)">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')">Supprimer</button>
                                     </form>
                                 </div>
                             </td>
