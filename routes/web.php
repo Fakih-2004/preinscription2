@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormationController;
+use App\Http\Controllers\CandidatController;
+use App\Http\Controllers\DiplomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +27,5 @@ Route::get('/', function () {
 
 Route::resource('formations', FormationController::class);
  
+Route::resource('candidats', CandidatController::class);
+Route::resource('diplomes', DiplomeController::class);

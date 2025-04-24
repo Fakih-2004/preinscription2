@@ -43,6 +43,20 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{route('candidats.index')}}" class="nav-link">
+                        <i class="nav-icon bi bi-folder"></i>
+                        <p>Candidat</p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="{{route('diplomes.index')}}" class="nav-link">
+                        <i class="nav-icon bi bi-folder"></i>
+                        <p>diplome</p>
+                    </a>
+                </li>
 
 
             
