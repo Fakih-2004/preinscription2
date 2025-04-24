@@ -15,9 +15,11 @@
                             $candidats = \App\Models\Candidat::all();
                         @endphp
         
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="table-primary">
+                        <div class="card shadow-sm border-0">
+        <div class="card-body p-0">            
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
                     <tr>
             <th>ID</th>
             <th>nom</th>
