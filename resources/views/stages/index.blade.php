@@ -6,6 +6,11 @@
         <h1 class="text-center mb-4">les stages</h1>
 
        
+        <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('stages.create') }}" class="btn btn-sm text-white" style="background-color:blue;">
+            <i class="bi bi-plus-circle me-1"></i> Ajouter un stage
+        </a>
+    </div>
                        
                         @php
                             $candidats = \App\Models\Candidat::all();
@@ -16,10 +21,13 @@
                 <thead class="table-primary">
                     <tr>
             <th>ID</th>
+            <th>nom</th>
+            <th>CIN</th>
             <th>fonction</th>
             <th>periode</th>
             <th>attestation</th>
-            <th>etablissement</th>
+            <th>établissement</th>
+            <th>secteur activite</th>
             <th>description</th>
             <th>Actions</th>
         </tr>
@@ -33,8 +41,11 @@
                 <td>{{ $stage->id }}</td>
                 <td>{{ $stage->candidat->nom  ?? 'Non défini'}}</td>
                 <td>{{ $stage->candidat->CIN  ?? 'Non défini'}}</td>
-                <td>{{ $stage->type_attestation}}</td>
+                <td>{{ $stage->fonction}}</td>
+                <td>{{ $stage->periode}}</td>
                 <td><a href="{{ asset('storage/' . $stage->attestation) }}" target="_blank">attestation</a></td>
+                <td>{{ $stage->etablissement}}</td>
+                <td>{{ $stage->secteur_activite}}</td>
                 <td>{{ $stage->description}}</td>
                 
              

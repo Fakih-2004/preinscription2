@@ -5,6 +5,11 @@
     <div class="container mt-4">
         <h1 class="text-center mb-4">les diplomes</h1>
 
+        <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('diplomes.create') }}" class="btn btn-sm text-white" style="background-color:blue;">
+            <i class="bi bi-plus-circle me-1"></i> Ajouter un diplome
+        </a>
+    </div>
        
                         @php
                             $diplomes = \App\Models\Diplome::all();
@@ -54,7 +59,7 @@
                                         onsubmit="confirmDelete(event, this)">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')">Supprimer</button>
                                     </form>
                                 </div>
                             </td>

@@ -5,6 +5,7 @@ use App\Http\Controllers\FormationController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\DiplomeController;
 use App\Http\Controllers\AttestationController;
+use App\Http\Controllers\StageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,4 @@ Route::resource('candidats', CandidatController::class);
 Route::resource('diplomes', DiplomeController::class);
 
 Route::resource('attestations', AttestationController::class);
+Route::resource('stages', StageController::class);

@@ -5,7 +5,11 @@
     <div class="container mt-4">
         <h1 class="text-center mb-4">les attestations</h1>
 
-       
+        <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('attestations.create') }}" class="btn btn-sm text-white" style="background-color:blue;">
+            <i class="bi bi-plus-circle me-1"></i> Ajouter un attestation
+        </a>
+    </div>
                        
                         @php
                             $candidats = \App\Models\Candidat::all();

@@ -71,6 +71,12 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{route('stages.index')}}" class="nav-link">
+                        <i class="nav-icon bi bi-folder"></i>
+                        <p>stage</p>
+                    </a>
+                </li>
 
             
               
