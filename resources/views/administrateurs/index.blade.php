@@ -35,11 +35,11 @@
                             <td class="text-nowrap">{{ $administrateur->password }}</td>
                             <td class="text-nowrap text-center">
                                 <a href="{{ route('administrateurs.show', $administrateur->id) }}" class="btn btn-sm btn-outline-info me-1">Voir</a>
-                                <a href="{{ route('administrateurs.edit', $administrateur->id) }}" class="btn btn-sm btn-outline-warning me-1">Modifier</a>
+                                <a href="{{ route('administrateurs.edit', $administrateur->id) }}" class="btn btn-sm btn-outline-warning me-1"><i class="bi bi-pencil-square"></i></a>
                                 <form action="{{ route('administrateurs.destroy', $administrateur->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')">Supprimer</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
                         </tr>

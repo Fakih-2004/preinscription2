@@ -21,7 +21,7 @@
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                     <tr>
-                        <th>ID</th>
+                       
                         <th>type formation</th>
                         <th>date debut</th>
                         <th>date fin</th>
@@ -36,7 +36,7 @@
 
 
 
-                            <td>{{ $formation->id }}</td>
+                            
                             <td>{{ $formation->type_formation }}</td>
                             <td>{{ $formation->date_debut }}</td>
                             <td>{{ $formation->date_fin }}</td>
@@ -46,12 +46,12 @@
                             <td>
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('formations.edit', $formation->id) }}"
-                                        class="btn btn-warning btn-sm">Modifier</a>
+                                        class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
                                     <form action="{{ route('formations.destroy', $formation->id) }}" method="POST"
                                         onsubmit="confirmDelete(event, this)">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')">Supprimer</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')"><i class="bi bi-trash"></i></button>
                                     </form>
                                 </div>
                             </td>

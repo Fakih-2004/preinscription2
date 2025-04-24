@@ -50,7 +50,7 @@ $candidats = \App\Models\Candidat::all();
                                 <form action="{{ route('experiences.destroy', $experiences->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet experiences ?')">Supprimer</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet experiences ?')"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
                         </tr>

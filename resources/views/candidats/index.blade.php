@@ -83,11 +83,11 @@
 
         <td class="text-nowrap" class="text-center">
                                 <a href="{{ route('candidats.show', $candidat->id) }}" class="btn btn-sm btn-outline-info me-1">Voir</a>
-                                <a href="{{ route('candidats.edit', $candidat->id) }}" class="btn btn-sm btn-outline-warning me-1">Modifier</a>
+                                <a href="{{ route('candidats.edit', $candidat->id) }}" class="btn btn-sm btn-outline-warning me-1"><i class="bi bi-pencil-square"></i></a>
                                 <form action="{{ route('candidats.destroy', $candidat->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet candidat ?')">Supprimer</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet candidat ?')"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
                         </tr>

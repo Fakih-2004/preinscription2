@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Formation;
+use App\Models\Administrateur;
 use Illuminate\Http\Request;
 
 class FormationController extends Controller
@@ -15,14 +16,24 @@ class FormationController extends Controller
 
     public function create()
     {
-        return view('formations.create');
+        $administrateurs = Administrateur::all();
+        return view('formations.create', compact('administrateurs'));
     }
-
+    
     public function store(Request $request)
     {
-        Formation::create($request->all());
-        return redirect()->route('formations.index');
+        $validated = $request->validate([
+            'type_formation' => 'required|string' ,
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
+            'administrateur_id' => 'required|exists:administrateurs,id',
+        ]);
+       
+    
+        Formation::create($validated);
+        return redirect()->route('formations.index')->with('success', 'Formation ajoutée avec succès.');
     }
+    
 
     public function show($id)
     {

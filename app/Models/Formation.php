@@ -8,11 +8,11 @@ class Formation extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $fillable = ['titre', 'date_debut', 'date_fin', 'administrateur_id'];
 
     public function administrateur()
     {
-        return $this->belongsTo(Administrateur::class, 'administrateur_id');
+        return $this->belongsTo(Administrateur::class);
     }
 
     public function inscriptions()
