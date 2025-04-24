@@ -29,7 +29,7 @@ use App\Http\Controllers\FormationController;
 
 Route::resource('administrateurs', AdministrateurController::class);
 Route::resource('formations', FormationController::class);
-Route::resource('experience', ExperienceController::class);
+Route::resource('experiences', ExperienceController::class);
 Route::resource('attestations', AttestationController::class);
 Route::resource('stages', StageController::class);
 Route::resource('inscriptions', InscriptionController::class);
