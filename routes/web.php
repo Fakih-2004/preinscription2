@@ -24,7 +24,6 @@ use App\Http\Controllers\FormationController;
 
 
 
- 
 
 
 Route::resource('administrateurs', AdministrateurController::class);
@@ -35,3 +34,10 @@ Route::resource('stages', StageController::class);
 Route::resource('inscriptions', InscriptionController::class);
 Route::resource('candidats', CandidatController::class);
 Route::resource('diplomes', DiplomeController::class);
+
+
+Route::get('/candidats/create', [CandidatController::class, 'create'])->name('candidats.create');
+Route::post('/candidats', [CandidatController::class, 'store'])->name('candidats.store');
+Route::get('/candidats/{id}/edit', [CandidatController::class, 'edit'])->name('candidats.edit');
+Route::put('/candidats/{id}', [CandidatController::class, 'update'])->name('candidats.update');
+Route::delete('/candidats/{id}', [CandidatController::class, 'destroy'])->name('candidats.destroy');

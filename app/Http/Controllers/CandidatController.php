@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Candidat;
@@ -17,14 +18,14 @@ class CandidatController extends Controller
 
     public function create()
     {
-        $formations = Formation::all(); // to populate the select
+        $formations = Formation::all();
         return view('candidats.create', compact('formations'));
     }
 
     public function store(Request $request)
     {
-        // Handle file uploads and store them in the public storage folder
-        $data = $request->except('formation_id'); // Exclude formation_id for now
+        $data = $request->except('formation_id');
+
         if ($request->hasFile('cv')) {
             $data['cv'] = $request->file('cv')->store('public/cv');
         }
@@ -41,13 +42,12 @@ class CandidatController extends Controller
             $data['scan_bac'] = $request->file('scan_bac')->store('public/bac');
         }
 
-        $candidat = Candidat::create($data); // Create candidate
+        $candidat = Candidat::create($data);
 
-        // Create the inscription for the candidate
         Inscription::create([
             'candidat_id' => $candidat->id,
             'formation_id' => $request->formation_id,
-            'annee' => now(), 
+            'annee' => now(),
         ]);
 
         return redirect()->route('candidats.index');
@@ -68,32 +68,42 @@ class CandidatController extends Controller
     public function update(Request $request, $id)
     {
         $candidat = Candidat::findOrFail($id);
+        $data = $request->all();
 
-        // Handle file updates
         if ($request->hasFile('cv')) {
-            $candidat->cv = $request->file('cv')->store('public/cv');
-        }
-        if ($request->hasFile('demande')) {
-            $candidat->demande = $request->file('demande')->store('public/demande');
-        }
-        if ($request->hasFile('scan_cartid')) {
-            $candidat->scan_cartid = $request->file('scan_cartid')->store('public/cin');
-        }
-        if ($request->hasFile('photo')) {
-            $candidat->photo = $request->file('photo')->store('public/photos');
-        }
-        if ($request->hasFile('scan_bac')) {
-            $candidat->scan_bac = $request->file('scan_bac')->store('public/bac');
+            Storage::delete($candidat->cv);
+            $data['cv'] = $request->file('cv')->store('public/cv');
         }
 
-        $candidat->update($request->all()); // Update candidate
+        if ($request->hasFile('demande')) {
+            Storage::delete($candidat->demande);
+            $data['demande'] = $request->file('demande')->store('public/demande');
+        }
+
+        if ($request->hasFile('scan_cartid')) {
+            Storage::delete($candidat->scan_cartid);
+            $data['scan_cartid'] = $request->file('scan_cartid')->store('public/cin');
+        }
+
+        if ($request->hasFile('photo')) {
+            Storage::delete($candidat->photo);
+            $data['photo'] = $request->file('photo')->store('public/photos');
+        }
+
+        if ($request->hasFile('scan_bac')) {
+            Storage::delete($candidat->scan_bac);
+            $data['scan_bac'] = $request->file('scan_bac')->store('public/bac');
+        }
+
+        $candidat->update($data);
+
         return redirect()->route('candidats.index');
     }
 
     public function destroy($id)
     {
         $candidat = Candidat::findOrFail($id);
-        // Delete the files
+
         Storage::delete([
             $candidat->cv,
             $candidat->demande,
@@ -101,7 +111,9 @@ class CandidatController extends Controller
             $candidat->photo,
             $candidat->scan_bac
         ]);
+
         $candidat->delete();
+
         return redirect()->route('candidats.index');
     }
 }
