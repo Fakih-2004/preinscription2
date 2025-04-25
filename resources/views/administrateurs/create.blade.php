@@ -9,7 +9,8 @@
         <div class="card-body">
             <form action="{{ route('administrateurs.store') }}" method="POST">
                 @csrf
-
+                
+               
                 <div class="mb-3">
                     <label for="nom" class="form-label">Nom</label>
                     <input type="text" name="nom" id="nom" class="form-control" placeholder="Entrez le nom" required>

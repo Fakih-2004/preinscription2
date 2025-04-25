@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('inscriptions', function (Blueprint $table) {
             $table->id();
             $table->date('annee');
-            $table->unsignedBigInteger('candidat_id');
-            $table->foreign('candidat_id')->references('id')->on('candidats');
+            $table->unsignedBigInteger('candidat_id'); 
+            $table->foreign('candidat_id')->references('id')->on('candidats')->onDelete('cascade'); // Add foreign key constraint
             $table->unsignedBigInteger('formation_id');
-            $table->foreign('formation_id')->references('id')->on('formations');
+            $table->foreign('formation_id')->references('id')->on('formations')->onDelete('cascade');
             $table->timestamps();
         });
+        
     }
 
     /**

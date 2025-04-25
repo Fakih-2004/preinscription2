@@ -136,7 +136,7 @@
 
             <div class="col-md-6 mb-3">
                 <label>Demande (PDF)</label>
-                <input type="file" name="demand" class="form-control" accept="application/pdf" required>
+                <input type="file" name="demande" class="form-control" accept="application/pdf" required>
             </div>
 
             <div class="col-md-6 mb-3">
