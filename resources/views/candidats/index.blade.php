@@ -26,6 +26,7 @@
                             <th>Prénom AR</th>
                             <th>CNE</th>
                             <th>CIN</th>
+                            <th>Email</th>
                             <th>Date de naissance</th>
                             <th>Ville naissance</th>
                             <th>Ville naissance AR</th>
@@ -36,7 +37,6 @@
                             <th>Téléphone mobile</th>
                             <th>Téléphone fixe</th>
                             <th>Adresse</th>
-                            <th>Email</th>
                             <th>Ville</th>
                             <th>Pays</th>
                             <th>CV</th>
@@ -61,6 +61,7 @@
                             <td>{{ $candidat->prenom_ar }}</td>
                             <td>{{ $candidat->CNE }}</td>
                             <td>{{ $candidat->CIN }}</td>
+                            <td>{{ $candidat->email }}</td>
                             <td>{{ $candidat->date_naissance }}</td>
                             <td>{{ $candidat->ville_naissance }}</td>
                             <td>{{ $candidat->ville_naissance_ar }}</td>
@@ -71,7 +72,6 @@
                             <td>{{ $candidat->telephone_mob }}</td>
                             <td>{{ $candidat->telephone_fix }}</td>
                             <td>{{ $candidat->adresse }}</td>
-                            <td>{{ $candidat->email }}</td>
                             <td>{{ $candidat->ville }}</td>
                             <td>{{ $candidat->pays }}</td>
                             <td>

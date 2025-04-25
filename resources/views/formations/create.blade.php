@@ -25,7 +25,7 @@
             
             <div class="mb-3">
                 <label>type formation</label>
-                <input type="text" name="type formation" required>
+                <input type="text" name="type formation" class="form-control" required>
             </div>
 
             <div class="mb-3">

@@ -29,35 +29,40 @@
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="col-md-6 mb-3">
                 <label>Nom</label>
-                <input type="text" name="nom" class="form-control" required>
+                <input type="text" name="nom" class="form-control" placeholder="Entrez votre nom" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Prénom</label>
-                <input type="text" name="prenom" class="form-control" required>
+                <input type="text" name="prenom" class="form-control" placeholder="Entrez votre prénom" required>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Nom AR</label>
-                <input type="text" name="nom_ar" class="form-control" required>
+                <label>الاسم العائلي</label>
+                <input type="text" name="nom_ar" class="form-control" placeholder="أدخل اسمك العائلي بالعربية" required>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Prénom AR</label>
-                <input type="text" name="prenom_ar" class="form-control" required>
+                <label> الاسم الشخصي</label>
+                <input type="text" name="prenom_ar" class="form-control" placeholder="أدخل اسمك الشخصي بالعربية" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>CNE</label>
-                <input type="text" name="CNE" class="form-control" required>
+                <input type="text" name="CNE" class="form-control" placeholder="Entrez votre CNE" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>CIN</label>
-                <input type="text" name="CIN" class="form-control" required>
+                <input type="text" name="CIN" class="form-control" placeholder="Entrez votre CIN" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" placeholder="Entrez votre email" required>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -67,27 +72,27 @@
 
             <div class="col-md-6 mb-3">
                 <label>Ville naissance</label>
-                <input type="text" name="ville_naissance" class="form-control" required>
+                <input type="text" name="ville_naissance" class="form-control" placeholder="Entrez la ville de naissance" required>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Ville naissance AR</label>
-                <input type="text" name="ville_naissance_ar" class="form-control" required>
+                <label>مدينة الولادة</label>
+                <input type="text" name="ville_naissance_ar" class="form-control" placeholder="أدخل مدينة الولادة بالعربية" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Province</label>
-                <input type="text" name="province" class="form-control" required>
+                <input type="text" name="province" class="form-control" placeholder="Entrez votre province" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Pays naissance</label>
-                <input type="text" name="pay_naissance" class="form-control" required>
+                <input type="text" name="pay_naissance" class="form-control" placeholder="Entrez votre pays de naissance" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Nationalité</label>
-                <input type="text" name="nationalite" class="form-control" required>
+                <input type="text" name="nationalite" class="form-control" placeholder="Entrez votre nationalité" required>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -100,35 +105,30 @@
 
             <div class="col-md-6 mb-3">
                 <label>Téléphone mobile</label>
-                <input type="text" name="telephone_mob" class="form-control" required>
+                <input type="text" name="telephone_mob" class="form-control" placeholder="Entrez votre téléphone mobile" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Téléphone fixe</label>
-                <input type="text" name="telephone_fix" class="form-control">
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control" required>
+                <input type="text" name="telephone_fix" class="form-control" placeholder="Entrez votre téléphone fixe">
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Ville</label>
-                <input type="text" name="ville" class="form-control" required>
+                <input type="text" name="ville" class="form-control" placeholder="Entrez votre ville" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Pays</label>
-                <input type="text" name="pays" class="form-control" required>
+                <input type="text" name="pays" class="form-control" placeholder="Entrez votre pays" required>
             </div>
 
             <div class="col-md-12 mb-3">
                 <label>Adresse</label>
-                <textarea name="adresse" class="form-control" rows="2" required></textarea>
+                <textarea name="adresse" class="form-control" rows="2" placeholder="Entrez votre adresse" required></textarea>
             </div>
 
-            {{-- Fichiers --}}
+            
             <div class="col-md-6 mb-3">
                 <label>CV (PDF)</label>
                 <input type="file" name="cv" class="form-control" accept="application/pdf" required>
@@ -149,10 +149,10 @@
                 <input type="file" name="photo" class="form-control" accept="image/*" required>
             </div>
 
-            {{-- Bac --}}
+            
             <div class="col-md-6 mb-3">
                 <label>Série Bac</label>
-                <input type="text" name="serie_bac" class="form-control" required>
+                <input type="text" name="serie_bac" class="form-control" placeholder="Entrez la série du Bac" required>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -169,6 +169,7 @@
 
         <div class="text-center">
             <button type="submit" class="btn btn-primary px-5">Enregistrer</button>
+            <a href="{{ route('candidats.index') }}" class="btn btn-secondary px-5">Annuler</a>
         </div>
     </form>
 </div>
