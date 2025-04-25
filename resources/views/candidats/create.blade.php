@@ -157,7 +157,17 @@
 
             <div class="col-md-6 mb-3">
                 <label>Année Bac</label>
-                <input type="date" name="annee_bac" class="form-control" required>
+
+
+<select name="annee_bac" id="annee_bac" class="form-control">
+    <option value="">année bac</option>
+
+    @for ($i = now()->year; $i >= 2000; $i--)
+        <option value="{{ ($i-1) . '/' . $i }}">{{ ($i-1) . '/' . $i }}</option>
+    @endfor
+</select>
+
+               
             </div>
 
             <div class="col-md-6 mb-3">

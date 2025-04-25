@@ -49,11 +49,11 @@
               </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('inscriptions.index')}}" class="nav-link">
-            <i class="bi bi-journal-check"></i>
-                <p>Insciptions</p>
-            </a>
-        </li>
+    <a href="{{ route('admin.formation-stats') }}" class="nav-link">
+        <i class="bi bi-bar-chart"></i>
+        <p>Statistiques des Formations</p>
+    </a>
+</li>
         <li class="nav-item">
           <a href="{{route('candidats.index')}}" class="nav-link">
           <i class="bi bi-people"></i>
