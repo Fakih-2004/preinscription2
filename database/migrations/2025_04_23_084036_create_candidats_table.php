@@ -37,7 +37,7 @@ return new class extends Migration
             $table->string('scan_cartid');
             $table->string('photo');
             $table->string('serie_bac');
-            $table->date('annee_bac');
+            $table->string('annee_bac');
             $table->string('scan_bac');
             $table->timestamps();
         });

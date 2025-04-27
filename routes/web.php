@@ -20,6 +20,7 @@ use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\FormationController;
+use App\Livewire\Admin\FormationStats;
 
 
 
@@ -34,6 +35,8 @@ Route::resource('stages', StageController::class);
 Route::resource('inscriptions', InscriptionController::class);
 Route::resource('candidats', CandidatController::class);
 Route::resource('diplomes', DiplomeController::class);
+Route::get('/admin/stats-formations', FormationStats::class)
+->name('admin.formation-stats');
 
 
 Route::get('/candidats/create', [CandidatController::class, 'create'])->name('candidats.create');

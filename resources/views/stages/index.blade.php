@@ -6,11 +6,7 @@
         <h1 class="text-center mb-4">les stages</h1>
 
        
-        <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('stages.create') }}" class="btn btn-sm text-white" style="background-color:blue;">
-            <i class="bi bi-plus-circle me-1"></i> Ajouter un stage
-        </a>
-    </div>
+        
                        
                         @php
                             $candidats = \App\Models\Candidat::all();
