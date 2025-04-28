@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('etablissement_bac+3');
             $table->string('scan_bac+3');
             $table->unsignedBigInteger('candidat_id');
-            $table->foreign('candidat_id')->references('id')->on('candidats');
+            $table->foreign('candidat_id')->references('id')->on('candidats')->onDelete('cascade');
             $table->timestamps();
         });
     }

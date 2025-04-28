@@ -16,14 +16,15 @@ use App\Http\Controllers\AdministrateurController;
 use App\Http\Controllers\AttestationController;
 use App\Http\Controllers\DiplomeController;
 use App\Http\Controllers\ExperienceController;
-use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\FormationController;
+use App\Livewire\Admin\FormationStats;
 
 
+use App\Http\Controllers\ExportController;
 
-
+Route::get('/export-candidats', [ExportController::class, 'export'])->name('export.candidats');
 
 
 Route::resource('administrateurs', AdministrateurController::class);
@@ -31,9 +32,10 @@ Route::resource('formations', FormationController::class);
 Route::resource('experiences', ExperienceController::class);
 Route::resource('attestations', AttestationController::class);
 Route::resource('stages', StageController::class);
-Route::resource('inscriptions', InscriptionController::class);
 Route::resource('candidats', CandidatController::class);
 Route::resource('diplomes', DiplomeController::class);
+Route::get('/admin/stats-formations', FormationStats::class)
+->name('admin.formation-stats');
 
 
 Route::get('/candidats/create', [CandidatController::class, 'create'])->name('candidats.create');

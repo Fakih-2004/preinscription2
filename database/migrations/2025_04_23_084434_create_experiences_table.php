@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('candidat_id');
-            $table->foreign('candidat_id')->references('id')->on('candidats');
+            $table->foreign('candidat_id')->references('id')->on('candidats')->onDelete('cascade');
             $table->string('fonction');
             $table->string('secteur_activite');
             $table->date('periode');

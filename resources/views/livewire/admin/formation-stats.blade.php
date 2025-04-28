@@ -18,6 +18,11 @@
         
 
         <p  > Nombre de candidats inscrits : <strong>{{ $formation->inscriptions->count() }}</strong></p>
+        <form method="GET" action="{{ route('export.candidats') }}">
+            <input type="hidden" name="formation_id" value="{{ $formation->id }}">
+            <button type="submit" class="btn btn-success">📤 Exporter les Candidats</button>
+        </form>
+        
     </div>
     @endforeach
 
