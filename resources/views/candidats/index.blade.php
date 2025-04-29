@@ -54,7 +54,7 @@
                         @foreach ($candidats as $candidat)
                         <tr>
                             <td>{{ $candidat->id }}</td>
-                            <td>{{ $candidat->inscriptions->first()->formation->type_formation ?? '—' }}</td>
+                            <td>{{ $candidat->inscriptions->first()->formation->type_formation ?? 'unkown' }}</td>
                             <td>{{ $candidat->nom }}</td>
                             <td>{{ $candidat->prenom }}</td>
                             <td>{{ $candidat->nom_ar }}</td>

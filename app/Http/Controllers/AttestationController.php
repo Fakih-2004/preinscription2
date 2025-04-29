@@ -3,50 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attestation;
+use App\Models\Candidat;
 use Illuminate\Http\Request;
 
 class AttestationController extends Controller
 {
     public function index()
     {
-        $attestations = Attestation::all();
+        $attestations = Attestation::with('candidat')->get();
         return view('attestations.index', compact('attestations'));
     }
 
     public function create()
     {
-        return view('attestations.create');
+        $candidats = Candidat::all();
+        return view('attestations.create', compact('candidats'));
     }
 
     public function store(Request $request)
     {
-        Attestation::create($request->all());
-        return redirect()->route('attestations.index');
-    }
+        $request->validate([
+            'candidat_id' => 'required|exists:candidats,id',
+            'attestation' => 'required|file|mimes:pdf,jpg,jpeg,png',
+            'discription' => 'required|string',
+            'type_attestation' => 'required|string',
+        ]);
 
-    public function show($id)
-    {
-        $attestation = Attestation::findOrFail($id);
-        return view('attestations.show', compact('attestation'));
-    }
+        $path = $request->file('attestation')->store('attestations', 'public');
 
+        Attestation::create([
+            'candidat_id' => $request->candidat_id,
+            'attestation' => $path,
+            'discription' => $request->discription,
+            'type_attestation' => $request->type_attestation,
+        ]);
+
+        return redirect()->route('attestations.index')->with('success', 'Attestation ajoutée avec succès.');
+    }
+    
     public function edit($id)
     {
         $attestation = Attestation::findOrFail($id);
-        return view('attestations.edit', compact('attestation'));
+        $candidats = Candidat::all();
+        return view('attestations.edit', compact('attestation', 'candidats'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $attestation = Attestation::findOrFail($id);
-        $attestation->update($request->all());
-        return redirect()->route('attestations.index');
-    }
+   
 
     public function destroy($id)
     {
         $attestation = Attestation::findOrFail($id);
         $attestation->delete();
-        return redirect()->route('attestations.index');
+        return redirect()->route('attestations.index')->with('success', 'Attestation supprimée avec succès.');
     }
 }

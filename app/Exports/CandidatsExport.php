@@ -14,7 +14,10 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings
     public function __construct($formationId)
     {
         $this->formationId = $formationId;
+        // $this->diplomes = $diplomes;
+
     }
+    
 
     public function collection()
     {
@@ -26,68 +29,64 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings
             'diplomes',
             'attestations',
             'experiences',
-            'inscriptions.formation', // Include formation details
+            'inscriptions.formation', 
         ])
         ->get();
     }
 
     public function map($candidat): array
-    {
-        return [
-            $candidat->id,
-            $candidat->inscriptions->first()->formation->type_formation ?? 'N/A', // Formation Type
-            $candidat->nom,
-            $candidat->prenom,
-            $candidat->nom_ar,
-            $candidat->prenom_ar,
-            $candidat->CNE,
-            $candidat->CIN,
-            $candidat->email,
-            $candidat->date_naissance,
-            $candidat->ville_naissance,
-            $candidat->ville_naissance_ar,
-            $candidat->province,
-            $candidat->pay_naissance,
-            $candidat->nationalite,
-            $candidat->sexe, 
-            $candidat->telephone_mob,
-            $candidat->telephone_fix,
-            $candidat->adresse,
-            $candidat->ville,
-            $candidat->pays,            
-            $candidat->cv,
-            $candidat->demande,
-            $candidat->scan_cartid,
-            $candidat->photo,
-            $candidat->serie_bac,
-            $candidat->annee_bac,
-            $candidat->scan_bac,
-            
-            // Stages - Return all stage details
-            $candidat->stages->map(function ($stage) {
-                return $stage->fonction . ' | ' . $stage->periode . ' | ' . $stage->etablissement . ' | ' . $stage->secteur_activite;
-            })->implode(', '),
+{
+    return [
+        $candidat->id,
+        $candidat->inscriptions->first()->formation->type_formation ?? 'N/A', 
+        $candidat->email,
+        $candidat->nom,
+        $candidat->prenom,
+        $candidat->nom_ar,
+        $candidat->prenom_ar,
+        $candidat->CNE,
+        $candidat->CIN,
+        $candidat->date_naissance,
+        $candidat->ville_naissance,
+        $candidat->ville_naissance_ar,
+        $candidat->province,
+        $candidat->pay_naissance,
+        $candidat->nationalite,
+        $candidat->sexe,
+        $candidat->telephone_mob,
+        $candidat->telephone_fix,
+        $candidat->adresse,
+        $candidat->ville,
+        $candidat->pays,
+        $candidat->cv ? asset('storage/' . $candidat->cv) : '',
+        $candidat->demande ? asset('storage/' . $candidat->demande) : '',
+        $candidat->scan_cartid ? asset('storage/' . $candidat->scan_cartid) : '',
+        $candidat->photo ? asset('storage/' . $candidat->photo) : '',
+        $candidat->serie_bac,
+        $candidat->annee_bac,
+        $candidat->scan_bac ? asset('storage/' . $candidat->scan_bac) : '',
 
-            // Diplomes - Return all diploma details
-            $candidat->diplomes->map(function ($diplome) {
-                return $diplome->type_diplome_bac+2 . ' | ' . $diplome->anne_bac+2 . ' | ' . $diplome->filiere_bac+2 . ' | ' . $diplome->etablissement_bac+2;
-            })->implode(', ') . ', ' .
-            
-            $candidat->diplomes->map(function ($diplome) {
-                return $diplome->type_bac+3 . ' | ' . $diplome->annee_bac+3 . ' | ' . $diplome->filiere_bac+3 . ' | ' . $diplome->etablissement_bac+3;
-            })->implode(', '),
+        // Safe mapping of related tables
+        $candidat->stages->count() > 0 ? $candidat->stages->pluck('fonction')->implode('; ') : '',
+        'Diplômes' => $candidat->diplomes->map(function ($diplome) {
+    return
+        "BAC+2: " . $diplome->{'type_diplome_bac+2'} . " (" . $diplome->{'anne_bac+2'} . "), " .
+        "Filière: " . $diplome->{'filiere_bac+2'} . ", " .
+        "Établissement: " . $diplome->{'etalissement_bac+2'} . "\n" .
+        "BAC+3: " . $diplome->{'type_bac+3'} . " (" . $diplome->{'annee_bac+3'} . "), " .
+        "Filière: " . $diplome->{'filiere_bac+3'} . ", " .
+        "Établissement: " . $diplome->{'etablissement_bac+3'};
+        // ❌ No scan_bac+2, scan_bac+3
+})->implode("\n\n"),
 
-            // Attestations - Return all attestation details
-            $candidat->attestations->map(function ($attestation) {
-                return $attestation->attestation . ' | ' . $attestation->discription . ' | ' . $attestation->type_attestation;
-            })->implode(', '),
+        $candidat->attestations->count() > 0 ? $candidat->attestations->pluck('type_attestation')->implode('; ') : '',
+        $candidat->experiences->count() > 0 ? $candidat->experiences->pluck('fonction')->implode('; ') : '',
+    
+    
+    
+    ];
+}
 
-            // Experiences - Return all experience details
-            $candidat->experiences->map(function ($experience) {
-                return $experience->fonction . ' | ' . $experience->secteur_activite . ' | ' . $experience->periode . ' | ' . $experience->etablissement;
-            })->implode(', '),
-        ];
-    }
 
     public function headings(): array
     {

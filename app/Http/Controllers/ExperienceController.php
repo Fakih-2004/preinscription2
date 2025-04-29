@@ -3,50 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\Experience;
+use App\Models\Candidat;
 use Illuminate\Http\Request;
 
 class ExperienceController extends Controller
 {
     public function index()
     {
-        $experiences = Experience::all();
+        $experiences = Experience::with('candidat')->get();
         return view('experiences.index', compact('experiences'));
     }
 
     public function create()
     {
-        return view('experiences.create');
+        $candidats = Candidat::all();
+        return view('experiences.create', compact('candidats'));
     }
 
     public function store(Request $request)
     {
-        Experience::create($request->all());
-        return redirect()->route('experiences.index');
-    }
+        $request->validate([
+            'candidat_id' => 'required|exists:candidats,id',
+            'fonction' => 'required|string',
+            'secteur_activite' => 'required|string',
+            'periode' => 'required|date',
+            'attestation' => 'required|file|mimes:pdf,jpg,jpeg,png',
+            'etablissement' => 'required|string',
+            'discription' => 'required|string',
+        ]);
 
-    public function show($id)
-    {
-        $experience = Experience::findOrFail($id);
-        return view('experiences.show', compact('experience'));
-    }
+        $path = $request->file('attestation')->store('experiences', 'public');
 
-    public function edit($id)
-    {
-        $experience = Experience::findOrFail($id);
-        return view('experiences.edit', compact('experience'));
-    }
+        Experience::create([
+            'candidat_id' => $request->candidat_id,
+            'fonction' => $request->fonction,
+            'secteur_activite' => $request->secteur_activite,
+            'periode' => $request->periode,
+            'attestation' => $path,
+            'etablissement' => $request->etablissement,
+            'discription' => $request->discription,
+        ]);
 
-    public function update(Request $request, $id)
-    {
-        $experience = Experience::findOrFail($id);
-        $experience->update($request->all());
-        return redirect()->route('experiences.index');
-    }
-
-    public function destroy($id)
-    {
-        $experience = Experience::findOrFail($id);
-        $experience->delete();
-        return redirect()->route('experiences.index');
+        return redirect()->route('experiences.index')->with('success', 'Expérience ajoutée avec succès.');
     }
 }

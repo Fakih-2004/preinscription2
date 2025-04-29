@@ -1,67 +1,64 @@
-@extends('Layouts.app') 
-@section('title', 'les attestation') 
+@extends('Layouts.app')
 
-@section('content') 
-    <div class="container mt-4">
-        <h1 class="text-center mb-4">les attestations</h1>
+@section('title', 'Liste des attestations')
 
-        <div class="d-flex justify-content-end mb-3">
+@section('content')
+<div class="container mt-5">
+    <h1 class="text-center mb-5 fw-bold text-primary">Liste des attestations</h1>
+
+    <div class="d-flex justify-content-end mb-3">
         <a href="{{ route('attestations.create') }}" class="btn btn-sm text-white" style="background-color:blue;">
-            <i class="bi bi-plus-circle me-1"></i> Ajouter un attestation
+            <i class="bi bi-plus-circle me-1"></i> Ajouter une attestation
         </a>
     </div>
-                       
-                        @php
-                            $candidats = \App\Models\Candidat::all();
-                        @endphp
-        
-                        <div class="card shadow-sm border-0">
-        <div class="card-body p-0">            
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                    <tr>
-            <th>ID</th>
-            <th>nom</th>
-            <th>CIN</th>
-            <th>attestation</th>
-            <th>type attestation</th>
-            <th>description</th>
-            <th>Actions</th>
-        </tr>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($attestations as $attestation)
+                    <thead class="table-light text-nowrap ">
                         <tr>
-
-                <td>{{ $attestation->id }}</td>
-                <td>{{ $attestation->candidat->nom  ?? 'Non défini'}}</td>
-                <td>{{ $attestation->candidat->CIN  ?? 'Non défini'}}</td>
-                <td>{{ $attestation->type_attestation}}</td>
-                <td><a href="{{ asset('storage/' . $attestation->attestation) }}" target="_blank">attestation</a></td>
-                <td>{{ $attestation->description}}</td>
-                
-             
+                            <th>ID</th>
+                            <th>Nom Candidat</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Fichier</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-nowrap">
+                        @foreach ($attestations as $attestation)
+                        <tr>
+                            <td>{{ $attestation->id }}</td>
+                            <td>{{ $attestation->candidat->nom }} {{ $attestation->candidat->prenom }}</td>
+                            <td>{{ $attestation->type_attestation }}</td>
+                            <td>{{ $attestation->discription }}</td>
                             <td>
-                                <div class="d-flex gap-2">
-                                    
-                                    <form action="{{ route('attestations.destroy', $attestation->id) }}" method="POST"
-                                        onsubmit="confirmDelete(event, this)">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </div>
+                                <a href="{{ asset('storage/' . $attestation->attestation) }}" target="_blank">Voir</a>
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ route('attestations.edit', $attestation->id) }}" class="btn btn-sm btn-outline-warning me-1">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <form action="{{ route('attestations.destroy', $attestation->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer cette attestation ?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        @endforeach
+                        @if ($attestations->isEmpty())
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">Aucune attestation trouvée.</td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
-       
     </div>
-    @endsection
-
-
+</div>
+@endsection
