@@ -21,24 +21,40 @@ class StageController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'candidat_id' => 'required|exists:candidats,id',
-            'fonction' => 'required|string',
-            'periode' => 'required|date',
-            'attestation' => 'nullable|file|mimes:pdf,jpg,png',
-            'etablissement' => 'required|string',
-            'secteur_activite' => 'required|string',
-            'discription' => 'required|string',
-        ]);
+{
+    $validated = $request->validate([
+        'candidat_id' => 'required|exists:candidats,id',
+        'fonction' => 'required|string',
+        'periode' => 'required|date',
+        'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+        'etablissement' => 'required|string',
+        'secteur_activite' => 'required|string',
+        'discription' => 'required|string',
+    ]);
 
-        if ($request->hasFile('attestation')) {
-            $validated['attestation'] = $request->file('attestation')->store('public/attestations');
-        }
+    $candidat = Candidat::findOrFail($request->candidat_id);
 
-        Stage::create($validated);
-        return redirect()->route('stages.index')->with('success', 'Stage ajouté avec succès.');
+    if ($request->hasFile('attestation')) {
+        // Count how many stages this candidate already has
+        $count = Stage::where('candidat_id', $candidat->id)->count() + 1;
+
+        $file = $request->file('attestation');
+        $extension = $file->getClientOriginalExtension();
+        $timestamp = now()->format('YmdHis');
+
+        $filename = strtoupper($candidat->CNE)
+            . strtolower(str_replace(' ', '', $candidat->nom))
+            . strtolower(str_replace(' ', '', $candidat->prenom))
+            . '_stage_' . $count . '_' . $timestamp . '.' . $extension;
+
+        $path = $file->storeAs('attestations', $filename, 'public');
+        $validated['attestation'] = $path;
     }
+
+    Stage::create($validated);
+    return redirect()->route('stages.index')->with('success', 'Stage ajouté avec succès.');
+}
+
 
     public function edit($id)
     {
@@ -47,27 +63,51 @@ class StageController extends Controller
         return view('stages.edit', compact('stage', 'candidats'));
     }
 
+    
+
     public function update(Request $request, $id)
     {
         $stage = Stage::findOrFail($id);
-
+    
         $validated = $request->validate([
             'candidat_id' => 'required|exists:candidats,id',
             'fonction' => 'required|string',
             'periode' => 'required|date',
-            'attestation' => 'nullable|file|mimes:pdf,jpg,png',
+            'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             'etablissement' => 'required|string',
             'secteur_activite' => 'required|string',
             'discription' => 'required|string',
         ]);
-
+    
+        $candidat = Candidat::findOrFail($request->candidat_id);
+    
         if ($request->hasFile('attestation')) {
-            $validated['attestation'] = $request->file('attestation')->store('public/attestations');
+            // Delete old file if exists
+            if ($stage->attestation && \Storage::disk('public')->exists($stage->attestation)) {
+                \Storage::disk('public')->delete($stage->attestation);
+            }
+    
+            $count = Stage::where('candidat_id', $candidat->id)
+                ->where('id', '!=', $stage->id)
+                ->count() + 1;
+    
+            $file = $request->file('attestation');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
+    
+            $filename = strtoupper($candidat->CNE)
+                . strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . '_stage_' . $count . '_' . $timestamp . '.' . $extension;
+    
+            $path = $file->storeAs('attestations', $filename, 'public');
+            $validated['attestation'] = $path;
         }
-
+    
         $stage->update($validated);
         return redirect()->route('stages.index')->with('success', 'Stage modifié avec succès.');
     }
+    
 
     public function destroy($id)
     {

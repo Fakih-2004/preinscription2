@@ -24,7 +24,7 @@ use App\Livewire\Admin\FormationStats;
 
 use App\Http\Controllers\ExportController;
 
-Route::get('/export-candidats', [ExportController::class, 'export'])->name('export.candidats');
+Route::get('export/{formationId}', [ExportController::class, 'export'])->name('export.candidats');
 
 
 Route::resource('administrateurs', AdministrateurController::class);
@@ -43,3 +43,4 @@ Route::post('/candidats', [CandidatController::class, 'store'])->name('candidats
 Route::get('/candidats/{id}/edit', [CandidatController::class, 'edit'])->name('candidats.edit');
 Route::put('/candidats/{id}', [CandidatController::class, 'update'])->name('candidats.update');
 Route::delete('/candidats/{id}', [CandidatController::class, 'destroy'])->name('candidats.destroy');
+

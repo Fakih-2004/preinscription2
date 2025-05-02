@@ -1,16 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Exports\CandidatsExport;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
 {
-    public function export(Request $request)
+    // Pass formationId to the export class
+    public function export($formationId)
     {
-        $formationId = $request->input('formation_id');
-        return Excel::download(new CandidatsExport($formationId), 'candidats.xlsx');
+        return Excel::download(new CandidatsExport($formationId), 'candidats_export.xlsx');
     }
 }

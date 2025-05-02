@@ -12,7 +12,10 @@ class CandidatController extends Controller
 {
     public function index()
     {
-        $candidats = Candidat::with('inscriptions.formation')->get();
+  
+    $candidats = Candidat::with(['stages', 'attestations', 'diplomes','experiences'])->get();
+    
+    $candidats = Candidat::with('inscriptions.formation')->get();
         return view('candidats.index', compact('candidats'));
     }
 

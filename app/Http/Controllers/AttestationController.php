@@ -28,18 +28,84 @@ class AttestationController extends Controller
             'discription' => 'required|string',
             'type_attestation' => 'required|string',
         ]);
-
-        $path = $request->file('attestation')->store('attestations', 'public');
-
+    
+        $candidat = Candidat::findOrFail($request->candidat_id);
+    
+        $count = Attestation::where('candidat_id', $candidat->id)
+            ->where('type_attestation', $request->type_attestation)
+            ->count() + 1;
+    
+        $file = $request->file('attestation');
+        $extension = $file->getClientOriginalExtension();
+        $timestamp = now()->format('YmdHis');
+    
+        $filename = strtoupper($candidat->CNE)
+            . strtolower(str_replace(' ', '', $candidat->nom))
+            . strtolower(str_replace(' ', '', $candidat->prenom))
+            . '_' . strtolower($request->type_attestation)
+            . '_' . $count
+            . '_' . $timestamp
+            . '.' . $extension;
+    
+        $path = $file->storeAs('attestations', $filename, 'public');
+    
         Attestation::create([
             'candidat_id' => $request->candidat_id,
             'attestation' => $path,
             'discription' => $request->discription,
             'type_attestation' => $request->type_attestation,
         ]);
-
+    
         return redirect()->route('attestations.index')->with('success', 'Attestation ajoutée avec succès.');
     }
+    
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'candidat_id' => 'required|exists:candidats,id',
+        'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+        'discription' => 'required|string',
+        'type_attestation' => 'required|string',
+    ]);
+
+    $attestation = Attestation::findOrFail($id);
+    $candidat = Candidat::findOrFail($request->candidat_id);
+
+    if ($request->hasFile('attestation')) {
+        if ($attestation->attestation && \Storage::disk('public')->exists($attestation->attestation)) {
+            \Storage::disk('public')->delete($attestation->attestation);
+        }
+
+        $count = Attestation::where('candidat_id', $candidat->id)
+            ->where('type_attestation', $request->type_attestation)
+            ->where('id', '!=', $attestation->id)
+            ->count() + 1;
+
+        $file = $request->file('attestation');
+        $extension = $file->getClientOriginalExtension();
+        $timestamp = now()->format('YmdHis');
+
+        $filename = strtoupper($candidat->CNE)
+            . strtolower(str_replace(' ', '', $candidat->nom))
+            . strtolower(str_replace(' ', '', $candidat->prenom))
+            . '_' . strtolower($request->type_attestation)
+            . '_' . $count
+            . '_' . $timestamp
+            . '.' . $extension;
+
+        $path = $file->storeAs('attestations', $filename, 'public');
+        $attestation->attestation = $path;
+    }
+
+    $attestation->candidat_id = $request->candidat_id;
+    $attestation->discription = $request->discription;
+    $attestation->type_attestation = $request->type_attestation;
+    $attestation->save();
+
+    return redirect()->route('attestations.index')->with('success', 'Attestation modifiée avec succès.');
+}
+
     
     public function edit($id)
     {
