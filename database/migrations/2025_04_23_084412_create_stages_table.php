@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('candidat_id');
             $table->foreign('candidat_id')->references('id')->on('candidats')->onDelete('cascade');
             $table->string('fonction');
-            $table->date('periode');
+            $table->string('periode');
             $table->string('attestation');
             $table->string('etablissement');
             $table->string('secteur_activite');

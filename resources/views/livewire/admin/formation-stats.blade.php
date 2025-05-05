@@ -12,8 +12,8 @@
 
     <div style="border: 1px solid #ccc; margin-bottom: 20px; padding: 10px;">
         <h4>
-            🧾 - {{ $annee_debut }}/{{ $annee_fin }}
-            ({{ $formation->type_formation }})
+             {{ $annee_debut }}/{{ $annee_fin }}
+            {{ $formation->type_formation  }}:{{$formation->titre}}
         </h4>
         
 

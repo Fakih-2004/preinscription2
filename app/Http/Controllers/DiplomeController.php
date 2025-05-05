@@ -23,19 +23,46 @@ class DiplomeController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
+        $validated = $request->all();
+        $candidat = Candidat::findOrFail($request->candidat_id);
 
-        // Handle scan_bac+2
+
+
+        
         if ($request->hasFile('scan_bac+2')) {
-            $data['scan_bac+2'] = $request->file('scan_bac+2')->store('scans_bac2', 'public');
+            $count = Diplome::where('candidat_id', $candidat->id)->count() + 1;
+    
+            $file = $request->file('scan_bac+2');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
+    
+            $filename = strtoupper($candidat->CNE)
+                .'_'. strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . '_bac+2_' . $count . '_' . $timestamp . '.' . $extension;
+    
+            $path = $file->storeAs('bac_2', $filename, 'public');
+            $validated['scan_bac+2'] = $path;
         }
-
-        // Handle scan_bac+3
         if ($request->hasFile('scan_bac+3')) {
-            $data['scan_bac+3'] = $request->file('scan_bac+3')->store('scans_bac3', 'public');
+            $count = Diplome::where('candidat_id', $candidat->id)->count() + 1;
+    
+            $file = $request->file('scan_bac+3');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
+    
+            $filename = strtoupper($candidat->CNE)
+                .'_'. strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . '_bac+3_' . $count . '_' . $timestamp . '.' . $extension;
+    
+            $path = $file->storeAs('bac+3', $filename, 'public');
+            $validated['scan_bac+3'] = $path;
         }
+    
+        Diplome::create($validated);
 
-        Diplome::create($data);
+        
         return redirect()->route('diplomes.index');
     }
 
@@ -74,7 +101,7 @@ class DiplomeController extends Controller
         }
 
         $diplome->update($data);
-        return redirect()->route('diplomes.index');
+        return redirect()->route('experiences.create');
     }
 
     public function destroy($id)

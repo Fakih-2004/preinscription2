@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('candidat_id')->references('id')->on('candidats')->onDelete('cascade');
             $table->string('fonction');
             $table->string('secteur_activite');
-            $table->date('periode');
+            $table->string('periode');
             $table->string('attestation');
             $table->string('etablissement');
             $table->string('discription');

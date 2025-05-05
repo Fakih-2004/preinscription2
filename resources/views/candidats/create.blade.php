@@ -25,8 +25,10 @@
                 <select name="formation_id" id="formation_id" class="form-select" required>
                     <option value="">-- Choisir --</option>
                     @foreach ($formations as $formation)
-                        <option value="{{ $formation->id }}">{{ ucfirst($formation->type_formation) }}</option>
-                    @endforeach
+                    <option value="{{ $formation->id }}">
+                        {{ ucfirst($formation->type_formation) }} ({{ $formation->titre }})
+                    </option>
+                     @endforeach
                 </select>
             </div>
 

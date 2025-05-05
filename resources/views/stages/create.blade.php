@@ -25,7 +25,7 @@
 
         <div class="mb-3">
             <label for="periode" class="form-label">Période</label>
-            <input type="date" name="periode" class="form-control" required>
+            <input type="text" name="periode" class="form-control" required>
         </div>
 
         <div class="mb-3">

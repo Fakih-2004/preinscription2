@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attestation;
 use App\Models\Candidat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AttestationController extends Controller
 {
@@ -22,7 +23,7 @@ class AttestationController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'candidat_id' => 'required|exists:candidats,id',
             'attestation' => 'required|file|mimes:pdf,jpg,jpeg,png',
             'discription' => 'required|string',
@@ -31,30 +32,24 @@ class AttestationController extends Controller
     
         $candidat = Candidat::findOrFail($request->candidat_id);
     
-        $count = Attestation::where('candidat_id', $candidat->id)
-            ->where('type_attestation', $request->type_attestation)
-            ->count() + 1;
+        
+        if ($request->hasFile('attestation')) {
+            $count = Attestation::where('candidat_id', $candidat->id)->count() + 1;
     
-        $file = $request->file('attestation');
-        $extension = $file->getClientOriginalExtension();
-        $timestamp = now()->format('YmdHis');
+            $file = $request->file('attestation');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
     
-        $filename = strtoupper($candidat->CNE)
-            . strtolower(str_replace(' ', '', $candidat->nom))
-            . strtolower(str_replace(' ', '', $candidat->prenom))
-            . '_' . strtolower($request->type_attestation)
-            . '_' . $count
-            . '_' . $timestamp
-            . '.' . $extension;
+            $filename = strtoupper($candidat->CNE)
+                . strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . 'attestation' . $count . '_' . $timestamp . '.' . $extension;
     
-        $path = $file->storeAs('attestations', $filename, 'public');
+            $path = $file->storeAs('attestations', $filename, 'public');
+            $validated['attestation'] = $path;
+        }
     
-        Attestation::create([
-            'candidat_id' => $request->candidat_id,
-            'attestation' => $path,
-            'discription' => $request->discription,
-            'type_attestation' => $request->type_attestation,
-        ]);
+        Attestation::create($validated);
     
         return redirect()->route('attestations.index')->with('success', 'Attestation ajoutée avec succès.');
     }

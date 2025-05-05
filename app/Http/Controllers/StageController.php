@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Stage;
 use App\Models\Candidat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StageController extends Controller
 {
@@ -25,7 +26,7 @@ class StageController extends Controller
     $validated = $request->validate([
         'candidat_id' => 'required|exists:candidats,id',
         'fonction' => 'required|string',
-        'periode' => 'required|date',
+        'periode' => 'required|string',
         'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
         'etablissement' => 'required|string',
         'secteur_activite' => 'required|string',
@@ -47,7 +48,7 @@ class StageController extends Controller
             . strtolower(str_replace(' ', '', $candidat->prenom))
             . '_stage_' . $count . '_' . $timestamp . '.' . $extension;
 
-        $path = $file->storeAs('attestations', $filename, 'public');
+        $path = $file->storeAs('stages', $filename, 'public');
         $validated['attestation'] = $path;
     }
 

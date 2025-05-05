@@ -23,6 +23,7 @@
                     <tr>
                        
                         <th>type formation</th>
+                        <th>Titre</th>
                         <th>date debut</th>
                         <th>date fin</th>
                         <th> administratreur</th>
@@ -38,6 +39,7 @@
 
                             
                             <td>{{ $formation->type_formation }}</td>
+                            <td>{{ $formation->titre }}</td>
                             <td>{{ $formation->date_debut }}</td>
                             <td>{{ $formation->date_fin }}</td>
                             <td>{{ $formation->administrateur->nom  ?? 'Non défini'}}</td>

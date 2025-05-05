@@ -26,7 +26,10 @@
                 <option value="Master">Master</option>
             </select>
         </div>
-
+        <div class="mb-3">
+            <label>Titre</label>
+            <input type="text" name="titre" class="form-control" required>
+        </div>
         <div class="mb-3">
             <label>Date début</label>
             <input type="date" name="date_debut" class="form-control" required>

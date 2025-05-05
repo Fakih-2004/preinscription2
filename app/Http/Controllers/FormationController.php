@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Formation;
 use App\Models\Administrateur;
 use Illuminate\Http\Request;
-
 class FormationController extends Controller
 {
     public function index()
@@ -24,6 +23,7 @@ class FormationController extends Controller
     {
         $validated = $request->validate([
             'type_formation' => 'required|string' ,
+            'titre' => 'required|string' ,
             'date_debut' => 'required|date',
             'date_fin' => 'required|date|after_or_equal:date_debut',
             'administrateur_id' => 'required|exists:administrateurs,id',

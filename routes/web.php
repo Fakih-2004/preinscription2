@@ -20,6 +20,7 @@ use App\Http\Controllers\StageController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\FormationController;
 use App\Livewire\Admin\FormationStats;
+use App\Http\Controllers\CandidatformController;
 
 
 use App\Http\Controllers\ExportController;
@@ -44,3 +45,8 @@ Route::get('/candidats/{id}/edit', [CandidatController::class, 'edit'])->name('c
 Route::put('/candidats/{id}', [CandidatController::class, 'update'])->name('candidats.update');
 Route::delete('/candidats/{id}', [CandidatController::class, 'destroy'])->name('candidats.destroy');
 
+
+
+Route::get('/candidat/form', [CandidatformController::class, 'showForm'])->name('candidat.form');
+Route::post('/candidat/form/submit', [CandidatformController::class, 'submitStep'])->name('candidat.submit');
+Route::post('/candidat/form/previous', [CandidatformController::class, 'previousStep'])->name('candidat.previous');

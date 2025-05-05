@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Experience;
 use App\Models\Candidat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ExperienceController extends Controller
 {
@@ -22,28 +23,34 @@ class ExperienceController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'candidat_id' => 'required|exists:candidats,id',
             'fonction' => 'required|string',
             'secteur_activite' => 'required|string',
-            'periode' => 'required|date',
+            'periode' => 'required',
             'attestation' => 'required|file|mimes:pdf,jpg,jpeg,png',
             'etablissement' => 'required|string',
             'discription' => 'required|string',
         ]);
+        $candidat = Candidat::findOrFail($request->candidat_id);
 
-        $path = $request->file('attestation')->store('experiences', 'public');
-
-        Experience::create([
-            'candidat_id' => $request->candidat_id,
-            'fonction' => $request->fonction,
-            'secteur_activite' => $request->secteur_activite,
-            'periode' => $request->periode,
-            'attestation' => $path,
-            'etablissement' => $request->etablissement,
-            'discription' => $request->discription,
-        ]);
-
+        if ($request->hasFile('attestation')) {
+            $count = Experience::where('candidat_id', $candidat->id)->count() + 1;
+    
+            $file = $request->file('attestation');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
+    
+            $filename = strtoupper($candidat->CNE)
+                . strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . 'experiences' . $count . '_' . $timestamp . '.' . $extension;
+    
+            $path = $file->storeAs('experiences', $filename, 'public');
+            $validated['attestation'] = $path;
+        }
+    
+        Experience::create($validated);
         return redirect()->route('experiences.index')->with('success', 'Expérience ajoutée avec succès.');
     }
 }
