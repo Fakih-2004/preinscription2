@@ -12,13 +12,13 @@ class AttestationController extends Controller
     public function index()
     {
         $attestations = Attestation::with('candidat')->get();
-        return view('attestations.index', compact('attestations'));
+        return view('utilisateur.attestations.index', compact('attestations'));
     }
 
     public function create()
     {
         $candidats = Candidat::all();
-        return view('attestations.create', compact('candidats'));
+        return view('utilisateur.attestations.create', compact('candidats'));
     }
 
     public function store(Request $request)
@@ -51,7 +51,7 @@ class AttestationController extends Controller
     
         Attestation::create($validated);
     
-        return redirect()->route('attestations.index')->with('success', 'Attestation ajoutée avec succès.');
+        return redirect()->route('utilisateur.attestations.index')->with('success', 'Attestation ajoutée avec succès.');
     }
     
 
@@ -98,7 +98,7 @@ class AttestationController extends Controller
     $attestation->type_attestation = $request->type_attestation;
     $attestation->save();
 
-    return redirect()->route('attestations.index')->with('success', 'Attestation modifiée avec succès.');
+    return redirect()->route('utilisateur.attestations.index')->with('success', 'Attestation modifiée avec succès.');
 }
 
     
@@ -106,7 +106,7 @@ class AttestationController extends Controller
     {
         $attestation = Attestation::findOrFail($id);
         $candidats = Candidat::all();
-        return view('attestations.edit', compact('attestation', 'candidats'));
+        return view('utilisateur.attestations.edit', compact('attestation', 'candidats'));
     }
 
    
@@ -115,6 +115,6 @@ class AttestationController extends Controller
     {
         $attestation = Attestation::findOrFail($id);
         $attestation->delete();
-        return redirect()->route('attestations.index')->with('success', 'Attestation supprimée avec succès.');
+        return redirect()->route('utilisateur.attestations.index')->with('success', 'Attestation supprimée avec succès.');
     }
 }

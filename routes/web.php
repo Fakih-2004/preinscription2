@@ -19,7 +19,7 @@ use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\FormationController;
-use App\Livewire\Admin\FormationStats;
+use App\Livewire\FormationStats;
 use App\Http\Controllers\CandidatformController;
 
 
@@ -35,15 +35,8 @@ Route::resource('attestations', AttestationController::class);
 Route::resource('stages', StageController::class);
 Route::resource('candidats', CandidatController::class);
 Route::resource('diplomes', DiplomeController::class);
-Route::get('/admin/stats-formations', FormationStats::class)
-->name('admin.formation-stats');
 
-
-Route::get('/candidats/create', [CandidatController::class, 'create'])->name('candidats.create');
-Route::post('/candidats', [CandidatController::class, 'store'])->name('candidats.store');
-Route::get('/candidats/{id}/edit', [CandidatController::class, 'edit'])->name('candidats.edit');
-Route::put('/candidats/{id}', [CandidatController::class, 'update'])->name('candidats.update');
-Route::delete('/candidats/{id}', [CandidatController::class, 'destroy'])->name('candidats.destroy');
+Route::get('/stats-formations', FormationStats::class)->name('formation-stats');
 
 
 

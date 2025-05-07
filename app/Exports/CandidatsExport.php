@@ -159,7 +159,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
         $sector= "Secteur d'activité";
         return [
             
-            'ID', 'Nom', 'Prénom', 'Nom AR', 'Prénom AR', 'CNE', 'CIN', 'Email', 'Date de naissance',
+            'ID','Type De Formation', 'Nom', 'Prénom', 'Nom AR', 'Prénom AR', 'CNE', 'CIN', 'Email', 'Date de naissance',
             'Ville naissance', 'Ville naissance AR', 'Province', 'Pays naissance', 'Nationalité', 'Sexe', 'Téléphone mobile',
             'Téléphone fixe', 'Adresse', 'Ville', 'Pays',
 

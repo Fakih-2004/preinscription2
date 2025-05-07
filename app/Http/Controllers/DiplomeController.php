@@ -12,13 +12,13 @@ class DiplomeController extends Controller
     public function index()
     {
         $diplomes = Diplome::with('candidat')->get();
-        return view('diplomes.index', compact('diplomes'));
+        return view('utilisateur.diplomes.index', compact('diplomes'));
     }
 
     public function create()
     {
         $candidats = Candidat::all();
-        return view('diplomes.create', compact('candidats'));
+        return view('utilisateur.diplomes.create', compact('candidats'));
     }
 
     public function store(Request $request)
@@ -63,20 +63,20 @@ class DiplomeController extends Controller
         Diplome::create($validated);
 
         
-        return redirect()->route('diplomes.index');
+        return redirect()->route('utilisateur.diplomes.index');
     }
 
     public function show($id)
     {
         $diplome = Diplome::findOrFail($id);
-        return view('diplomes.show', compact('diplome'));
+        return view('utilisateur.diplomes.show', compact('diplome'));
     }
 
     public function edit($id)
     {
         $diplome = Diplome::findOrFail($id);
         $candidats = Candidat::all();
-        return view('diplomes.edit', compact('diplome', 'candidats'));
+        return view('utilisateur.diplomes.edit', compact('diplome', 'candidats'));
     }
 
     public function update(Request $request, $id)
@@ -101,7 +101,7 @@ class DiplomeController extends Controller
         }
 
         $diplome->update($data);
-        return redirect()->route('experiences.create');
+        return redirect()->route('utilisateur.diplomes.create');
     }
 
     public function destroy($id)
@@ -117,6 +117,6 @@ class DiplomeController extends Controller
         }
 
         $diplome->delete();
-        return redirect()->route('diplomes.index');
+        return redirect()->route('utilisateur.diplomes.index');
     }
 }

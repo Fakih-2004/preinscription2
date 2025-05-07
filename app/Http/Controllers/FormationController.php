@@ -10,13 +10,13 @@ class FormationController extends Controller
     public function index()
     {
         $formations = Formation::all();
-        return view('formations.index', compact('formations'));
+        return view('utilisateur.formations.index', compact('formations'));
     }
 
     public function create()
     {
         $administrateurs = Administrateur::all();
-        return view('formations.create', compact('administrateurs'));
+        return view('utilisateur.formations.create', compact('administrateurs'));
     }
     
     public function store(Request $request)
@@ -31,14 +31,14 @@ class FormationController extends Controller
        
     
         Formation::create($validated);
-        return redirect()->route('formations.index')->with('success', 'Formation ajoutée avec succès.');
+        return redirect()->route('utilisateur.formations.index')->with('success', 'Formation ajoutée avec succès.');
     }
     
 
     public function show($id)
     {
         $formation = Formation::findOrFail($id);
-        return view('formations.show', compact('formation'));
+        return view('utilisateur.formations.show', compact('formation'));
     }
 
     public function edit($id)
@@ -46,7 +46,7 @@ class FormationController extends Controller
     
     $formation = Formation::findOrFail($id);
     $administrateurs = Administrateur::all();
-    return view('formations.edit', compact('formation', 'administrateurs'));
+    return view('utilisateur.formations.edit', compact('formation', 'administrateurs'));
 }
 
 
@@ -56,13 +56,13 @@ class FormationController extends Controller
     {
         $formation = Formation::findOrFail($id);
         $formation->update($request->all());
-        return redirect()->route('formations.index');
+        return redirect()->route('utilisateur.formations.index');
     }
 
     public function destroy($id)
     {
         $formation = Formation::findOrFail($id);
         $formation->delete();
-        return redirect()->route('formations.index');
+        return redirect()->route('utilisateur.formations.index');
     }
 }

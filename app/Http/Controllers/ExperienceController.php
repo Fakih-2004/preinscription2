@@ -12,13 +12,13 @@ class ExperienceController extends Controller
     public function index()
     {
         $experiences = Experience::with('candidat')->get();
-        return view('experiences.index', compact('experiences'));
+        return view('utilisateur.experiences.index', compact('experiences'));
     }
 
     public function create()
     {
         $candidats = Candidat::all();
-        return view('experiences.create', compact('candidats'));
+        return view('utilisateur.experiences.create', compact('candidats'));
     }
 
     public function store(Request $request)
@@ -51,6 +51,6 @@ class ExperienceController extends Controller
         }
     
         Experience::create($validated);
-        return redirect()->route('experiences.index')->with('success', 'Expérience ajoutée avec succès.');
+        return redirect()->route('utilisateur.experiences.index')->with('success', 'Expérience ajoutée avec succès.');
     }
 }

@@ -23,7 +23,7 @@ class CandidatformController extends Controller
         $titres = Formation::all(); // Fetch formations for dropdown
         $data = session('form_data', []); // Retrieve form data from session
 
-        return view('candidat.form', compact('step', 'titres', 'data'));
+        return view('candidateur.candidat.form', compact('step', 'titres', 'data'));
     }
 
     public function submitStep(Request $request)
@@ -52,7 +52,7 @@ class CandidatformController extends Controller
 
         // Move to next step or save if final step
         if ($step < 6) {
-            return redirect()->route('candidat.form', ['step' => $step + 1]);
+            return redirect()->route('candidateur.candidat.form', ['step' => $step + 1]);
         } else {
             // Save the data to the database
             $this->saveCandidat($formData);
@@ -60,7 +60,7 @@ class CandidatformController extends Controller
             // Clear session data
             $request->session()->forget('form_data');
 
-            return redirect()->route('candidat.form')->with('success', 'Candidature submitted successfully!');
+            return redirect()->route('candidateur.candidat.form')->with('success', 'Candidature submitted successfully!');
         }
     }
 
@@ -68,9 +68,9 @@ class CandidatformController extends Controller
     {
         $step = $request->input('step', 1);
         if ($step > 1) {
-            return redirect()->route('candidat.form', ['step' => $step - 1]);
+            return redirect()->route('candidateur.candidat.form', ['step' => $step - 1]);
         }
-        return redirect()->route('candidat.form');
+        return redirect()->route('candidateur.candidat.form');
     }
 
     private function getValidationRules($step)
@@ -156,18 +156,38 @@ class CandidatformController extends Controller
     private function handleFileUploads(Request $request, array $formData, $step)
     {
         if ($step == 1) {
-            if ($request->hasFile('CV')) {
-                $formData['CV'] = $request->file('CV')->store('cvs', 'public');
-            }
-            if ($request->hasFile('demande')) {
-                $formData['demande'] = $request->file('demande')->store('cartes', 'public');
-            }
-            if ($request->hasFile('scan_cartid')) {
-                $formData['scan_cartid'] = $request->file('scan_cartid')->store('cartes', 'public');
-            }
-            if ($request->hasFile('photo')) {
-                $formData['photo'] = $request->file('photo')->store('photos', 'public');
-            }
+            $baseName = strtoupper($request->CNE) . strtolower(str_replace(' ', '', $request->nom)) . strtolower(str_replace(' ', '', $request->prenom));
+    $timestamp = now()->format('YmdHis');
+
+    if ($request->hasFile('cv')) {
+        $cvExtension = $request->file('cv')->getClientOriginalExtension();
+        $cvName = $baseName . '_cv_' . $timestamp . '.' . $cvExtension;
+        $data['cv'] = $request->file('cv')->storeAs('cv', $cvName, 'public');
+    }
+
+    if ($request->hasFile('demande')) {
+        $demandeExtension = $request->file('demande')->getClientOriginalExtension();
+        $demandeName = $baseName . '_demande_' . $timestamp . '.' . $demandeExtension;
+        $data['demande'] = $request->file('demande')->storeAs('demande', $demandeName, 'public');
+    }
+
+    if ($request->hasFile('scan_cartid')) {
+        $cinExtension = $request->file('scan_cartid')->getClientOriginalExtension();
+        $cinName = $baseName . '_cin_' . $timestamp . '.' . $cinExtension;
+        $data['scan_cartid'] = $request->file('scan_cartid')->storeAs('cart', $cinName, 'public');
+    }
+
+    if ($request->hasFile('photo')) {
+        $photoExtension = $request->file('photo')->getClientOriginalExtension();
+        $photoName = $baseName . '_photo_' . $timestamp . '.' . $photoExtension;
+        $data['photo'] = $request->file('photo')->storeAs('photos', $photoName, 'public');
+    }
+
+    if ($request->hasFile('scan_bac')) {
+        $bacExtension = $request->file('scan_bac')->getClientOriginalExtension();
+        $bacName = $baseName . '_bac_' . $timestamp . '.' . $bacExtension;
+        $data['scan_bac'] = $request->file('scan_bac')->storeAs('bac', $bacName, 'public');
+    }
         } elseif ($step == 2) {
             if ($request->hasFile('scan_bac')) {
                 $formData['scan_bac'] = $request->file('scan_bac')->store('bacs', 'public');

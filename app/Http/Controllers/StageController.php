@@ -12,13 +12,13 @@ class StageController extends Controller
     public function index()
     {
         $stages = Stage::with('candidat')->get();
-        return view('stages.index', compact('stages'));
+        return view('utilisateur.stages.index', compact('stages'));
     }
 
     public function create()
     {
         $candidats = Candidat::all();
-        return view('stages.create', compact('candidats'));
+        return view('utilisateur.stages.create', compact('candidats'));
     }
 
     public function store(Request $request)

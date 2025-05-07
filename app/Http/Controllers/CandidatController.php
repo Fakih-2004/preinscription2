@@ -19,20 +19,20 @@ class CandidatController extends Controller
             'experiences',
             'inscriptions.formation'
         ])->get();        
-        return view('candidats.index', compact('candidats'));
+        return view('utilisateur.candidats.index', compact('candidats'));
     }
 
     public function create()
     {
         $formations = Formation::all();
-        return view('candidats.create', compact('formations'));
+        return view('utilisateur.candidats.create', compact('formations'));
     }
 
     public function store(Request $request)
 {
     $data = $request->except('formation_id');
 
-    // On prépare une base du nom de fichier
+
     $baseName = strtoupper($request->CNE) . strtolower(str_replace(' ', '', $request->nom)) . strtolower(str_replace(' ', '', $request->prenom));
     $timestamp = now()->format('YmdHis');
 
@@ -80,13 +80,13 @@ class CandidatController extends Controller
     public function show($id)
     {
         $candidat = Candidat::findOrFail($id);
-        return view('candidats.show', compact('candidat'));
+        return view('utilisateur.candidats.show', compact('candidat'));
     }
 
     public function edit($id)
     {
         $candidat = Candidat::findOrFail($id);
-        return view('candidats.edit', compact('candidat'));
+        return view('utilisateur.candidats.edit', compact('candidat'));
     }
 
     public function update(Request $request, $id)
@@ -134,7 +134,7 @@ class CandidatController extends Controller
 
     $candidat->update($data);
 
-    return redirect()->route('candidats.index')->with('success', 'Candidat mis à jour avec succès.');
+    return redirect()->route('utilisateur.candidats.index')->with('success', 'Candidat mis à jour avec succès.');
 }
 
     public function destroy($id)
@@ -151,6 +151,6 @@ class CandidatController extends Controller
 
         $candidat->delete();
 
-        return redirect()->route('candidats.index');
+        return redirect()->route('utilisateur.candidats.index');
     }
 }
