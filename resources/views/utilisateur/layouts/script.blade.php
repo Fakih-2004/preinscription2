@@ -244,3 +244,5 @@
       const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
       sparkline3.render();
     </script>
+    {{-- for seewtalter --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

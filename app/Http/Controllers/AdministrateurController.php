@@ -21,13 +21,13 @@ class AdministrateurController extends Controller
     public function store(Request $request)
     {
         Administrateur::create($request->all());
-        return redirect()->route('utilisateur.administrateurs.index');
+        return redirect()->route('administrateurs.index');
     }
 
     public function show($id)
     {
         $administrateur = Administrateur::findOrFail($id);
-        return view('utilisateur.administrateurs.show', compact('administrateur'));
+        return view('administrateurs.show', compact('administrateur'));
     }
 
     public function edit($id)
@@ -40,13 +40,13 @@ class AdministrateurController extends Controller
     {
         $administrateur = Administrateur::findOrFail($id);
         $administrateur->update($request->all());
-        return redirect()->route('utilisateur.administrateurs.index');
+        return redirect()->route('administrateurs.index');
     }
 
     public function destroy($id)
     {
         $administrateur = Administrateur::findOrFail($id);
         $administrateur->delete();
-        return redirect()->route('utilisateur.administrateurs.index');
+        return redirect()->route('administrateurs.index');
     }
 }

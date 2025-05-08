@@ -36,18 +36,38 @@
                             <td class="text-nowrap text-center">
                 
                                 <a href="{{ route('administrateurs.edit', $administrateur->id) }}" class="btn btn-sm btn-outline-warning me-1"><i class="bi bi-pencil-square"></i></a>
-                                <form action="{{ route('administrateurs.destroy', $administrateur->id) }}" method="POST" style="display:inline;">
+                                <form id="delete-form-{{ $administrateur->id }}" action="{{ route('administrateurs.destroy', $administrateur->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')"><i class="bi bi-trash"></i></button>
+                                    <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $administrateur->id }})">Supprimer</button>
                                 </form>
+                                
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        </div>
+            
+        </div><script>
+            function confirmDelete(id) {
+                Swal.fire({
+                    title: 'Êtes-vous sûr ?',
+                    text: "Cette action est irréversible !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Oui, supprimer !',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('delete-form-' + id).submit();
+                    }
+                });
+            }
+        </script>
+        
     </div>
 </div>
 @endsection
