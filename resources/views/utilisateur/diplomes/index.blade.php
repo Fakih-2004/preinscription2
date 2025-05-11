@@ -1,90 +1,188 @@
 @extends('utilisateur.Layouts.app')
-
-@section('title', 'Les diplômes')
+@section('title', 'Les Diplômes')
 
 @section('content')
-<div class="container mt-5">
-    <h1 class="text-center mb-5 fw-bold text-primary">Liste des diplômes</h1>
-
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('diplomes.create') }}" class="btn btn-sm text-white" style="background-color:blue;">
-            <i class="bi bi-plus-circle me-1"></i> Ajouter un diplôme
-        </a>
-    </div>
-
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light text-nowrap text-center align-middle">
-                        <tr>
-                            <th>ID</th>
-                            <th>Candidat</th>
-                            <th>Type Bac+2</th>
-                            <th>Année Bac+2</th>
-                            <th>Filière Bac+2</th>
-                            <th>Établissement Bac+2</th>
-                            <th>Scan Bac+2</th>
-                            <th>Type Bac+3</th>
-                            <th>Année Bac+3</th>
-                            <th>Filière Bac+3</th>
-                            <th>Établissement Bac+3</th>
-                            <th>Scan Bac+3</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody class="text-nowrap text-center align-middle">
-                        @foreach ($diplomes as $diplome)
-                        <tr>
-                            <td>{{ $diplome->id }}</td>
-                            <td>{{ $diplome->candidat->nom ?? 'Inconnu' }} {{ $diplome->candidat->prenom ?? '' }}</td>
-                            <td>{{ $diplome->{'type_diplome_bac+2'} }}</td>
-                            <td>{{ $diplome->{'anne_bac+2'} }}</td>
-                            <td>{{ $diplome->{'filiere_bac+2'} }}</td>
-                            <td>{{ $diplome->{'etalissement_bac+2'} }}</td>
-                            <td>
-                                @if ($diplome->{'scan_bac+2'})
-                                    <a href="{{ asset('storage/' . $diplome->{'scan_bac+2'}) }}" target="_blank">Voir scan</a>
-                                @else
-                                    Aucun
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="border-radius-lg pt-4 pb-3" style="background-color: #1a4b8c; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <h6 class="text-white text-capitalize ps-3">Liste des Diplômes</h6>
+                    </div>
+                </div>
+                
+                <div class="card-body px-0 pb-2">
+                    <div class="d-flex justify-content-end mx-3 mb-3">
+                        <a href="{{ route('diplomes.create') }}" class="btn btn-sm text-white" style="background-color: #1a4b8c;">
+                            <i class="material-symbols-rounded me-1">add</i>
+                            <span>Ajouter un diplôme</span>
+                        </a>
+                    </div>
+                    
+                    <div class="table-responsive p-3">
+                        <table id="diplomeTable" class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">ID</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Candidat</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Type Bac+2</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Année</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Filière</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Établissement</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Scan</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Type Bac+3</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Année</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Filière</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Établissement</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Scan</th>
+                                    <th class="text-secondary opacity-7 text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($diplomes as $diplome)
+                                <tr>
+                                    <td class="ps-4">
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->id }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->candidat->nom ?? 'Inconnu' }} {{ $diplome->candidat->prenom ?? '' }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_diplome_bac+2'} }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'anne_bac+2'} }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_bac+2'} }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etalissement_bac+2'} }}</p>
+                                    </td>
+                                    <td>
+                                        @if ($diplome->{'scan_bac+2'})
+                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac+2'}) }}" 
+                                           target="_blank" 
+                                           class="badge badge-sm text-white" 
+                                           style="background-color: #1a4b8c; padding: 4px 8px;">
+                                           Voir
+                                        </a>
+                                        @else
+                                        <p class="text-xs text-secondary mb-0">Aucun</p>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_bac+3'} }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'annee_bac+3'} }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_bac+3'} }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etablissement_bac+3'} }}</p>
+                                    </td>
+                                    <td>
+                                        @if ($diplome->{'scan_bac+3'})
+                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac+3'}) }}" 
+                                           target="_blank" 
+                                           class="badge badge-sm text-white" 
+                                           style="background-color: #1a4b8c; padding: 4px 8px;">
+                                           Voir
+                                        </a>
+                                        @else
+                                        <p class="text-xs text-secondary mb-0">Aucun</p>
+                                        @endif
+                                    </td>
+                                    <td class="align-center text-end pe-4">
+                                        <a href="{{ route('diplomes.edit', $diplome->id) }}" class="text-secondary font-weight-bold text-xs me-2">
+                                            <i class="material-symbols-rounded">edit</i>
+                                        </a>
+                                        <form id="delete-form-{{ $diplome->id }}" action="{{ route('diplomes.destroy', $diplome->id) }}" method="POST" style="display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-link text-danger font-weight-bold text-xs p-0" onclick="confirmDelete({{ $diplome->id }})">
+                                                <i class="material-symbols-rounded">delete</i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                
+                                @if ($diplomes->isEmpty())
+                                <tr>
+                                    <td colspan="13" class="text-center text-muted py-4">Aucun diplôme trouvé</td>
+                                </tr>
                                 @endif
-                            </td>
-                            <td>{{ $diplome->{'type_bac+3'} }}</td>
-                            <td>{{ $diplome->{'annee_bac+3'} }}</td>
-                            <td>{{ $diplome->{'filiere_bac+3'} }}</td>
-                            <td>{{ $diplome->{'etablissement_bac+3'} }}</td>
-                            <td>
-                                @if ($diplome->{'scan_bac+3'})
-                                    <a href="{{ asset('storage/' . $diplome->{'scan_bac+3'}) }}" target="_blank">Voir scan</a>
-                                @else
-                                    Aucun
-                                @endif
-                            </td>
-                            <td class="text-center">
-                                <a href="{{ route('diplomes.edit', $diplome->id) }}" class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <form action="{{ route('diplomes.destroy', $diplome->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce diplôme ?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-
-                        @if ($diplomes->isEmpty())
-                        <tr>
-                            <td colspan="13" class="text-center text-muted py-4">Aucun diplôme trouvé.</td>
-                        </tr>
-                        @endif
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+{{-- DataTables & SweetAlert --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Confirmation suppression
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Cette action est irréversible !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer !',
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+
+    // Activation DataTable
+    $(document).ready(function () {
+        $('#diplomeTable').DataTable({
+            language: {
+                search: "",
+                searchPlaceholder: "Rechercher un diplôme..."
+            },
+            scrollX: true,
+            dom: '<"d-flex justify-content-start"f>t',
+        });
+
+        // Style champ recherche
+        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '300px');
+        $('.dataTables_filter label').addClass('me-2');
+    });
+</script>
+
+<style>
+    /* Button hover effect */
+    .btn[style*="#1a4b8c"]:hover {
+        background-color: #0d3a73 !important;
+    }
+    
+    /* View button hover */
+    a.badge[style*="#1a4b8c"]:hover {
+        background-color: #0d3a73 !important;
+        text-decoration: none;
+    }
+    
+    /* Horizontal scrolling for wide tables */
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
 @endsection

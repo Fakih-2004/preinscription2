@@ -51,7 +51,7 @@ class AttestationController extends Controller
     
         Attestation::create($validated);
     
-        return redirect()->route('utilisateur.attestations.index')->with('success', 'Attestation ajoutée avec succès.');
+        return redirect()->route('attestations.index')->with('success', 'Attestation ajoutée avec succès.');
     }
     
 
@@ -98,7 +98,7 @@ class AttestationController extends Controller
     $attestation->type_attestation = $request->type_attestation;
     $attestation->save();
 
-    return redirect()->route('utilisateur.attestations.index')->with('success', 'Attestation modifiée avec succès.');
+    return redirect()->route('attestations.index')->with('success', 'Attestation modifiée avec succès.');
 }
 
     
@@ -115,6 +115,6 @@ class AttestationController extends Controller
     {
         $attestation = Attestation::findOrFail($id);
         $attestation->delete();
-        return redirect()->route('utilisateur.attestations.index')->with('success', 'Attestation supprimée avec succès.');
+        return redirect()->route('attestations.index')->with('success', 'Attestation supprimée avec succès.');
     }
 }

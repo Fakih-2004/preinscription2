@@ -51,6 +51,6 @@ class ExperienceController extends Controller
         }
     
         Experience::create($validated);
-        return redirect()->route('utilisateur.experiences.index')->with('success', 'Expérience ajoutée avec succès.');
+        return redirect()->route('experiences.index')->with('success', 'Expérience ajoutée avec succès.');
     }
 }

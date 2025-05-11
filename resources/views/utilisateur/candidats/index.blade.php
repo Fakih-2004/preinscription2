@@ -1,331 +1,282 @@
 @extends('utilisateur.layouts.app')
 
 @section('content')
-<div class="container mt-5">
-    <h1 class="text-center mb-5 fw-bold text-primary">Liste des Candidats</h1>
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('candidats.create') }}" class="btn btn-sm text-white" style="background-color:blue;">
-            <i class="bi bi-plus-circle me-1"></i> Ajouter un Candidat
-        </a>
-    </div>
-    
+<div class="container-fluid py-4" style="background-color: #1a4b8c; ">
+    <div class="row" style="background-color: #1a4b8c; ">
+        <div class="col-12" style="background-color: #1a4b8c; ">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">Liste des Candidats</h6>                        
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end me-3">
+                    <a href="{{ route('candidats.create') }}" class="btn btn-sm bg-gradient-info">
+                        <i class="material-symbols-rounded me-1">add</i>
+                        Ajouter un Candidat
+                    </a>
+                </div>
+                
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-3">
+                        <table id="candidatsTable" class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-items-center">Photo & Info</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 align-items-center">Formation</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Contact</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">CIN & Naissance</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Documents</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Bac</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Bac+2</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Bac+3</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 ">Stages</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Expériences</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Attestations</th>
+                                    <th class="text-secondary opacity-7">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($candidats as $candidat)
+                                @php
+                                    $diplome = $candidat->diplomes->first();
+                                    $stages = $candidat->stages->take(3);
+                                    $experiences = $candidat->experiences->take(3);
+                                    $attestations = $candidat->attestations->take(3);
+                                @endphp
+                                <tr>
+                                    <!-- Photo & Info -->
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div>
+                                                @if ($candidat->photo)
+                                                <a href="{{ asset('storage/photos/' . basename($candidat->photo)) }}" target="_blank">
+                                                    <img src="{{ asset('storage/photos/' . basename($candidat->photo)) }}" class="avatar avatar-sm me-3 border-radius-lg" alt="photo">
+                                                </a>
+                                                @else
+                                                <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="default">
+                                                @endif
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm"> {{ $candidat->nom }}{{ $candidat->prenom }}</h6>
+                                                <h6 class="mb-0 text-sm"> {{ $candidat->nom_ar }}{{ $candidat->prenom_ar }}</h6>
+                                                <p class="text-xs text-secondary mb-0">CNE: {{ $candidat->CNE }}</p>
+                                                <p class="text-xs text-secondary mb-0">CIN: {{ $candidat->CIN }}</p>
+                                                <p class="text-xs text-secondary mb-0">Sexe: {{ $candidat->sexe }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- Formation -->
+                                    <td>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">{{ $candidat->inscriptions->first()->formation->type_formation ?? 'Unknown' }}</h6>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $candidat->inscriptions->first()->formation->titre ?? '' }}</p>
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- Contact -->
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">Mobile:{{ $candidat->telephone_mob }}</p>
+                                        <p class="text-xs text-secondary mb-0">Fix:{{ $candidat->telephone_fix }}</p>
+                                        <p class="text-xs text-secondary mb-0">Email:{{ $candidat->email }}</p>
+                                        <p class="text-xs text-secondary mb-0">Address:{{ $candidat->adresse }}</p>
+                                        <p class="text-xs text-secondary mb-0">Province:{{ $candidat->province }}</p>
+                                        <p class="text-xs text-secondary mb-0">Ville{{ $candidat->ville }}</p>
+                                        <p class="text-xs text-secondary mb-0">Pays {{ $candidat->pays }}</p>
+                                    </td>
+                                    
+                                    <!-- CIN & Naissance -->
+                                    <td>
+                                        <div class="d-flex flex-column justify-content-center">                                              
+                                            
+                                            <p class="mb-0 text-sm">Né(e) le: {{ $candidat->date_naissance }}</p>
+                                            <p class="text-xs text-secondary mb-0">À: {{ $candidat->ville_naissance }}  {{ $candidat->ville_naissance_ar }}</p>
+                                            <p class="text-xs text-secondary mb-0">Nationalité: {{ $candidat->nationalite }}</p>
+                                            @if ($candidat->scan_cartid)
+                                            <a href="{{ asset('storage/cin/' . basename($candidat->scan_cartid)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir CIN</a>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- Documents -->
+                                    <td>
+                                        <div class="d-flex flex-wrap">
+                                            @if ($candidat->cv)
+                                            <a href="{{ asset('storage/cv/' . basename($candidat->cv)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none; margin-bottom: 10px;  width: 100px; border-radius: 6px;">CV</a>
+                                            @endif
+                                            @if ($candidat->demande)
+                                            <a href="{{ asset('storage/demande/' . basename($candidat->demande)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Demande</a>
+                                            @endif
+                                            
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- Bac -->
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $candidat->serie_bac }}</p>
+                                        <p class="text-xs text-secondary mb-0">Année: {{ $candidat->annee_bac }}</p>
+                                        @if ($candidat->scan_bac)
+                                        <a href="{{ asset('storage/bac/' . basename($candidat->scan_bac)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir Bac</a>
+                                        @endif
+                                    </td>
+                                    
+                                    <!-- Bac+2 -->
+                                    <td>
+                                        @if ($diplome)
+                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_diplome_bac+2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_bac+2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etalissement_bac+2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'anne_bac+2'} ?? '' }}</p>
+                                        @if ($diplome->{'scan_bac+2'})
+                                        <a href="{{ asset('storage/bac_2/' . basename($diplome->{'scan_bac+2'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
+                                        @endif
+                                        @else
+                                        <p class="text-xs text-secondary mb-0">Aucun diplôme</p>
+                                        @endif
+                                    </td>
+                                    
+                                    <!-- Bac+3 -->
+                                    <td>
+                                        @if ($diplome)
+                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_bac+3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_bac+3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etablissement_bac+3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'annee_bac+3'} ?? '' }}</p>
+                                        @if ($diplome->{'scan_bac+3'})
+                                        <a href="{{ asset('storage/bac+3/' . basename($diplome->{'scan_bac+3'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
+                                        @endif
+                                        @else
+                                        <p class="text-xs text-secondary mb-0">Aucun diplôme</p>
+                                        @endif
+                                    </td>
+                                    
+                                    <!-- Stages -->
+                                    <td>
+                                        @foreach($stages as $stage)
+                                        <div class="d-inline-block me-2" style="width: 150px; vertical-align: top;">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $stage->fonction }}</p>
+                                            <p class="text-xs text-secondary mb-0">{{ $stage->etablissement }}</p>
+                                            <p class="text-xs text-secondary mb-0">{{ $stage->periode }}</p>
+                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $stage->discription }}">
+                                                {{ Str::limit($stage->discription, 20) }}
+                                            </p>
+                                            @if ($stage->attestation)
+                                            <a href="{{ asset('storage/stages/' . basename($stage->attestation)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Attestation</a>
+                                            @endif
+                                            
+                                        </div>
+                                        @endforeach
+                                    </td>
 
-    
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0">            
-            <div class="table-responsive">
-                <table border="2" class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="text-nowrap text-center" colspan="21">Informations personnelles</th>
-                            <th class="text-nowrap text-center" colspan="4">Pièces jointes</th>
-                            <th class="text-nowrap text-center" colspan="3">Bac Info</th>
-                            <th class="text-nowrap text-center" colspan="5">Diplôme Bac+2</th>
-                            <th class="text-nowrap text-center" colspan="5">Diplôme Bac+3</th>
-                            <th class="text-nowrap text-center" colspan="18">Stages</th>
-                            <th class="text-nowrap text-center" colspan="15">Expériences</th>
-                            <th class="text-nowrap text-center" colspan="9">Attestations</th>
-                            <th class="text-nowrap text-center" colspan="1">Actions</th>
-                        </tr>
-            
-            <tr class="column-headers">
-                <th class="text-nowrap text-center">ID</th>
-                <th class="text-nowrap text-center">Type Formation</th>
-                <th class="text-nowrap text-center">Nom</th>
-                <th class="text-nowrap text-center">Prénom</th>
-                <th class="text-nowrap text-center">Nom AR</th>
-                <th class="text-nowrap text-center">Prénom AR</th>
-                <th class="text-nowrap text-center">CNE</th>
-                <th class="text-nowrap text-center">CIN</th>
-                <th class="text-nowrap text-center">Email</th>
-                <th class="text-nowrap text-center">Date naissance</th>
-                <th class="text-nowrap text-center">Ville naissance</th>
-                <th class="text-nowrap text-center">Ville naissance AR</th>
-                <th class="text-nowrap text-center">Province</th>
-                <th class="text-nowrap text-center">Pays naissance</th>
-                <th class="text-nowrap text-center">Nationalité</th>
-                <th class="text-nowrap text-center">Sexe</th>
-                <th class="text-nowrap text-center">Téléphone mobile</th>
-                <th class="text-nowrap text-center">Téléphone fixe</th>
-                <th class="text-nowrap text-center">Adresse</th>
-                <th class="text-nowrap text-center">Ville</th>
-                <th class="text-nowrap text-center">Pays</th>
-                
-                <!-- Attachments -->
-                <th class="text-nowrap text-center">CV</th>
-                <th class="text-nowrap text-center">Demonde</th>
-                <th class="text-nowrap text-center">Carte Identité</th>
-                <th class="text-nowrap text-center">Photo</th>
-                
-                <!-- Bac Info -->
-                <th class="text-nowrap text-center">Bac Type</th>
-                <th class="text-nowrap text-center">Bac Year</th>
-                <th class="text-nowrap text-center">Bac Scan</th>
-                
-                <!-- Bac+2 -->
-                <th class="text-nowrap text-center">Type Bac+2</th>
-                <th class="text-nowrap text-center">Year Bac+2</th>
-                <th class="text-nowrap text-center">Filière Bac+2</th>
-                <th class="text-nowrap text-center">Establishment Bac+2</th>
-                <th class="text-nowrap text-center">Bac+2 Scan</th>
-                
-                <!-- Bac+3 -->
-                <th class="text-nowrap text-center">Type Bac+3</th>
-                <th class="text-nowrap text-center">Year Bac+3</th>
-                <th class="text-nowrap text-center">Filière Bac+3</th>
-                <th class="text-nowrap text-center">Establishment Bac+3</th>
-                <th class="text-nowrap text-center">Bac+3 Scan</th>
-                
-                <!-- Stages (3 stages) -->
-                @for($i = 1; $i <= 3; $i++)
-                    <th class="text-nowrap text-center">Stage {{$i}} Function</th>
-                    <th class="text-nowrap text-center">Stage {{$i}} Period</th>
-                    <th class="text-nowrap text-center">Stage {{$i}} Institution</th>
-                    <th class="text-nowrap text-center">Stage {{$i}} Secteur d'activité</th>
-                    <th class="text-nowrap text-center">Stage {{$i}} Attestation</th>
-                    <th class="text-nowrap text-center">Stage {{$i}} Description</th>
-                @endfor
-                
-                <!-- Experiences (3 experiences) -->
-                @for($i = 1; $i <= 3; $i++)
-                    <th class="text-nowrap text-center">Experience {{$i}} Function</th>
-                    <th class="text-nowrap text-center">Experience {{$i}} Secteur d'activité</th>
-                    <th class="text-nowrap text-center">Experience {{$i}} Period</th>
-                    <th class="text-nowrap text-center">Experience {{$i}} Attestation</th>
-                    <th class="text-nowrap text-center">Experience {{$i}} Description</th>
-                @endfor
-                
-                <!-- Attestations (3 attestations) -->
-                @for($i = 1; $i <= 3; $i++)
-                    <th class="text-nowrap text-center">Attestation {{$i}} Type</th>
-                    <th class="text-nowrap text-center">Attestation {{$i}} Attestation</th>
-                    <th class="text-nowrap text-center">Attestation {{$i}} Description</th>
-                @endfor
-            </tr>
-            
-            <!-- Data Rows -->
-            @foreach($candidats as $candidat)
-            <tr>
-                <!-- Personal Information -->
-                <td class="text-nowrap text-center">{{ $candidat->id }}</td>
-                <td>{{ $candidat->inscriptions->first()->formation->type_formation  ?? 'unkown' }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->nom }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->prenom }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->nom_ar }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->prenom_ar }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->CNE }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->CIN }}</td>
-                <td class="text-nowrap text-center">
-                    <a href="mailto:{{ $candidat->email }}">{{ $candidat->email }}</a>
-                </td>
-                <td class="text-nowrap text-center">{{ $candidat->date_naissance }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->ville_naissance }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->ville_naissance_ar }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->province }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->pay_naissance }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->nationalite }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->sexe }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->telephone_mob }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->telephone_fix }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->adresse }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->ville }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->pays }}</td>               
-                <td class="text-nowrap text-center">
-                    @if ($candidat->cv)
-                    <a href="{{ asset('storage/cv/' . basename($candidat->cv)) }}" target="_blank">Voir cv</a>
-                    @else
-                        No CV
-                    @endif
-                </td>
-                <td class="text-nowrap text-center">
-                    @if ($candidat->demande)
-                    <a href="{{ asset('storage/demande/' . basename($candidat->demande)) }}" target="_blank">Voir demande</a>
-                    @else
-                        No Demande
-                    @endif
-                </td>
-                <td class="text-nowrap text-center">
-                    @if ($candidat->scan_cartid)
-                    <a href="{{ asset('storage/scan_cartids/' . basename($candidat->scan_cartid)) }}" target="_blank">Voir scan_cartid</a>
-                    @else
-                        No Carte Identité
-                    @endif
-                </td>
-                <td class="text-nowrap text-center">
-                    @if ($candidat->photo)
-                    <a href="{{ asset('storage/photos/' . basename($candidat->photo)) }}" target="_blank">Voir photo</a>
-                    @else
-                        No Photo
-                    @endif
-                </td>
-                            
-                <!-- Bac Info -->
-                <td class="text-nowrap text-center">{{ $candidat->serie_bac }}</td>
-                <td class="text-nowrap text-center">{{ $candidat->annee_bac }}</td>
-                <td class="text-nowrap text-center">
-                    @if ($candidat->scan_bac)
-                    <a href="{{ asset('storage/bac/' . basename($candidat->scan_bac)) }}" target="_blank">Voir scan_bac</a>
-                    @else
-                        No Scan Bac
-                    @endif
-                </td>
-                
-                <!-- Bac+2 -->
-                @php $diplome = $candidat->diplomes->first(); @endphp
+                                    <!-- Experiences -->
+                                    <td>
+                                        @foreach($experiences as $experience)
+                                        <div class="d-inline-block me-2" style="width: 150px; vertical-align: top;">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $experience->fonction }}</p>
+                                            <p class="text-xs text-secondary mb-0">{{ $experience->etablissement }}</p>
+                                            <p class="text-xs text-secondary mb-0">{{ $experience->periode }}</p>
+                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $experience->discription }}">
+                                                {{ Str::limit($experience->discription, 20) }}
+                                            </p>
+                                            @if ($experience->attestation)
+                                            <a href="{{ asset('storage/experiences/' . basename($experience->attestation)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Attestation</a>
+                                            @endif
+                                        </div>
+                                        @endforeach
+                                    </td>
 
-@if ($diplome)
-    <td class="text-nowrap text-center">{{ $diplome->{'type_diplome_bac+2'} ?? '' }}</td>
-    <td class="text-nowrap text-center">{{ $diplome->{'anne_bac+2'} ?? '' }}</td>
-    <td class="text-nowrap text-center">{{ $diplome->{'filiere_bac+2'} ?? '' }}</td>
-    <td class="text-nowrap text-center">
-        @if ($diplome->{'scan_bac+2'})
-            <a href="{{ asset('storage/bac_2/' . basename($diplome->{'scan_bac+2'})) }}" target="_blank">Voir scan bac+2</a>
-        @else
-            No scan_bac+2
-        @endif
-    </td>
-    <td class="text-nowrap text-center">{{ $diplome->{'etalissement_bac+2'} ?? '' }}</td>
-
-    <!-- Bac+3 -->
-    <td class="text-nowrap text-center">{{ $diplome->{'type_bac+3'} ?? '' }}</td>
-    <td class="text-nowrap text-center">{{ $diplome->{'annee_bac+3'} ?? '' }}</td>
-    <td class="text-nowrap text-center">{{ $diplome->{'filiere_bac+3'} ?? '' }}</td>
-    <td class="text-nowrap text-center">{{ $diplome->{'etablissement_bac+3'} ?? '' }}</td>
-    <td class="text-nowrap text-center">
-        @if ($diplome->{'scan_bac+3'})
-            <a href="{{ asset('storage/bac+3/' . basename($diplome->{'scan_bac+3'})) }}" target="_blank">Voir scan bac+3</a>
-        @else
-            No scan_bac+3
-        @endif
-    </td>
-@else
-    <td class="text-nowrap text-center" colspan="10">Aucun diplôme disponible</td>
-@endif
-
-                <!-- Stages (3 stages) -->
-                @php $stages = $candidat->stages->take(3) @endphp
-                @for($i = 0; $i < 3; $i++)
-                    @if(isset($stages[$i]))
-                        <td class="text-nowrap text-center">{{ $stages[$i]->fonction }}</td>
-                        <td class="text-nowrap text-center">{{ $stages[$i]->periode }}</td>
-                        <td class="text-nowrap text-center">{{ $stages[$i]->etablissement }}</td>
-                        <td class="text-nowrap text-center">{{ $stages[$i]->secteur_activite }}</td>
-                        <td class="text-nowrap text-center">
-                            @if ($stages[$i]->attestation)
-                            <a href="{{ asset('storage/stages/' . basename($stages[$i]->attestation)) }}" target="_blank">Voir stage attestation</a>
-                            @else
-                                No stage attestation
-                            @endif
-                        </td>
-                        <td class="text-nowrap text-center">{{ $stages[$i]->discription }}</td>
-                    @else
-                        <td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td>
-                    @endif
-                @endfor
-                
-                <!-- Experiences (3 experiences) -->
-                @php $experiences = $candidat->experiences->take(3) @endphp
-                @for($i = 0; $i < 3; $i++)
-                    @if(isset($experiences[$i]))
-                        <td class="text-nowrap text-center">{{ $experiences[$i]->fonction }}</td>
-                        <td class="text-nowrap text-center">{{ $experiences[$i]->secteur_activite }}</td>
-                        <td class="text-nowrap text-center">{{ $experiences[$i]->periode }}</td>
-                        <td class="text-nowrap text-center">{{ $experiences[$i]->etablissement }}</td>
-                        <td class="text-nowrap text-center">
-                            @if ($experiences[$i]->attestation)
-                            <a href="{{ asset('storage/experiences/' . basename($experiences[$i]->attestation)) }}" target="_blank">Voir Experience Attestation</a>
-                            @else
-                                No Experience Attestation
-                            @endif
-                        </td>
-                        
-                        <td class="text-nowrap text-center">{{ $experiences[$i]->discription }}</td>
-                    @else
-                    <td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td><td class="text-nowrap text-center"></td>
-                    @endif
-                @endfor
-                
-                <!-- Attestations (3 attestations) -->
-                @php $attestations = $candidat->attestations->take(3) @endphp
-                @for($i = 0; $i < 3; $i++)
-                    @if(isset($attestations[$i]))
-                        <td class="text-nowrap text-center">{{ $attestations[$i]->type_attestation }}</td>
-                        <td>
-                            @if ($attestations[$i]->attestation)
-                                <a href="{{ asset('storage/attestations/' . basename($attestations[$i]->attestation)) }}" target="_blank">Voir Attestation</a>
-                            @else
-                                No Attestation
-                            @endif
-                        </td>
-                        <td class="text-nowrap text-center">{{ $attestations[$i]->discription }}</td>
-                            @else
-                                <td class="text-nowrap text-center"></td>
-                                <td class="text-nowrap text-center"></td>
-                                <td class="text-nowrap text-center"></td>
-                            @endif
-                        @endfor
-                <td class="text-nowrap text-center">
-                
-                    <a href="{{ route('candidats.edit', $candidat->id) }}" class="btn btn-sm btn-outline-warning me-1"><i class="bi bi-pencil-square"></i></a>
-                    <form action="{{ route('candidats.destroy', $candidat->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet candidat ?')"><i class="bi bi-trash"></i></button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </table>
+                                    <!-- Attestations -->
+                                    <td>
+                                        @foreach($attestations as $attestation)
+                                        <div class="d-inline-block me-2" style="width: 150px; vertical-align: top;">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $attestation->type_attestation }}</p>
+                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $attestation->discription }}">
+                                                {{ Str::limit($attestation->discription, 20) }}
+                                            </p>
+                                            @if ($attestation->attestation)
+                                            <a href="{{ asset('storage/attestations/' . basename($attestation->attestation)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
+                                            @endif
+                                        </div>
+                                        @endforeach
+                                    </td>
+                                    <!-- Actions -->
+                                    <td class="align-middle">
+                                        <a href="{{ route('candidats.edit', $candidat->id) }}" class="text-secondary font-weight-bold text-xs me-2" data-toggle="tooltip" title="Modifier">
+                                            <i class="material-symbols-rounded">edit</i>
+                                        </a>
+                                        <form id="delete-form-{{ $candidat->id }}" action="{{ route('candidats.destroy', $candidat->id) }}" method="POST" style="display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="javascript:void(0)" class="text-danger font-weight-bold text-xs" onclick="confirmDelete({{ $candidat->id }})" data-toggle="tooltip" title="Supprimer">
+                                                <i class="material-symbols-rounded">delete</i>
+                                            </a>
+                                        </form>
+                                        <a href="{{ route('candidats.show', $candidat->id) }}" class="text-info font-weight-bold text-xs ms-2" data-toggle="tooltip" title="Détails">
+                                            <i class="material-symbols-rounded">visibility</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div>
-</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmer la suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer ce candidat ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn bg-gradient-danger" id="confirmDeleteButton">Supprimer</button>
+            </div>
+        </div>
     </div>
 </div>
+
+@section('scripts')
+<!-- DataTables Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#candidatsTable').DataTable({
+            language: {
+                search: "",
+                searchPlaceholder: "Rechercher un candidat...",
+                paginate: {
+                    previous: '<i class="material-symbols-rounded">chevron_left</i>',
+                    next: '<i class="material-symbols-rounded">chevron_right</i>'
+                }
+            },
+            dom: '<"d-flex justify-content-between"lf>rt<"d-flex justify-content-between"ip>'
+        });
+
+        // Style the search bar
+        $('.dataTables_filter input').addClass('form-control');
+        $('.dataTables_filter label').addClass('search-container');
+    });
+
+    function confirmDelete(id) {
+        $('#confirmDeleteModal').modal('show');
+        $('#confirmDeleteButton').off('click').on('click', function() {
+            $('#delete-form-'+id).submit();
+        });
+    }
+</script>
 @endsection
 
-
-@section('styles')
-<style>
-    #candidats-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    #candidats-table th, 
-    #candidats-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    
-    .group-header th {
-        background-color: #3490dc;
-        color: white;
-        text-align: center;
-        font-weight: bold;
-    }
-    
-    .column-headers th {
-        background-color: #f8f9fa;
-        font-weight: bold;
-    }
-    
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-    
-    tr:hover {
-        background-color: #e9ecef;
-    }
-    
-    a {
-        color: #3490dc;
-        text-decoration: none;
-    }
-    
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
 @endsection

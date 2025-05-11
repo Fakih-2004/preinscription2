@@ -13,48 +13,48 @@
   <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link text-dark {{ request()->routeIs('administrateurs.*') ? 'active' : '' }}" href="{{ route('administrateurs.index') }}">
+        <a class="nav-link text-dark" href="{{ route('administrateurs.index') }}">
           <i class="material-symbols-rounded opacity-5">admin_panel_settings</i>
           <span class="nav-link-text ms-1">Administrateurs</span>
         </a>
       </li> 
       <li class="nav-item">
-        <a class="nav-link text-dark {{ request()->routeIs('formations.*') ? 'active' : '' }}" href="{{ route('formations.index') }}">
+        <a class="nav-link text-dark " href="{{ route('formations.index') }}">
           <i class="material-symbols-rounded opacity-5">receipt_long</i>          <span class="nav-link-text ms-1">Formations</span>
         </a>
       </li> 
       <li class="nav-item">
-        <a class="nav-link text-dark {{ request()->routeIs('candidats.*') ? 'active' : '' }}" href="{{ route('candidats.index') }}">
+        <a class="nav-link text-dark  " href="{{ route('candidats.index') }}">
           <i class="material-symbols-rounded opacity-5">group</i>
           <span class="nav-link-text ms-1">Candidats</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-dark {{ request()->routeIs('formation-stats') ? 'active' : '' }}" href="{{ route('formation-stats') }}">
+        <a class="nav-link text-dark " href="{{ route('formation-stats') }}">
           <i class="material-symbols-rounded opacity-5">bar_chart</i>
           <span class="nav-link-text ms-1">Statistiques des Formations</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-dark {{ request()->routeIs('diplomes.*') ? 'active' : '' }}" href="{{ route('diplomes.index') }}">
+        <a class="nav-link text-dark " href="{{ route('diplomes.index') }}">
           <i class="material-symbols-rounded opacity-5">school</i>
           <span class="nav-link-text ms-1">Diplômes</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-dark {{ request()->routeIs('experiences.*') ? 'active' : '' }}" href="{{ route('experiences.index') }}">
+        <a class="nav-link text-dark " href="{{ route('experiences.index') }}">
           <i class="material-symbols-rounded opacity-5">work</i>
           <span class="nav-link-text ms-1">Expériences</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-dark {{ request()->routeIs('stages.*') ? 'active' : '' }}" href="{{ route('stages.index') }}">
+        <a class="nav-link text-dark " href="{{ route('stages.index') }}">
           <i class="material-symbols-rounded opacity-5">business_center</i>
           <span class="nav-link-text ms-1">Stages</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-dark {{ request()->routeIs('attestations.*') ? 'active' : '' }}" href="{{ route('attestations.index') }}">
+        <a class="nav-link text-dark  " href="{{ route('attestations.index') }}">
           <i class="material-symbols-rounded opacity-5">description</i>
           <span class="nav-link-text ms-1">Attestations</span>
         </a>

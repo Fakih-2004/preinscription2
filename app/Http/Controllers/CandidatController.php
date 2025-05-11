@@ -77,11 +77,11 @@ class CandidatController extends Controller
     return redirect()->route('diplomes.create')->with('success', 'Candidat ajouté avec succès.');
 }
 
-    public function show($id)
-    {
-        $candidat = Candidat::findOrFail($id);
-        return view('utilisateur.candidats.show', compact('candidat'));
-    }
+public function show($id)
+{
+    $candidats = Candidat::all(); 
+    return view('utilisateur.candidats.show', compact('candidats'));
+}
 
     public function edit($id)
     {
