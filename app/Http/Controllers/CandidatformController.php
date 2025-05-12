@@ -9,21 +9,22 @@ use App\Models\Attestation;
 use App\Models\Experience;
 use App\Models\Diplome;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\CandidatInscriptionConfirmation;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+
 class CandidatformController extends Controller
 {
-
-
-
-
-
     public function showForm(Request $request)
     {
         $step = $request->query('step', 1);
-        $titres = Formation::all(); // Fetch formations for dropdown
-        $data = session('form_data', []); // Retrieve form data from session
+        $titres = Formation::all();
+        $types_formation = Formation::distinct()->pluck('type_formation')->toArray();
+        $data = session('form_data', []);
 
-        return view('candidateur.candidat.form', compact('step', 'titres', 'data'));
+        return view('candidateur.candidat.form', compact('step', 'titres', 'types_formation', 'data'));
     }
 
     public function submitStep(Request $request)
@@ -36,6 +37,16 @@ class CandidatformController extends Controller
 
         // Validate the request
         $validated = $request->validate($rules);
+
+        // Additional server-side validation for step 1: ensure titre_id matches type_formation
+        if ($step == 1) {
+            $formation = Formation::findOrFail($validated['titre_id']);
+            if ($formation->type_formation !== $validated['type_formation']) {
+                return redirect()->route('candidat.form', ['step' => 1])
+                    ->withErrors(['titre_id' => 'Le titre de formation sélectionné ne correspond pas au type de formation choisi.'])
+                    ->withInput();
+            }
+        }
 
         // Merge validated data into session
         $formData = array_merge($formData, $validated);
@@ -52,25 +63,22 @@ class CandidatformController extends Controller
 
         // Move to next step or save if final step
         if ($step < 6) {
-            return redirect()->route('candidateur.candidat.form', ['step' => $step + 1]);
+            return redirect()->route('candidat.form', ['step' => $step + 1]);
         } else {
-            // Save the data to the database
-            $this->saveCandidat($formData);
+            try {
+                // Save the data to the database
+                $this->saveCandidat($formData);
 
-            // Clear session data
-            $request->session()->forget('form_data');
+                // Clear session data
+                $request->session()->forget('form_data');
 
-            return redirect()->route('candidateur.candidat.form')->with('success', 'Candidature submitted successfully!');
+                return redirect()->route('candidat.form')->with('success', 'Candidature soumise avec succès !');
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                return redirect()->route('candidat.form', ['step' => 1])
+                    ->withErrors($e->validator)
+                    ->withInput();
+            }
         }
-    }
-
-    public function previousStep(Request $request)
-    {
-        $step = $request->input('step', 1);
-        if ($step > 1) {
-            return redirect()->route('candidateur.candidat.form', ['step' => $step - 1]);
-        }
-        return redirect()->route('candidateur.candidat.form');
     }
 
     private function getValidationRules($step)
@@ -79,6 +87,7 @@ class CandidatformController extends Controller
 
         if ($step == 1) {
             $rules = [
+                'type_formation' => 'required|string|in:' . implode(',', Formation::distinct()->pluck('type_formation')->toArray()),
                 'titre_id' => 'required|exists:formations,id',
                 'nom' => 'required|string',
                 'prenom' => 'required|string',
@@ -88,7 +97,7 @@ class CandidatformController extends Controller
                 'CIN' => 'required|string',
                 'date_naissance' => 'required|date',
                 'ville_naissance' => 'required|string',
-                'ville_naissance_ar'=> 'required|string',
+                'ville_naissance_ar' => 'required|string',
                 'province' => 'required|string',
                 'pay_naissance' => 'required|string',
                 'nationalite' => 'required|string',
@@ -112,35 +121,39 @@ class CandidatformController extends Controller
             ];
         } elseif ($step == 3) {
             $rules = [
-                'diplomes' => 'required|array|max:3', // At least one diploma, max 3
-                'diplomes.*.type_diplome_bac_2' => 'required|string',
-                'diplomes.*.annee_diplome_bac_2' => 'required|string',
-                'diplomes.*.filier_diplome_bac_2' => 'required|string',
-                'diplomes.*.scan_bac_2' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                'diplomes.*.etablissement_bac_2' => 'required|string',
+                // Bac+2 obligatoire
+                'diplomes.0.type_diplome_bac_2' => 'required|string',
+                'diplomes.0.annee_diplome_bac_2' => 'required|string',
+                'diplomes.0.filier_diplome_bac_2' => 'required|string',
+                'diplomes.0.scan_bac_2' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'diplomes.0.etablissement_bac_2' => 'required|string',
+                // Bac+3 facultatif
+                'diplomes.0.type_diplome_bac_3' => 'nullable|string',
+                'diplomes.0.annee_diplome_bac_3' => 'nullable|string',
+                'diplomes.0.filier_diplome_bac_3' => 'nullable|string',
+                'diplomes.0.scan_bac_3' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'diplomes.0.etablissement_bac_3' => 'nullable|string',
             ];
         } elseif ($step == 4) {
             $rules = [
-                'stages' => 'nullable|array|max:3', // Optional, max 3
-                'stages.*.fonction' => 'string',
-                'stages.*.periode' => 'string',
-                'stages.*.attestation' => 'file|mimes:pdf,doc,docx|max:2048',
-                'stages.*.etablissement' => 'string',
-                'stages.*.secteur_activite' => 'string',
-                'stages.*.description' => 'string',
+                'stages' => 'nullable|array|max:3',
+                'stages.*.fonction' => 'nullable|string',
+                'stages.*.periode' => 'nullable|string',
+                'stages.*.attestation' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+                'stages.*.etablissement' => 'nullable|string',
+                'stages.*.secteur_activite' => 'nullable|string',
+                'stages.*.description' => 'nullable|string',
             ];
         } elseif ($step == 5) {
             $rules = [
-                'attestations' => 'nullable|array|max:3', // Optional, max 3
-
+                'attestations' => 'nullable|array|max:3',
                 'attestations.*.attestation' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
                 'attestations.*.type_attestation' => 'nullable|string',
                 'attestations.*.description' => 'nullable|string',
             ];
         } elseif ($step == 6) {
             $rules = [
-                                'experiences' => 'nullable|array|max:3', // Optional, max 3
-
+                'experiences' => 'nullable|array|max:3',
                 'experiences.*.fonction' => 'nullable|string',
                 'experiences.*.periode' => 'nullable|string',
                 'experiences.*.attestation' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
@@ -156,64 +169,45 @@ class CandidatformController extends Controller
     private function handleFileUploads(Request $request, array $formData, $step)
     {
         if ($step == 1) {
-            $baseName = strtoupper($request->CNE) . strtolower(str_replace(' ', '', $request->nom)) . strtolower(str_replace(' ', '', $request->prenom));
-    $timestamp = now()->format('YmdHis');
-
-    if ($request->hasFile('cv')) {
-        $cvExtension = $request->file('cv')->getClientOriginalExtension();
-        $cvName = $baseName . '_cv_' . $timestamp . '.' . $cvExtension;
-        $data['cv'] = $request->file('cv')->storeAs('cv', $cvName, 'public');
-    }
-
-    if ($request->hasFile('demande')) {
-        $demandeExtension = $request->file('demande')->getClientOriginalExtension();
-        $demandeName = $baseName . '_demande_' . $timestamp . '.' . $demandeExtension;
-        $data['demande'] = $request->file('demande')->storeAs('demande', $demandeName, 'public');
-    }
-
-    if ($request->hasFile('scan_cartid')) {
-        $cinExtension = $request->file('scan_cartid')->getClientOriginalExtension();
-        $cinName = $baseName . '_cin_' . $timestamp . '.' . $cinExtension;
-        $data['scan_cartid'] = $request->file('scan_cartid')->storeAs('cart', $cinName, 'public');
-    }
-
-    if ($request->hasFile('photo')) {
-        $photoExtension = $request->file('photo')->getClientOriginalExtension();
-        $photoName = $baseName . '_photo_' . $timestamp . '.' . $photoExtension;
-        $data['photo'] = $request->file('photo')->storeAs('photos', $photoName, 'public');
-    }
-
-    if ($request->hasFile('scan_bac')) {
-        $bacExtension = $request->file('scan_bac')->getClientOriginalExtension();
-        $bacName = $baseName . '_bac_' . $timestamp . '.' . $bacExtension;
-        $data['scan_bac'] = $request->file('scan_bac')->storeAs('bac', $bacName, 'public');
-    }
+            if ($request->hasFile('CV')) {
+                $formData['CV'] = $request->file('CV')->store('cvs', 'public');
+            }
+            if ($request->hasFile('demande')) {
+                $formData['demande'] = $request->file('demande')->store('cartes', 'public');
+            }
+            if ($request->hasFile('scan_cartid')) {
+                $formData['scan_cartid'] = $request->file('scan_cartid')->store('cartes', 'public');
+            }
+            if ($request->hasFile('photo')) {
+                $formData['photo'] = $request->file('photo')->store('photos', 'public');
+            }
         } elseif ($step == 2) {
             if ($request->hasFile('scan_bac')) {
                 $formData['scan_bac'] = $request->file('scan_bac')->store('bacs', 'public');
             }
         } elseif ($step == 3) {
-            foreach ($request->file('diplomes', []) as $index => $diplome) {
-                if (isset($diplome['scan_bac_2'])) {
-                    $formData['diplomes'][$index]['scan_bac_2'] = $diplome['scan_bac_2']->store('diplomes', 'public');
-                }
+            if ($request->hasFile('diplomes.0.scan_bac_2')) {
+                $formData['diplomes'][0]['scan_bac_2'] = $request->file('diplomes.0.scan_bac_2')->store('diplomes', 'public');
+            }
+            if ($request->hasFile('diplomes.0.scan_bac_3')) {
+                $formData['diplomes'][0]['scan_bac_3'] = $request->file('diplomes.0.scan_bac_3')->store('diplomes', 'public');
             }
         } elseif ($step == 4) {
-            foreach ($request->file('stages', []) as $index => $stage) {
-                if (isset($stage['attestation'])) {
-                    $formData['stages'][$index]['attestation'] = $stage['attestation']->store('stages', 'public');
+            foreach ($formData['stages'] ?? [] as $index => $stage) {
+                if ($request->hasFile("stages.$index.attestation")) {
+                    $formData['stages'][$index]['attestation'] = $request->file("stages.$index.attestation")->store('stages', 'public');
                 }
             }
         } elseif ($step == 5) {
-            foreach ($request->file('attestations', []) as $index => $attestation) {
-                if (isset($attestation['attestation'])) {
-                    $formData['attestations'][$index]['attestation'] = $attestation['attestation']->store('attestations', 'public');
+            foreach ($formData['attestations'] ?? [] as $index => $attestation) {
+                if ($request->hasFile("attestations.$index.attestation")) {
+                    $formData['attestations'][$index]['attestation'] = $request->file("attestations.$index.attestation")->store('attestations', 'public');
                 }
             }
         } elseif ($step == 6) {
-            foreach ($request->file('experiences', []) as $index => $experience) {
-                if (isset($experience['attestation'])) {
-                    $formData['experiences'][$index]['attestation'] = $experience['attestation']->store('experiences', 'public');
+            foreach ($formData['experiences'] ?? [] as $index => $experience) {
+                if ($request->hasFile("experiences.$index.attestation")) {
+                    $formData['experiences'][$index]['attestation'] = $request->file("experiences.$index.attestation")->store('experiences', 'public');
                 }
             }
         }
@@ -223,17 +217,28 @@ class CandidatformController extends Controller
 
     private function saveCandidat(array $formData)
     {
-        $formation = Formation::find($formData['titre_id']);
+        // Validate unique fields
+        $validator = Validator::make($formData, [
+            'email' => 'required|email|unique:candidats,email',
+            'CNE' => 'required|string|unique:candidats,CNE',
+        ]);
+
+        if ($validator->fails()) {
+            throw new \Illuminate\Validation\ValidationException($validator);
+        }
+
+        $formation = Formation::findOrFail($formData['titre_id']);
 
         $candidat = Candidat::create([
             'formation_id' => $formation->id,
-            'type' => $formation->type,
+            'type_formation' => $formData['type_formation'],
             'titre' => $formation->titre,
             'nom' => $formData['nom'],
             'prenom' => $formData['prenom'],
             'nom_ar' => $formData['nom_ar'],
             'prenom_ar' => $formData['prenom_ar'],
             'CNE' => $formData['CNE'],
+            'email' => $formData['email'],
             'CIN' => $formData['CIN'],
             'date_naissance' => $formData['date_naissance'],
             'ville_naissance' => $formData['ville_naissance'],
@@ -245,7 +250,6 @@ class CandidatformController extends Controller
             'telephone_mob' => $formData['telephone_mob'],
             'telephone_fix' => $formData['telephone_fix'] ?? null,
             'adresse' => $formData['adresse'],
-            'email' => $formData['email'],
             'ville' => $formData['ville'],
             'pays' => $formData['pays'],
             'CV' => $formData['CV'],
@@ -256,43 +260,55 @@ class CandidatformController extends Controller
             'annee_bac' => $formData['annee_bac'],
             'scan_bac' => $formData['scan_bac'],
         ]);
+
         // Envoi de l'e-mail de confirmation
         try {
-            Mail::to($candidat->email)->send(new \App\Mail\CandidatInscriptionConfirmation($candidat));
+            Mail::to($candidat->email)->send(new CandidatInscriptionConfirmation($candidat));
         } catch (\Exception $e) {
-            \Log::error('Erreur lors de l\'envoi de l\'e-mail de confirmation : ' . $e->getMessage());
+            Log::error('Erreur lors de l\'envoi de l\'e-mail de confirmation pour le candidat ID ' . $candidat->id . ' : ' . $e->getMessage());
         }
 
-       // Save stages (optional, max 3)
-       foreach (array_slice($formData['stages'], 0, 2) as $stage) {
-        if (!empty($stage['fonction']) || !empty($stage['periode']) || !empty($stage['attestation'])) {
-            Stage::create([
+        // Sauvegarde du diplôme Bac+2 (obligatoire)
+        if (!empty($formData['diplomes'][0]['type_diplome_bac_2'])) {
+            Diplome::create([
                 'candidat_id' => $candidat->id,
-                'fonction' => $stage['fonction'] ?? '',
-                'periode' => $stage['periode'] ?? '',
-                'attestation' => $stage['attestation'] ?? null,
-                'etablissement' => $stage['etablissement'] ?? '',
-                'description' => $stage['description'] ?? '',
-                'secteur_activite' => $stage['secteur_activite'] ?? '',
+                'type_diplome_bac_2' => $formData['diplomes'][0]['type_diplome_bac_2'],
+                'annee_diplome_bac_2' => $formData['diplomes'][0]['annee_diplome_bac_2'],
+                'filier_diplome_bac_2' => $formData['diplomes'][0]['filier_diplome_bac_2'],
+                'scan_bac_2' => $formData['diplomes'][0]['scan_bac_2'],
+                'etablissement_bac_2' => $formData['diplomes'][0]['etablissement_bac_2'],
             ]);
         }
-    
 
-        foreach ($formData['diplomes'] as $diplome) {
-            if (!empty($diplome['type_diplome_bac_2'])) {
-                Diplome::create([
+        // Sauvegarde du diplôme Bac+3 (facultatif)
+        if (!empty($formData['diplomes'][0]['type_diplome_bac_3'])) {
+            Diplome::create([
+                'candidat_id' => $candidat->id,
+                'type_diplome_bac_3' => $formData['diplomes'][0]['type_diplome_bac_3'] ?? null,
+                'annee_diplome_bac_3' => $formData['diplomes'][0]['annee_diplome_bac_3'] ?? null,
+                'filier_diplome_bac_3' => $formData['diplomes'][0]['filier_diplome_bac_3'] ?? null,
+                'scan_bac_3' => $formData['diplomes'][0]['scan_bac_3'] ?? null,
+                'etablissement_bac_3' => $formData['diplomes'][0]['etablissement_bac_3'] ?? null,
+            ]);
+        }
+
+        // Sauvegarde des stages (facultatif, max 3)
+        foreach (array_slice($formData['stages'] ?? [], 0, 3) as $stage) {
+            if (!empty($stage['fonction']) || !empty($stage['periode']) || !empty($stage['attestation'])) {
+                Stage::create([
                     'candidat_id' => $candidat->id,
-                    'type_diplome_bac_2' => $diplome['type_diplome_bac_2'],
-                    'annee_diplome_bac_2' => $diplome['anne45'] . 'annee_diplome_bac_2',
-                    'filier_diplome_bac_2' => $diplome['filier_diplome_bac_2'],
-                    'scan_bac_2' => $diplome['scan_bac_2'],
-                    'etablissement_bac_2' => $diplome['etablissement_bac_2'],
+                    'fonction' => $stage['fonction'] ?? '',
+                    'periode' => $stage['periode'] ?? '',
+                    'attestation' => $stage['attestation'] ?? null,
+                    'etablissement' => $stage['etablissement'] ?? '',
+                    'description' => $stage['description'] ?? '',
+                    'secteur_activite' => $stage['secteur_activite'] ?? '',
                 ]);
             }
         }
 
-        // Save attestations (optional, max 3)
-        foreach (array_slice($formData['attestations'], 0, 3) as $attestation) {
+        // Sauvegarde des attestations (facultatif, max 3)
+        foreach (array_slice($formData['attestations'] ?? [], 0, 3) as $attestation) {
             if (!empty($attestation['type_attestation']) || !empty($attestation['description']) || !empty($attestation['attestation'])) {
                 Attestation::create([
                     'candidat_id' => $candidat->id,
@@ -302,7 +318,9 @@ class CandidatformController extends Controller
                 ]);
             }
         }
-        foreach (array_slice($formData['experiences'], 0, 3) as $experience) {
+
+        // Sauvegarde des expériences (facultatif, max 3)
+        foreach (array_slice($formData['experiences'] ?? [], 0, 3) as $experience) {
             if (!empty($experience['fonction']) || !empty($experience['periode']) || !empty($experience['attestation'])) {
                 Experience::create([
                     'candidat_id' => $candidat->id,
@@ -316,11 +334,4 @@ class CandidatformController extends Controller
             }
         }
     }
-}
-
-
-
-
-    
-
 }

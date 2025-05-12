@@ -1,6 +1,99 @@
-@extends('layout.index')
+@extends('candidateur.layout.index')
 
 @section('content')
+<style>
+    body {
+        background-color: #f4f7fa;
+        color: #333;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .inscription-form {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .form-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+        color: #004aad;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-size: 1.8rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #004aad;
+        box-shadow: 0 0 5px rgba(0, 74, 173, 0.2);
+    }
+
+    .btn-primary {
+        background: #004aad;
+        border: none;
+        border-radius: 5px;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+        transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+        background: #003780;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        border-radius: 5px;
+    }
+
+    .btn-danger {
+        border-radius: 5px;
+    }
+
+    .btn-success {
+        border-radius: 5px;
+    }
+
+    .alert {
+        border-radius: 5px;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group[dir="rtl"] input {
+        text-align: right;
+    }
+
+    hr {
+        border-top: 1px solid #ccc;
+        margin: 2rem 0;
+    }
+
+    @media (max-width: 768px) {
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .form-section {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
 <div class="container inscription-form">
     @if (session('success'))
         <div class="alert alert-success">
@@ -18,500 +111,447 @@
         </div>
     @endif
 
-    <form action="{{ route('candidat.submit') }}" method="POST" enctype="multipart/form-data" class="p-4 bg-white shadow rounded">
-        @csrf
-        <input type="hidden" name="step" value="{{ $step }}">
+    <div class="form-section">
+        <form action="{{ route('candidat.submit') }}" method="POST" enctype="multipart/form-data" id="candidat-form">
+            @csrf
+            <input type="hidden" name="step" value="{{ $step }}">
 
-        <!-- Step 1: Informations Personnelles -->
-        @if ($step == 1)
-            <h2 class="section-title">Informations Personnelles</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="titre_id">Formation</label>
-                    <select name="titre_id" class="form-control" id="titre_id" >
-                        <option value="">Sélectionner une formation</option>
-                        @foreach ($titres as $titre)
-                            <option value="{{ $titre->id }}" {{ old('titre_id', $data['titre_id'] ?? '') == $titre->id ? 'selected' : '' }}>
-                                {{ $titre->titre }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('titre_id') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="nom">Nom</label>
-                    <input type="text" name="nom" class="form-control" id="nom" placeholder="Entrez votre nom" value="{{ old('nom', $data['nom'] ?? '') }}" >
-                    @error('nom') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="prenom">Prénom</label>
-                    <input type="text" name="prenom" class="form-control" id="prenom" placeholder="Entrez votre prénom" value="{{ old('prenom', $data['prenom'] ?? '') }}" >
-                    @error('prenom') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="nom_ar">الاسم العائلي بالعربية</label>
-                    <input type="text" name="nom_ar" class="form-control" id="nom_ar" placeholder="الاسم العائلي بالعربية" value="{{ old('nom_ar', $data['nom_ar'] ?? '') }}"  dir="rtl">
-                    @error('nom_ar') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="prenom_ar">الاسم الشخصي بالعربية</label>
-                    <input type="text" name="prenom_ar" class="form-control" id="prenom_ar" placeholder="الاسم الشخصي بالعربية" value="{{ old('prenom_ar', $data['prenom_ar'] ?? '') }}"  dir="rtl">
-                    @error('prenom_ar') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="CNE">CNE</label>
-                    <input type="text" name="CNE" class="form-control" id="CNE" placeholder="Entrez votre CNE" value="{{ old('CNE', $data['CNE'] ?? '') }}" >
-                    @error('CNE') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="CIN">CIN</label>
-                    <input type="text" name="CIN" class="form-control" id="CIN" placeholder="Entrez votre CIN" value="{{ old('CIN', $data['CIN'] ?? '') }}" >
-                    @error('CIN') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="date_naissance">Date de naissance</label>
-                    <input type="date" name="date_naissance" class="form-control" id="date_naissance" value="{{ old('date_naissance', $data['date_naissance'] ?? '') }}" >
-                    @error('date_naissance') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="ville_naissance">Ville de naissance</label>
-                    <input type="text" name="ville_naissance" class="form-control" id="ville_naissance" placeholder="Entrez votre ville de naissance" value="{{ old('ville_naissance', $data['ville_naissance'] ?? '') }}" >
-                    @error('ville_naissance') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="ville_naissance_ar">مدينة الازدياد بالعربية</label>
-                    <input type="text" name="ville_naissance_ar" class="form-control" id="ville_naissance_ar" placeholder="مدينة الازدياد بالعربية" value="{{ old('ville_naissance_ar', $data['ville_naissance_ar'] ?? '') }}"  dir="rtl">
-                    @error('ville_naissance_ar') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="province">Province</label>
-                    <input type="text" name="province" class="form-control" id="province" placeholder="Entrez votre province" value="{{ old('province', $data['province'] ?? '') }}" >
-                    @error('province') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="pay_naissance">Pays de naissance</label>
-                    <input type="text" name="pay_naissance" class="form-control" id="pay_naissance" placeholder="Entrez votre pays de naissance" value="{{ old('pay_naissance', $data['pay_naissance'] ?? '') }}" >
-                    @error('pay_naissance') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="nationalite">Nationalité</label>
-                    <input type="text" name="nationalite" class="form-control" id="nationalite" placeholder="Entrez votre nationalité" value="{{ old('nationalite', $data['nationalite'] ?? '') }}" >
-                    @error('nationalite') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="sex">Sexe</label>
-                    <select name="sex" class="form-control" id="sex" >
-                        <option value="">Sélectionner un sexe</option>
-                        <option value="Homme" {{ old('sex', $data['sex'] ?? '') == 'Homme' ? 'selected' : '' }}>Homme</option>
-                        <option value="Femme" {{ old('sex', $data['sex'] ?? '') == 'Femme' ? 'selected' : '' }}>Femme</option>
-                    </select>
-                    @error('sex') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="telephone_mob">Téléphone mobile</label>
-                    <input type="text" name="telephone_mob" class="form-control" id="telephone_mob" placeholder="Entrez votre téléphone mobile" value="{{ old('telephone_mob', $data['telephone_mob'] ?? '') }}" >
-                    @error('telephone_mob') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="telephone_fix">Téléphone fixe</label>
-                    <input type="text" name="telephone_fix" class="form-control" id="telephone_fix" placeholder="Entrez votre téléphone fixe" value="{{ old('telephone_fix', $data['telephone_fix'] ?? '') }}">
-                    @error('telephone_fix') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="adresse">Adresse</label>
-                    <input type="text" name="adresse" class="form-control" id="adresse" placeholder="Entrez votre adresse" value="{{ old('adresse', $data['adresse'] ?? '') }}" >
-                    @error('adresse') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="Entrez votre email" value="{{ old('email', $data['email'] ?? '') }}" >
-                    @error('email') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="ville">Ville actuelle</label>
-                    <input type="text" name="ville" class="form-control" id="ville" placeholder="Entrez votre ville actuelle" value="{{ old('ville', $data['ville'] ?? '') }}" >
-                    @error('ville') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="pays">Pays actuel</label>
-                    <input type="text" name="pays" class="form-control" id="pays" placeholder="Entrez votre pays actuel" value="{{ old('pays', $data['pays'] ?? '') }}" >
-                    @error('pays') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="CV">CV</label>
-                    <input type="file" name="CV" class="form-control" id="CV" accept=".pdf,.doc,.docx" >
-                    @error('CV') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="demande">Demande</label>
-                    <input type="file" name="demande" class="form-control" id="demande" accept=".pdf,.doc,.docx" >
-                    @error('demande') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="scan_cartid">Scan de la carte d'identité</label>
-                    <input type="file" name="scan_cartid" class="form-control" id="scan_cartid" accept=".jpg,.jpeg,.png,.pdf" >
-                    @error('scan_cartid') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="photo">Photo</label>
-                    <input type="file" name="photo" class="form-control" id="photo" accept=".jpg,.jpeg,.png" >
-                    @error('photo') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-            </div>
-            <div class="mt-3">
-                <button type="submit" class="btn btn-primary">Suivant</button>
-            </div>
-        @endif
-
-        <!-- Step 2: Bac -->
-        @if ($step == 2)
-            <hr>
-            <h2 class="section-title">Informations sur le Baccalauréat</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="serie_bac">Série du Bac</label>
-                    <input type="text" name="serie_bac" class="form-control" id="serie_bac" placeholder="Série du Bac" value="{{ old('serie_bac', $data['serie_bac'] ?? '') }}" >
-                    @error('serie_bac') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="annee_bac">Année du Bac</label>
-                    <select name="annee_bac" class="form-control" id="annee_bac" >
-                        <option value="">Veuillez sélectionner</option>
-                        @for ($i = now()->year; $i >= 2000; $i--)
-                            <option value="{{ ($i-1) . '/' . $i }}" {{ old('annee_bac', $data['annee_bac'] ?? '') == ($i-1) . '/' . $i ? 'selected' : '' }}>
-                                {{ ($i-1) . '/' . $i }}
-                            </option>
-                        @endfor
-                    </select>
-                    @error('annee_bac') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="scan_bac">Scan Bac</label>
-                    <input type="file" name="scan_bac" class="form-control" id="scan_bac" accept=".pdf,.jpg,.jpeg,.png" >
-                    @error('scan_bac') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-            </div>
-            <div class="mt-3">
-                <form action="{{ route('candidat.previous') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <input type="hidden" name="step" value="{{ $step }}">
-                    <button type="submit" class="btn btn-secondary">Retour</button>
-                </form>
-                <button type="submit" class="btn btn-primary">Suivant</button>
-            </div>
-        @endif
-
-        <!-- Step 3: Diplomes -->
-        @if ($step == 3)
-            <hr>
-            <h2 class="section-title">Diplômes (Max 2)</h2>
-            <div id="diplomes">
-                @foreach ($data['diplomes'] ?? [[]] as $index => $diplome)
-                    <div class="diplome-form mb-4 p-3 border rounded">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="type_diplome_bac_2_{{ $index }}">Type diplôme Bac+2</label>
-                                <input type="text" name="diplomes[{{ $index }}][type_diplome_bac_2]" class="form-control" id="type_diplome_bac_2_{{ $index }}" placeholder="Type Diplôme Bac+2" value="{{ old('diplomes.' . $index . '.type_diplome_bac_2', $diplome['type_diplome_bac_2'] ?? '') }}" >
-                                @error('diplomes.' . $index . '.type_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="annee_diplome_bac_2_{{ $index }}">Année Bac+2</label>
-                                <select name="diplomes[{{ $index }}][annee_diplome_bac_2]" class="form-control" id="annee_diplome_bac_2_{{ $index }}" >
-                                    <option value="">Veuillez sélectionner</option>
-                                    @for ($i = now()->year; $i >= 2000; $i--)
-                                        <option value="{{ ($i-1) . '/' . $i }}" {{ old('diplomes.' . $index . '.annee_diplome_bac_2', $diplome['annee_diplome_bac_2'] ?? '') == ($i-1) . '/' . $i ? 'selected' : '' }}>
-                                            {{ ($i-1) . '/' . $i }}
-                                        </option>
-                                    @endfor
-                                </select>
-                                @error('diplomes.' . $index . '.annee_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="filier_diplome_bac_2_{{ $index }}">Filière Bac+2</label>
-                                <input type="text" name="diplomes[{{ $index }}][filier_diplome_bac_2]" class="form-control" id="filier_diplome_bac_2_{{ $index }}" placeholder="Filière Bac+2" value="{{ old('diplomes.' . $index . '.filier_diplome_bac_2', $diplome['filier_diplome_bac_2'] ?? '') }}" >
-                                @error('diplomes.' . $index . '.filier_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="scan_bac_2_{{ $index }}">Scan Bac+2</label>
-                                <input type="file" name="diplomes[{{ $index }}][scan_bac_2]" class="form-control" id="scan_bac_2_{{ $index }}" accept=".jpg,.jpeg,.png,.pdf" >
-                                @error('diplomes.' . $index . '.scan_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="etablissement_bac_2_{{ $index }}">Établissement Bac+2</label>
-                                <input type="text" name="diplomes[{{ $index }}][etablissement_bac_2]" class="form-control" id="etablissement_bac_2_{{ $index }}" placeholder="Établissement Bac+2" value="{{ old('diplomes.' . $index . '.etablissement_bac_2', $diplome['etablissement_bac_2'] ?? '') }}" >
-                                @error('diplomes.' . $index . '.etablissement_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="type_diplome_bac_3_{{ $index }}">Type Diplôme Bac+3 (optionnel)</label>
-                                <input type="text" name="diplomes[{{ $index }}][type_diplome_bac_3]" class="form-control" id="type_diplome_bac_3_{{ $index }}" placeholder="Type Diplôme Bac+3" value="{{ old('diplomes.' . $index . '.type_diplome_bac_3', $diplome['type_diplome_bac_3'] ?? '') }}">
-                                @error('diplomes.' . $index . '.type_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="annee_diplome_bac_3_{{ $index }}">Année Bac+3 (optionnel)</label>
-                                <select name="diplomes[{{ $index }}][annee_diplome_bac_3]" class="form-control" id="annee_diplome_bac_3_{{ $index }}">
-                                    <option value="">Veuillez sélectionner</option>
-                                    @for ($i = now()->year; $i >= 2000; $i--)
-                                        <option value="{{ ($i-1) . '/' . $i }}" {{ old('diplomes.' . $index . '.annee_diplome_bac_3', $diplome['annee_diplome_bac_3'] ?? '') == ($i-1) . '/' . $i ? 'selected' : '' }}>
-                                            {{ ($i-1) . '/' . $i }}
-                                        </option>
-                                    @endfor
-                                </select>
-                                @error('diplomes.' . $index . '.annee_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="filier_diplome_bac_3_{{ $index }}">Filière Bac+3 (optionnel)</label>
-                                <input type="text" name="diplomes[{{ $index }}][filier_diplome_bac_3]" class="form-control" id="filier_diplome_bac_3_{{ $index }}" placeholder="Filière Bac+3" value="{{ old('diplomes.' . $index . '.filier_diplome_bac_3', $diplome['filier_diplome_bac_3'] ?? '') }}">
-                                @error('diplomes.' . $index . '.filier_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="scan_bac_3_{{ $index }}">Scan Bac+3 (optionnel)</label>
-                                <input type="file" name="diplomes[{{ $index }}][scan_bac_3]" class="form-control" id="scan_bac_3_{{ $index }}" accept=".jpg,.jpeg,.png,.pdf">
-                                @error('diplomes.' . $index . '.scan_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="etablissement_bac_3_{{ $index }}">Établissement Bac+3 (optionnel)</label>
-                                <input type="text" name="diplomes[{{ $index }}][etablissement_bac_3]" class="form-control" id="etablissement_bac_3_{{ $index }}" placeholder="Établissement Bac+3" value="{{ old('diplomes.' . $index . '.etablissement_bac_3', $diplome['etablissement_bac_3'] ?? '') }}">
-                                @error('diplomes.' . $index . '.etablissement_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'diplomes')">Supprimer</button>
+            <!-- Step 1: Informations Personnelles -->
+            @if ($step == 1)
+                <h2 class="section-title">Informations Personnelles</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="type_formation">Type de Formation</label>
+                        <select name="type_formation" class="form-control" id="type_formation" required>
+                            <option value="">Sélectionner un type de formation</option>
+                            @if (isset($types_formation) && !empty($types_formation))
+                                @foreach ($types_formation as $type)
+                                    <option value="{{ $type }}" {{ old('type_formation', $data['type_formation'] ?? '') == $type ? 'selected' : '' }}>
+                                        {{ $type }}
+                                    </option>
+                                @endforeach
+                            @else
+                                <option value="" disabled>Aucun type de formation disponible</option>
+                            @endif
+                        </select>
+                        @error('type_formation') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-                @endforeach
-            </div>
-            <button type="button" id="add-diplome" onclick="addDiplome()" class            class="btn btn-secondary mb-3">Ajouter un diplôme</button>
-            <div class="mt-3">
-                <form action="{{ route('candidat.previous') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <input type="hidden" name="step" value="{{ $step }}">
-                    <button type="submit" class="btn btn-secondary">Retour</button>
-                </form>
-                <button type="submit" class="btn btn-primary">Suivant</button>
-            </div>
-        @endif
-
-        <!-- Step 4: Stages -->
-        @if ($step == 4)
-            <hr>
-            <h2 class="section-title">Stages (Optionnel, Max 3)</h2>
-            <div id="stages">
-                @foreach ($data['stages'] ?? [] as $index => $stage)
-                    <div class="stage-form mb-4 p-3 border rounded">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="fonction_stage_{{ $index }}">Fonction</label>
-                                <input type="text" name="stages[{{ $index }}][fonction]" class="form-control" id="fonction_stage_{{ $index }}" placeholder="Fonction" value="{{ old('stages.' . $index . '.fonction', $stage['fonction'] ?? '') }}">
-                                @error('stages.' . $index . '.fonction') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="periode_stage_{{ $index }}">Période</label>
-                                <input type="text" name="stages[{{ $index }}][periode]" class="form-control" id="periode_stage_{{ $index }}" placeholder="Période" value="{{ old('stages.' . $index . '.periode', $stage['periode'] ?? '') }}">
-                                @error('stages.' . $index . '.periode') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="attestation_stage_{{ $index }}">Attestation</label>
-                                <input type="file" name="stages[{{ $index }}][attestation]" class="form-control" id="attestation_stage_{{ $index }}" accept=".pdf,.doc,.docx">
-                                @error('stages.' . $index . '.attestation') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="etablissement_stage_{{ $index }}">Établissement</label>
-                                <input type="text" name="stages[{{ $index }}][etablissement]" class="form-control" id="etablissement_stage_{{ $index }}" placeholder="Établissement" value="{{ old('stages.' . $index . '.etablissement', $stage['etablissement'] ?? '') }}">
-                                @error('stages.' . $index . '.etablissement') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="secteur_activite_stage_{{ $index }}">Secteur d'activité</label>
-                                <input type="text" name="stages[{{ $index }}][secteur_activite]" class="form-control" id="secteur_activite_stage_{{ $index }}" placeholder="Secteur d'activité" value="{{ old('stages.' . $index . '.secteur_activite', $stage['secteur_activite'] ?? '') }}">
-                                @error('stages.' . $index . '.secteur_activite') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="description_stage_{{ $index }}">Description</label>
-                                <textarea name="stages[{{ $index }}][description]" class="form-control" id="description_stage_{{ $index }}" placeholder="Description">{{ old('stages.' . $index . '.description', $stage['description'] ?? '') }}</textarea>
-                                @error('stages.' . $index . '.description') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'stages')">Supprimer</button>
+                    <div class="col-md-6 mb-3">
+                        <label for="titre_id">Titre de Formation</label>
+                        <select name="titre_id" class="form-control" id="titre_id" required>
+                            <option value="">Sélectionner un titre de formation</option>
+                            @if ($titres->isEmpty())
+                                <option value="" disabled>Aucun titre de formation disponible</option>
+                            @else
+                                @foreach ($titres as $titre)
+                                    <option value="{{ $titre->id }}"
+                                            data-type="{{ $titre->type_formation ?? '' }}"
+                                            {{ old('titre_id', $data['titre_id'] ?? '') == $titre->id ? 'selected' : '' }}>
+                                        {{ $titre->titre }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('titre_id') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-                @endforeach
-            </div>
-            <button type="button" id="add-stage" onclick="addStage()" class="btn btn-secondary mb-3">Ajouter un stage</button>
-            <div class="mt-3">
-                <form action="{{ route('candidat.previous') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <input type="hidden" name="step" value="{{ $step }}">
-                    <button type="submit" class="btn btn-secondary">Retour</button>
-                </form>
-                <button type="submit" class="btn btn-primary">Suivant</button>
-            </div>
-        @endif
-
-        <!-- Step 5: Attestations -->
-        @if ($step == 5)
-            <hr>
-            <h2 class="section-title">Attestations (Optionnel, Max 3)</h2>
-            <div id="attestations">
-                @foreach ($data['attestations'] ?? [] as $index => $attestation)
-                    <div class="attestation-form mb-4 p-3 border rounded">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="attestation_{{ $index }}">Attestation</label>
-                                <input type="file" name="attestations[{{ $index }}][attestation]" class="form-control" id="attestation_{{ $index }}" accept=".pdf,.doc,.docx">
-                                @error('attestations.' . $index . '.attestation') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="type_attestation_{{ $index }}">Type d'attestation</label>
-                                <input type="text" name="attestations[{{ $index }}][type_attestation]" class="form-control" id="type_attestation_{{ $index }}" placeholder="Type d'attestation" value="{{ old('attestations.' . $index . '.type_attestation', $attestation['type_attestation'] ?? '') }}">
-                                @error('attestations.' . $index . '.type_attestation') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="description_attestation_{{ $index }}">Description</label>
-                                <textarea name="attestations[{{ $index }}][description]" class="form-control" id="description_attestation_{{ $index }}" placeholder="Description">{{ old('attestations.' . $index . '.description', $attestation['description'] ?? '') }}</textarea>
-                                @error('attestations.' . $index . '.description') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'attestations')">Supprimer</button>
+                    <div class="col-md-6 mb-3">
+                        <label for="nom">Nom</label>
+                        <input type="text" name="nom" class="form-control" id="nom" placeholder="Entrez votre nom" value="{{ old('nom', $data['nom'] ?? '') }}" required>
+                        @error('nom') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-                @endforeach
-            </div>
-            <button type="button" id="add-attestation" onclick="addAttestation()" class="btn btn-secondary mb-3">Ajouter une attestation</button>
-            <div class="mt-3">
-                <form action="{{ route('candidat.previous') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <input type="hidden" name="step" value="{{ $step }}">
-                    <button type="submit" class="btn btn-secondary">Retour</button>
-                </form>
-                <button type="submit" class="btn btn-primary">Suivant</button>
-            </div>
-        @endif
-
-        <!-- Step 6: Expériences -->
-        @if ($step == 6)
-            <hr>
-            <h2 class="section-title">Expériences (Optionnel, Max 3)</h2>
-            <div id="experiences">
-                @foreach ($data['experiences'] ?? [] as $index => $experience)
-                    <div class="experience-form mb-4 p-3 border rounded">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="fonction_experience_{{ $index }}">Fonction</label>
-                                <input type="text" name="experiences[{{ $index }}][fonction]" class="form-control" id="fonction_experience_{{ $index }}" placeholder="Fonction" value="{{ old('experiences.' . $index . '.fonction', $experience['fonction'] ?? '') }}">
-                                @error('experiences.' . $index . '.fonction') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="periode_experience_{{ $index }}">Période</label>
-                                <input type="text" name="experiences[{{ $index }}][periode]" class="form-control" id="periode_experience_{{ $index }}" placeholder="Période" value="{{ old('experiences.' . $index . '.periode', $experience['periode'] ?? '') }}">
-                                @error('experiences.' . $index . '.periode') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="attestation_experience_{{ $index }}">Attestation</label>
-                                <input type="file" name="experiences[{{ $index }}][attestation]" class="form-control" id="attestation_experience_{{ $index }}" accept=".jpg,.jpeg,.png,.pdf">
-                                @error('experiences.' . $index . '.attestation') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="etablissement_experience_{{ $index }}">Établissement</label>
-                                <input type="text" name="experiences[{{ $index }}][etablissement]" class="form-control" id="etablissement_experience_{{ $index }}" placeholder="Établissement" value="{{ old('experiences.' . $index . '.etablissement', $experience['etablissement'] ?? '') }}">
-                                @error('experiences.' . $index . '.etablissement') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="secteur_activite_experience_{{ $index }}">Secteur d'activité</label>
-                                <input type="text" name="experiences[{{ $index }}][secteur_activite]" class="form-control" id="secteur_activite_experience_{{ $index }}" placeholder="Secteur d'activité" value="{{ old('experiences.' . $index . '.secteur_activite', $experience['secteur_activite'] ?? '') }}">
-                                @error('experiences.' . $index . '.secteur_activite') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="description_experience_{{ $index }}">Description</label>
-                                <textarea name="experiences[{{ $index }}][description]" class="form-control" id="description_experience_{{ $index }}" placeholder="Description">{{ old('experiences.' . $index . '.description', $experience['description'] ?? '') }}</textarea>
-                                @error('experiences.' . $index . '.description') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'experiences')">Supprimer</button>
+                    <div class="col-md-6 mb-3">
+                        <label for="prenom">Prénom</label>
+                        <input type="text" name="prenom" class="form-control" id="prenom" placeholder="Entrez votre prénom" value="{{ old('prenom', $data['prenom'] ?? '') }}" required>
+                        @error('prenom') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-                @endforeach
-            </div>
-            <button type="button" id="add-experience" onclick="addExperience()" class="btn btn-secondary mb-3">Ajouter une expérience</button>
-            <div class="mt-3">
-                <form action="{{ route('candidat.previous') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <input type="hidden" name="step" value="{{ $step }}">
-                    <button type="submit" class="btn btn-secondary">Retour</button>
-                </form>
-                <button type="submit" class="btn btn-success">Valider</button>
-            </div>
-        @endif
-    </form>
+                    <div class="col-md-6 mb-3" dir="rtl">
+                        <label for="nom_ar">الاسم العائلي بالعربية</label>
+                        <input type="text" name="nom_ar" class="form-control" id="nom_ar" placeholder="الاسم العائلي بالعربية" value="{{ old('nom_ar', $data['nom_ar'] ?? '') }}" required>
+                        @error('nom_ar') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3" dir="rtl">
+                        <label for="prenom_ar">الاسم الشخصي بالعربية</label>
+                        <input type="text" name="prenom_ar" class="form-control" id="prenom_ar" placeholder="الاسم الشخصي بالعربية" value="{{ old('prenom_ar', $data['prenom_ar'] ?? '') }}" required>
+                        @error('prenom_ar') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="CNE">CNE</label>
+                        <input type="text" name="CNE" class="form-control" id="CNE" placeholder="Entrez votre CNE" value="{{ old('CNE', $data['CNE'] ?? '') }}" required>
+                        @error('CNE') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="CIN">CIN</label>
+                        <input type="text" name="CIN" class="form-control" id="CIN" placeholder="Entrez votre CIN" value="{{ old('CIN', $data['CIN'] ?? '') }}" required>
+                        @error('CIN') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="date_naissance">Date de naissance</label>
+                        <input type="date" name="date_naissance" class="form-control" id="date_naissance" value="{{ old('date_naissance', $data['date_naissance'] ?? '') }}" required>
+                        @error('date_naissance') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="ville_naissance">Ville de naissance</label>
+                        <input type="text" name="ville_naissance" class="form-control" Tasmania id="ville_naissance" placeholder="Entrez votre ville de naissance" value="{{ old('ville_naissance', $data['ville_naissance'] ?? '') }}" required>
+                        @error('ville_naissance') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3" dir="rtl">
+                        <label for="ville_naissance_ar">مدينة الازدياد بالعربية</label>
+                        <input type="text" name="ville_naissance_ar" class="form-control" id="ville_naissance_ar" placeholder="مدينة الازدياد بالعربية" value="{{ old('ville_naissance_ar', $data['ville_naissance_ar'] ?? '') }}" required>
+                        @error('ville_naissance_ar') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="province">Province</label>
+                        <input type="text" name="province" class="form-control" id="province" placeholder="Entrez votre province" value="{{ old('province', $data['province'] ?? '') }}" required>
+                        @error('province') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="pay_naissance">Pays de naissance</label>
+                        <input type="text" name="pay_naissance" class="form-control" id="pay_naissance" placeholder="Entrez votre pays de naissance" value="{{ old('pay_naissance', $data['pay_naissance'] ?? '') }}" required>
+                        @error('pay_naissance') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="nationalite">Nationalité</label>
+                        <input type="text" name="nationalite" class="form-control" id="nationalite" placeholder="Entrez votre nationalité" value="{{ old('nationalite', $data['nationalite'] ?? '') }}" required>
+                        @error('nationalite') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="sex">Sexe</label>
+                        <select name="sex" class="form-control" id="sex" required>
+                            <option value="">Sélectionner un sexe</option>
+                            <option value="Homme" {{ old('sex', $data['sex'] ?? '') == 'Homme' ? 'selected' : '' }}>Homme</option>
+                            <option value="Femme" {{ old('sex', $data['sex'] ?? '') == 'Femme' ? 'selected' : '' }}>Femme</option>
+                        </select>
+                        @error('sex') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="telephone_mob">Téléphone mobile</label>
+                        <input type="text" name="telephone_mob" class="form-control" id="telephone_mob" placeholder="Entrez votre téléphone mobile" value="{{ old('telephone_mob', $data['telephone_mob'] ?? '') }}" required>
+                        @error('telephone_mob') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="telephone_fix">Téléphone fixe</label>
+                        <input type="text" name="telephone_fix" class="form-control" id="telephone_fix" placeholder="Entrez votre téléphone fixe" value="{{ old('telephone_fix', $data['telephone_fix'] ?? '') }}">
+                        @error('telephone_fix') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="adresse">Adresse</label>
+                        <input type="text" name="adresse" class="form-control" id="adresse" placeholder="Entrez votre adresse" value="{{ old('adresse', $data['adresse'] ?? '') }}" required>
+                        @error('adresse') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Entrez votre email" value="{{ old('email', $data['email'] ?? '') }}" required>
+                        @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="ville">Ville actuelle</label>
+                        <input type="text" name="ville" class="form-control" id="ville" placeholder="Entrez votre ville actuelle" value="{{ old('ville', $data['ville'] ?? '') }}" required>
+                        @error('ville') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="pays">Pays actuel</label>
+                        <input type="text" name="pays" class="form-control" id="pays" placeholder="Entrez votre pays actuel" value="{{ old('pays', $data['pays'] ?? '') }}" required>
+                        @error('pays') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="CV">CV</label>
+                        <input type="file" name="CV" class="form-control" id="CV" accept=".pdf,.doc,.docx" required>
+                        @error('CV') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="demande">Demande</label>
+                        <input type="file" name="demande" class="form-control" id="demande" accept=".pdf,.doc,.docx" required>
+                        @error('demande') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="scan_cartid">Scan de la carte d'identité</label>
+                        <input type="file" name="scan_cartid" class="form-control" id="scan_cartid" accept=".jpg,.jpeg,.png,.pdf" required>
+                        @error('scan_cartid') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="photo">Photo</label>
+                        <input type="file" name="photo" class="form-control" id="photo" accept=".jpg,.jpeg,.png" required>
+                        @error('photo') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                <div class="mt-3 text-center">
+                    <button type="submit" class="btn btn-primary">Suivant</button>
+                </div>
+            @endif
+
+            <!-- Step 2: Bac -->
+            @if ($step == 2)
+                <hr>
+                <h2 class="section-title">Informations sur le Baccalauréat</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="serie_bac">Série du Bac</label>
+                        <input type="text" name="serie_bac" class="form-control" id="serie_bac" placeholder="Ex: Sciences Physiques" value="{{ old('serie_bac', $data['serie_bac'] ?? '') }}" required>
+                        @error('serie_bac') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="annee_bac">Année du Bac</label>
+                        <select name="annee_bac" class="form-control" id="annee_bac" required>
+                            <option value="">Veuillez sélectionner</option>
+                            @for ($i = now()->year; $i >= 2000; $i--)
+                                <option value="{{ ($i-1) . '/' . $i }}" {{ old('annee_bac', $data['annee_bac'] ?? '') == ($i-1) . '/' . $i ? 'selected' : '' }}>
+                                    {{ ($i-1) . '/' . $i }}
+                                </option>
+                            @endfor
+                        </select>
+                        @error('annee_bac') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="scan_bac">Scan Bac</label>
+                        <input type="file" name="scan_bac" class="form-control" id="scan_bac" accept=".pdf,.jpg,.jpeg,.png" required>
+                        @error('scan_bac') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                <div class="mt-3 text-center">
+                    <a href="{{ route('candidat.form', ['step' => $step - 1]) }}" class="btn btn-secondary mr-2">Précédent</a>
+                    <button type="submit" class="btn btn-primary">Suivant</button>
+                </div>
+            @endif
+
+            <!-- Step 3: Diplômes -->
+            @if ($step == 3)
+                <hr>
+                <h2 class="section-title">Diplômes</h2>
+                <h3>Diplôme Bac+2 </h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_type_diplome_bac_2">Type de diplôme</label>
+                        <input type="text" name="diplomes[0][type_diplome_bac_2]" class="form-control" id="diplomes_0_type_diplome_bac_2" value="{{ old('diplomes.0.type_diplome_bac_2', $data['diplomes'][0]['type_diplome_bac_2'] ?? '') }}" required>
+                        @error('diplomes.0.type_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_annee_diplome_bac_2">Année d'obtention</label>
+                        <input type="text" name="diplomes[0][annee_diplome_bac_2]" class="form-control" id="diplomes_0_annee_diplome_bac_2" value="{{ old('diplomes.0.annee_diplome_bac_2', $data['diplomes'][0]['annee_diplome_bac_2'] ?? '') }}" required>
+                        @error('diplomes.0.annee_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_filier_diplome_bac_2">Filière</label>
+                        <input type="text" name="diplomes[0][filier_diplome_bac_2]" class="form-control" id="diplomes_0_filier_diplome_bac_2" value="{{ old('diplomes.0.filier_diplome_bac_2', $data['diplomes'][0]['filier_diplome_bac_2'] ?? '') }}" required>
+                        @error('diplomes.0.filier_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_scan_bac_2">Scan du diplôme (PDF, JPG, PNG)</label>
+                        <input type="file" name="diplomes[0][scan_bac_2]" class="form-control" id="diplomes_0_scan_bac_2" accept=".pdf,.jpg,.jpeg,.png" required>
+                        @error('diplomes.0.scan_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_etablissement_bac_2">Établissement</label>
+                        <input type="text" name="diplomes[0][etablissement_bac_2]" class="form-control" id="diplomes_0_etablissement_bac_2" value="{{ old('diplomes.0.etablissement_bac_2', $data['diplomes'][0]['etablissement_bac_2'] ?? '') }}" required>
+                        @error('diplomes.0.etablissement_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <h3>Diplôme Bac+3</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_type_diplome_bac_3">Type de diplôme</label>
+                        <input type="text" name="diplomes[0][type_diplome_bac_3]" class="form-control" id="diplomes_0_type_diplome_bac_3" value="{{ old('diplomes.0.type_diplome_bac_3', $data['diplomes'][0]['type_diplome_bac_3'] ?? '') }}">
+                        @error('diplomes.0.type_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_annee_diplome_bac_3">Année d'obtention</label>
+                        <input type="text" name="diplomes[0][annee_diplome_bac_3]" class="form-control" id="diplomes_0_annee_diplome_bac_3" value="{{ old('diplomes.0.annee_diplome_bac_3', $data['diplomes'][0]['annee_diplome_bac_3'] ?? '') }}">
+                        @error('diplomes.0.annee_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_filier_diplome_bac_3">Filière</label>
+                        <input type="text" name="diplomes[0][filier_diplome_bac_3]" class="form-control" id="diplomes_0_filier_diplome_bac_3" value="{{ old('diplomes.0.filier_diplome_bac_3', $data['diplomes'][0]['filier_diplome_bac_3'] ?? '') }}">
+                        @error('diplomes.0.filier_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_scan_bac_3">Scan du diplôme (PDF, JPG, PNG)</label>
+                        <input type="file" name="diplomes[0][scan_bac_3]" class="form-control" id="diplomes_0_scan_bac_3" accept=".pdf,.jpg,.jpeg,.png">
+                        @error('diplomes.0.scan_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="diplomes_0_etablissement_bac_3">Établissement</label>
+                        <input type="text" name="diplomes[0][etablissement_bac_3]" class="form-control" id="diplomes_0_etablissement_bac_3" value="{{ old('diplomes.0.etablissement_bac_3', $data['diplomes'][0]['etablissement_bac_3'] ?? '') }}">
+                        @error('diplomes.0.etablissement_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                <div class="mt-3 text-center">
+                    <a href="{{ route('candidat.form', ['step' => $step - 1]) }}" class="btn btn-secondary mr-2">Précédent</a>
+                    <button type="submit" class="btn btn-primary">Suivant</button>
+                </div>
+            @endif
+
+            <!-- Step 4: Stages -->
+            @if ($step == 4)
+                <hr>
+                <h2 class="section-title">Stages</h2>
+                <div id="stages">
+                    @foreach ($data['stages'] ?? [] as $index => $stage)
+                        <div class="stage-form mb-4 p-3 border rounded">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="stages_{{ $index }}_fonction">Fonction</label>
+                                    <input type="text" name="stages[{{ $index }}][fonction]" class="form-control" id="stages_{{ $index }}_fonction" placeholder="Fonction" value="{{ old('stages.' . $index . '.fonction', $stage['fonction'] ?? '') }}">
+                                    @error('stages.' . $index . '.fonction') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="stages_{{ $index }}_periode">Période</label>
+                                    <input type="text" name="stages[{{ $index }}][periode]" class="form-control" id="stages_{{ $index }}_periode" placeholder="Période" value="{{ old('stages.' . $index . '.periode', $stage['periode'] ?? '') }}">
+                                    @error('stages.' . $index . '.periode') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="stages_{{ $index }}_attestation">Attestation</label>
+                                    <input type="file" name="stages[{{ $index }}][attestation]" class="form-control" id="stages_{{ $index }}_attestation" accept=".pdf,.doc,.docx">
+                                    @error('stages.' . $index . '.attestation') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="stages_{{ $index }}_etablissement">Établissement</label>
+                                    <input type="text" name="stages[{{ $index }}][etablissement]" class="form-control" id="stages_{{ $index }}_etablissement" placeholder="Établissement" value="{{ old('stages.' . $index . '.etablissement', $stage['etablissement'] ?? '') }}">
+                                    @error('stages.' . $index . '.etablissement') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="stages_{{ $index }}_secteur_activite">Secteur d'activité</label>
+                                    <input type="text" name="stages[{{ $index }}][secteur_activite]" class="form-control" id="stages_{{ $index }}_secteur_activite" placeholder="Secteur d'activité" value="{{ old('stages.' . $index . '.secteur_activite', $stage['secteur_activite'] ?? '') }}">
+                                    @error('stages.' . $index . '.secteur_activite') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="stages_{{ $index }}_description">Description</label>
+                                    <textarea name="stages[{{ $index }}][description]" class="form-control" id="stages_{{ $index }}_description" placeholder="Description">{{ old('stages.' . $index . '.description', $stage['description'] ?? '') }}</textarea>
+                                    @error('stages.' . $index . '.description') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'stages')">Supprimer</button>
+                        </div>
+                    @endforeach
+                </div>
+                <button type="button" id="add-stage" onclick="addStage()" class="btn btn-secondary mb-3">Ajouter un stage</button>
+                <div class="mt-3 text-center">
+                    <a href="{{ route('candidat.form', ['step' => $step - 1]) }}" class="btn btn-secondary mr-2">Précédent</a>
+                    <button type="submit" class="btn btn-primary">Suivant</button>
+                </div>
+            @endif
+
+            <!-- Step 5: Attestations -->
+            @if ($step == 5)
+                <hr>
+                <h2 class="section-title">Attestations </h2>
+                <div id="attestations">
+                    @foreach ($data['attestations'] ?? [] as $index => $attestation)
+                        <div class="attestation-form mb-4 p-3 border rounded">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="attestations_{{ $index }}_attestation">Attestation</label>
+                                    <input type="file" name="attestations[{{ $index }}][attestation]" class="form-control" id="attestations_{{ $index }}_attestation" accept=".pdf,.doc,.docx">
+                                    @error('attestations.' . $index . '.attestation') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="attestations_{{ $index }}_type_attestation">Type d'attestation</label>
+                                    <input type="text" name="attestations[{{ $index }}][type_attestation]" class="form-control" id="attestations_{{ $index }}_type_attestation" placeholder="Type d'attestation" value="{{ old('attestations.' . $index . '.type_attestation', $attestation['type_attestation'] ?? '') }}">
+                                    @error('attestations.' . $index . '.type_attestation') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="attestations_{{ $index }}_description">Description</label>
+                                    <textarea name="attestations[{{ $index }}][description]" class="form-control" id="attestations_{{ $index }}_description" placeholder="Description">{{ old('attestations.' . $index . '.description', $attestation['description'] ?? '') }}</textarea>
+                                    @error('attestations.' . $index . '.description') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'attestations')">Supprimer</button>
+                        </div>
+                    @endforeach
+                </div>
+                <button type="button" id="add-attestation" onclick="addAttestation()" class="btn btn-secondary mb-3">Ajouter une attestation</button>
+                <div class="mt-3 text-center">
+                    <a href="{{ route('candidat.form', ['step' => $step - 1]) }}" class="btn btn-secondary mr-2">Précédent</a>
+                    <button type="submit" class="btn btn-primary">Suivant</button>
+                </div>
+            @endif
+
+            <!-- Step 6: Expériences -->
+            @if ($step == 6)
+                <hr>
+                <h2 class="section-title">Expériences</h2>
+                <div id="experiences">
+                    @foreach ($data['experiences'] ?? [] as $index => $experience)
+                        <div class="experience-form mb-4 p-3 border rounded">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="experiences_{{ $index }}_fonction">Fonction</label>
+                                    <input type="text" name="experiences[{{ $index }}][fonction]" class="form-control" id="experiences_{{ $index }}_fonction" placeholder="Fonction" value="{{ old('experiences.' . $index . '.fonction', $experience['fonction'] ?? '') }}">
+                                    @error('experiences.' . $index . '.fonction') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="experiences_{{ $index }}_periode">Période</label>
+                                    <input type="text" name="experiences[{{ $index }}][periode]" class="form-control" id="experiences_{{ $index }}_periode" placeholder="Période" value="{{ old('experiences.' . $index . '.periode', $experience['periode'] ?? '') }}">
+                                    @error('experiences.' . $index . '.periode') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="experiences_{{ $index }}_attestation">Attestation</label>
+                                    <input type="file" name="experiences[{{ $index }}][attestation]" class="form-control" id="experiences_{{ $index }}_attestation" accept=".jpg,.jpeg,.png,.pdf">
+                                    @error('experiences.' . $index . '.attestation') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="experiences_{{ $index }}_etablissement">Établissement</label>
+                                    <input type="text" name="experiences[{{ $index }}][etablissement]" class="form-control" id="experiences_{{ $index }}_etablissement" placeholder="Établissement" value="{{ old('experiences.' . $index . '.etablissement', $experience['etablissement'] ?? '') }}">
+                                    @error('experiences.' . $index . '.etablissement') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="experiences_{{ $index }}_secteur_activite">Secteur d'activité</label>
+                                    <input type="text" name="experiences[{{ $index }}][secteur_activite]" class="form-control" id="experiences_{{ $index }}_secteur_activite" placeholder="Secteur d'activité" value="{{ old('experiences.' . $index . '.secteur_activite', $experience['secteur_activite'] ?? '') }}">
+                                    @error('experiences.' . $index . '.secteur_activite') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="experiences_{{ $index }}_description">Description</label>
+                                    <textarea name="experiences[{{ $index }}][description]" class="form-control" id="experiences_{{ $index }}_description" placeholder="Description">{{ old('experiences.' . $index . '.description', $experience['description'] ?? '') }}</textarea>
+                                    @error('experiences.' . $index . '.description') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'experiences')">Supprimer</button>
+                        </div>
+                    @endforeach
+                </div>
+                <button type="button" id="add-experience" onclick="addExperience()" class="btn btn-secondary mb-3">Ajouter une expérience</button>
+                <div class="mt-3 text-center">
+                    <a href="{{ route('candidat.form', ['step' => $step - 1]) }}" class="btn btn-secondary mr-2">Précédent</a>
+                    <button type="submit" class="btn btn-success">Valider</button>
+                </div>
+            @endif
+        </form>
+    </div>
 </div>
 
 <script>
-    let diplomeCount = {{ count($data['diplomes'] ?? [[]]) }};
     let stageCount = {{ count($data['stages'] ?? []) }};
     let attestationCount = {{ count($data['attestations'] ?? []) }};
     let experienceCount = {{ count($data['experiences'] ?? []) }};
 
-    function addDiplome() {
-        if (diplomeCount >= 3) {
-            alert('Vous ne pouvez ajouter que 3 diplômes maximum.');
-            return;
+    // Filtrage dynamique des titres de formation en fonction du type de formation
+    document.getElementById('type_formation').addEventListener('change', function() {
+        const selectedType = this.value;
+        const titreSelect = document.getElementById('titre_id');
+        const options = titreSelect.querySelectorAll('option[data-type]');
+
+        options.forEach(option => {
+            if (option.getAttribute('data-type') === selectedType || option.value === '') {
+                option.style.display = '';
+            } else {
+                option.style.display = 'none';
+            }
+        });
+
+        // Réinitialiser la sélection si l'option actuelle n'est pas compatible
+        const selectedOption = titreSelect.querySelector(`option[value="${titreSelect.value}"]`);
+        if (selectedOption && selectedOption.style.display === 'none') {
+            titreSelect.value = '';
         }
-        const diplomeDiv = document.createElement('div');
-        diplomeDiv.className = 'diplome-form mb-4 p-3 border rounded';
-        diplomeDiv.innerHTML = `
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="type_diplome_bac_2_${diplomeCount}">Type diplôme Bac+2</label>
-                    <input type="text" name="diplomes[${diplomeCount}][type_diplome_bac_2]" class="form-control" id="type_diplome_bac_2_${diplomeCount}" placeholder="Type Diplôme Bac+2" >
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="annee_diplome_bac_2_${diplomeCount}">Année Bac+2</label>
-                    <select name="diplomes[${diplomeCount}][annee_diplome_bac_2]" class="form-control" id="annee_diplome_bac_2_${diplomeCount}" >
-                        <option value="">Veuillez sélectionner</option>
-                        ${[...Array(new Date().getFullYear() - 1999).keys()].map(i => {
-                            const year = new Date().getFullYear() - i;
-                            return `<option value="${(year-1)}/${year}">${(year-1)}/${year}</option>`;
-                        }).join('')}
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="filier_diplome_bac_2_${diplomeCount}">Filière Bac+2</label>
-                    <input type="text" name="diplomes[${diplomeCount}][filier_diplome_bac_2]" class="form-control" id="filier_diplome_bac_2_${diplomeCount}" placeholder="Filière Bac+2" >
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="scan_bac_2_${diplomeCount}">Scan Bac+2</label>
-                    <input type="file" name="diplomes[${diplomeCount}][scan_bac_2]" class="form-control" id="scan_bac_2_${diplomeCount}" accept=".jpg,.jpeg,.png,.pdf" >
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="etablissement_bac_2_${diplomeCount}">Établissement Bac+2</label>
-                    <input type="text" name="diplomes[${diplomeCount}][etablissement_bac_2]" class="form-control" id="etablissement_bac_2_${diplomeCount}" placeholder="Établissement Bac+2" >
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="type_diplome_bac_3_${diplomeCount}">Type Diplôme Bac+3 (optionnel)</label>
-                    <input type="text" name="diplomes[${diplomeCount}][type_diplome_bac_3]" class="form-control" id="type_diplome_bac_3_${diplomeCount}" placeholder="Type Diplôme Bac+3">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="annee_diplome_bac_3_${diplomeCount}">Année Bac+3 (optionnel)</label>
-                    <select name="diplomes[${diplomeCount}][annee_diplome_bac_3]" class="form-control" id="annee_diplome_bac_3_${diplomeCount}">
-                        <option value="">Veuillez sélectionner</option>
-                        ${[...Array(new Date().getFullYear() - 1999).keys()].map(i => {
-                            const year = new Date().getFullYear() - i;
-                            return `<option value="${(year-1)}/${year}">${(year-1)}/${year}</option>`;
-                        }).join('')}
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="filier_diplome_bac_3_${diplomeCount}">Filière Bac+3 (optionnel)</label>
-                    <input type="text" name="diplomes[${diplomeCount}][filier_diplome_bac_3]" class="form-control" id="filier_diplome_bac_3_${diplomeCount}" placeholder="Filière Bac+3">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="scan_bac_3_${diplomeCount}">Scan Bac+3 (optionnel)</label>
-                    <input type="file" name="diplomes[${diplomeCount}][scan_bac_3]" class="form-control" id="scan_bac_3_${diplomeCount}" accept=".jpg,.jpeg,.png,.pdf">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="etablissement_bac_3_${diplomeCount}">Établissement Bac+3 (optionnel)</label>
-                    <input type="text" name="diplomes[${diplomeCount}][etablissement_bac_3]" class="form-control" id="etablissement_bac_3_${diplomeCount}" placeholder="Établissement Bac+3">
-                </div>
-            </div>
-            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'diplomes')">Supprimer</button>
-        `;
-        document.getElementById('diplomes').appendChild(diplomeDiv);
-        diplomeCount++;
-        updateAddButtonState('diplome', diplomeCount);
-    }
+    });
+
+    // Déclencher le filtrage au chargement de la page pour gérer les données pré-remplies
+    window.addEventListener('load', function() {
+        const typeFormation = document.getElementById('type_formation').value;
+        if (typeFormation) {
+            const event = new Event('change');
+            document.getElementById('type_formation').dispatchEvent(event);
+        }
+    });
 
     function addStage() {
         if (stageCount >= 3) {
@@ -523,28 +563,28 @@
         stageDiv.innerHTML = `
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="fonction_stage_${stageCount}">Fonction</label>
-                    <input type="text" name="stages[${stageCount}][fonction]" class="form-control" id="fonction_stage_${stageCount}" placeholder="Fonction">
+                    <label for="stages_${stageCount}_fonction">Fonction</label>
+                    <input type="text" name="stages[${stageCount}][fonction]" class="form-control" id="stages_${stageCount}_fonction" placeholder="Fonction">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="periode_stage_${stageCount}">Période</label>
-                    <input type="text" name="stages[${stageCount}][periode]" class="form-control" id="periode_stage_${stageCount}" placeholder="Période">
+                    <label for="stages_${stageCount}_periode">Période</label>
+                    <input type="text" name="stages[${stageCount}][periode]" class="form-control" id="stages_${stageCount}_periode" placeholder="Période">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="attestation_stage_${stageCount}">Attestation</label>
-                    <input type="file" name="stages[${stageCount}][attestation]" class="form-control" id="attestation_stage_${stageCount}" accept=".pdf,.doc,.docx">
+                    <label for="stages_${stageCount}_attestation">Attestation</label>
+                    <input type="file" name="stages[${stageCount}][attestation]" class="form-control" id="stages_${stageCount}_attestation" accept=".pdf,.doc,.docx">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="etablissement_stage_${stageCount}">Établissement</label>
-                    <input type="text" name="stages[${stageCount}][etablissement]" class="form-control" id="etablissement_stage_${stageCount}" placeholder="Établissement">
+                    <label for="stages_${stageCount}_etablissement">Établissement</label>
+                    <input type="text" name="stages[${stageCount}][etablissement]" class="form-control" id="stages_${stageCount}_etablissement" placeholder="Établissement">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="secteur_activite_stage_${stageCount}">Secteur d'activité</label>
-                    <input type="text" name="stages[${stageCount}][secteur_activite]" class="form-control" id="secteur_activite_stage_${stageCount}" placeholder="Secteur d'activité">
+                    <label for="stages_${stageCount}_secteur_activite">Secteur d'activité</label>
+                    <input type="text" name="stages[${stageCount}][secteur_activite]" class="form-control" id="stages_${stageCount}_secteur_activite" placeholder="Secteur d'activité">
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="description_stage_${stageCount}">Description</label>
-                    <textarea name="stages[${stageCount}][description]" class="form-control" id="description_stage_${stageCount}" placeholder="Description"></textarea>
+                    <label for="stages_${stageCount}_description">Description</label>
+                    <textarea name="stages[${stageCount}][description]" class="form-control" id="stages_${stageCount}_description" placeholder="Description"></textarea>
                 </div>
             </div>
             <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'stages')">Supprimer</button>
@@ -564,16 +604,16 @@
         attestationDiv.innerHTML = `
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="attestation_${attestationCount}">Attestation</label>
-                    <input type="file" name="attestations[${attestationCount}][attestation]" class="form-control" id="attestation_${attestationCount}" accept=".pdf,.doc,.docx">
+                    <label for="attestations_${attestationCount}_attestation">Attestation</label>
+                    <input type="file" name="attestations[${attestationCount}][attestation]" class="form-control" id="attestations_${attestationCount}_attestation" accept=".pdf,.doc,.docx">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="type_attestation_${attestationCount}">Type d'attestation</label>
-                    <input type="text" name="attestations[${attestationCount}][type_attestation]" class="form-control" id="type_attestation_${attestationCount}" placeholder="Type d'attestation">
+                    <label for="attestations_${attestationCount}_type_attestation">Type d'attestation</label>
+                    <input type="text" name="attestations[${attestationCount}][type_attestation]" class="form-control" id="attestations_${attestationCount}_type_attestation" placeholder="Type d'attestation">
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="description_attestation_${attestationCount}">Description</label>
-                    <textarea name="attestations[${attestationCount}][description]" class="form-control" id="description_attestation_${attestationCount}" placeholder="Description"></textarea>
+                    <label for="attestations_${attestationCount}_description">Description</label>
+                    <textarea name="attestations[${attestationCount}][description]" class="form-control" id="attestations_${attestationCount}_description" placeholder="Description"></textarea>
                 </div>
             </div>
             <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'attestations')">Supprimer</button>
@@ -593,28 +633,28 @@
         experienceDiv.innerHTML = `
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="fonction_experience_${experienceCount}">Fonction</label>
-                    <input type="text" name="experiences[${experienceCount}][fonction]" class="form-control" id="fonction_experience_${experienceCount}" placeholder="Fonction">
+                    <label for="experiences_${experienceCount}_fonction">Fonction</label>
+                    <input type="text" name="experiences[${experienceCount}][fonction]" class="form-control" id="experiences_${experienceCount}_fonction" placeholder="Fonction">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="periode_experience_${experienceCount}">Période</label>
-                    <input type="text" name="experiences[${experienceCount}][periode]" class="form-control" id="periode_experience_${experienceCount}" placeholder="Période">
+                    <label for="experiences_${experienceCount}_periode">Période</label>
+                    <input type="text" name="experiences[${experienceCount}][periode]" class="form-control" id="experiences_${experienceCount}_periode" placeholder="Période">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="attestation_experience_${experienceCount}">Attestation</label>
-                    <input type="file" name="experiences[${experienceCount}][attestation]" class="form-control" id="attestation_experience_${experienceCount}" accept=".jpg,.jpeg,.png,.pdf">
+                    <label for="experiences_${experienceCount}_attestation">Attestation</label>
+                    <input type="file" name="experiences[${experienceCount}][attestation]" class="form-control" id="experiences_${experienceCount}_attestation" accept=".jpg,.jpeg,.png,.pdf">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="etablissement_experience_${experienceCount}">Établissement</label>
-                    <input type="text" name="experiences[${experienceCount}][etablissement]" class="form-control" id="etablissement_experience_${experienceCount}" placeholder="Établissement">
+                    <label for="experiences_${experienceCount}_etablissement">Établissement</label>
+                    <input type="text" name="experiences[${experienceCount}][etablissement]" class="form-control" id="experiences_${experienceCount}_etablissement" placeholder="Établissement">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="secteur_activite_experience_${experienceCount}">Secteur d'activité</label>
-                    <input type="text" name="experiences[${experienceCount}][secteur_activite]" class="form-control" id="secteur_activite_experience_${experienceCount}" placeholder="Secteur d'activité">
+                    <label for="experiences_${experienceCount}_secteur_activite">Secteur d'activité</label>
+                    <input type="text" name="experiences[${experienceCount}][secteur_activite]" class="form-control" id="experiences_${experienceCount}_secteur_activite" placeholder="Secteur d'activité">
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="description_experience_${experienceCount}">Description</label>
-                    <textarea name="experiences[${experienceCount}][description]" class="form-control" id="description_experience_${experienceCount}" placeholder="Description"></textarea>
+                    <label for="experiences_${experienceCount}_description">Description</label>
+                    <textarea name="experiences[${experienceCount}][description]" class="form-control" id="experiences_${experienceCount}_description" placeholder="Description"></textarea>
                 </div>
             </div>
             <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this, 'experiences')">Supprimer</button>
@@ -626,8 +666,7 @@
 
     function removeEntry(element, type) {
         element.parentElement.remove();
-        if (type === 'diplomes') diplomeCount--;
-        else if (type === 'stages') stageCount--;
+        if (type === 'stages') stageCount--;
         else if (type === 'attestations') attestationCount--;
         else if (type === 'experiences') experienceCount--;
         updateAddButtonState(type, window[type + 'Count']);
@@ -647,10 +686,10 @@
     }
 
     window.onload = function() {
-        updateAddButtonState('diplome', diplomeCount);
         updateAddButtonState('stage', stageCount);
         updateAddButtonState('attestation', attestationCount);
         updateAddButtonState('experience', experienceCount);
     };
 </script>
+
 @endsection
