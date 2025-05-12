@@ -1,22 +1,22 @@
 @extends('utilisateur.layouts.app')
 
 @section('content')
-<div class="container-fluid py-4" style="background-color: #1a4b8c; ">
-    <div class="row" style="background-color: #1a4b8c; ">
-        <div class="col-12" style="background-color: #1a4b8c; ">
-            <div class="card my-4">
+<div class="container-fluid py-4" >
+    <div class="row" >
+        <div class="col-12" >
+           <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                    <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
+                    <div class="border-radius-lg pt-4 pb-3" style="background-color: #1a4b8c; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                         <h6 class="text-white text-capitalize ps-3">Liste des Candidats</h6>                        
                     </div>
                 </div>
-                
-                <div class="d-flex justify-content-end me-3">
-                    <a href="{{ route('candidats.create') }}" class="btn btn-sm bg-gradient-info">
-                        <i class="material-symbols-rounded me-1">add</i>
-                        Ajouter un Candidat
-                    </a>
-                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="d-flex justify-content-end mx-3 mb-3">
+                        <a href="{{ route('candidats.create') }}" class="btn btn-sm text-white" style="background-color: #1a4b8c;">
+                            <i class="material-symbols-rounded me-1 text-white">add</i>
+                            <span class="text-white">Ajouter un Candidat</span>
+                        </a>
+                    </div>
                 
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive p-3">
