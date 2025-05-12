@@ -6,9 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('dist/assets/img/apple-icon.png') }}">
   <link rel="icon" type="image/png" href="{{ asset('dist/assets/img/logo-fsdm-fes.png') }}">
-  <title>
-    PreInscription FST
-  </title>
+  <title>PreInscription FST</title>
   @livewireStyles
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
   <!-- Fonts and icons -->
@@ -48,6 +46,7 @@
   
   <!-- Core JS Files -->
   @livewireScripts
+  @stack('scripts')
   @include('utilisateur.layouts.script')
 
   <!-- Additional script to initialize form inputs -->

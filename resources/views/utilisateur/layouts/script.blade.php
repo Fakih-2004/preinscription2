@@ -1,9 +1,9 @@
 
 <!-- Existing scripts -->
-<script src="../assets/js/core/popper.min.js"></script>
-<script src="../assets/js/core/bootstrap.min.js"></script>
-<script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-<script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+<script src="dist/assets/js/core/popper.min.js"></script>
+<script src="dist/assets/js/core/bootstrap.min.js"></script>
+<script src="dist/assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="dist/assets/js/plugins/smooth-scrollbar.min.js"></script>
 
 <!-- Add these new script dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -11,7 +11,7 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Material Dashboard JS -->
-<script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+<script src="dist/assets/js/material-dashboard.min.js?v=3.2.0"></script>
 
 <!-- Your custom scripts -->
 <script>
@@ -30,7 +30,7 @@
             $(this).DataTable({
                 language: {
                     search: "",
-                    searchPlaceholder: "Rechercher...",
+                    searchPlaceholder: "Rechercherdist.",
                     paginate: {
                         previous: '<i class="material-icons">chevron_left</i>',
                         next: '<i class="material-icons">chevron_right</i>'
