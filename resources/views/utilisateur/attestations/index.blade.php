@@ -15,7 +15,7 @@
                 
                 <div class="card-body px-0 pb-2">
                     <div class="d-flex justify-content-end mx-3 mb-3">
-                        <a href="{{ route('attestations.create') }}" class="btn btn-sm bg-gradient-info">
+                        <a href="{{ route('attestations.create') }}" class="btn btn-sm text-white" style="background-color: #1a4b8c;">
                             <i class="material-symbols-rounded me-1 text-white">add</i>
                             <span class="text-white">Ajouter une attestation</span>
                         </a>
