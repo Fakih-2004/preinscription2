@@ -202,22 +202,19 @@
                                         @endforeach
                                     </td>
                                     <!-- Actions -->
-                                    <td class="align-middle">
-                                        <a href="{{ route('candidats.edit', $candidat->id) }}" class="text-secondary font-weight-bold text-xs me-2" data-toggle="tooltip" title="Modifier">
-                                            <i class="material-symbols-rounded">edit</i>
-                                        </a>
-                                        <form id="delete-form-{{ $candidat->id }}" action="{{ route('candidats.destroy', $candidat->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="javascript:void(0)" class="text-danger font-weight-bold text-xs" onclick="confirmDelete({{ $candidat->id }})" data-toggle="tooltip" title="Supprimer">
-                                                <i class="material-symbols-rounded">delete</i>
-                                            </a>
-                                        </form>
-                                        <a href="{{ route('candidats.show', $candidat->id) }}" class="text-info font-weight-bold text-xs ms-2" data-toggle="tooltip" title="Détails">
-                                            <i class="material-symbols-rounded">visibility</i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                 <td class="align-middle">
+                                    <div class="d-flex">       
+                                        <form action="{{ route('candidats.destroy', $candidat->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" 
+                                                         class="btn btn-link text-danger font-weight-bold text-xs p-0 border-0 bg-transparent" 
+                                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet candidat ?')">
+                                                         <i class="material-symbols-rounded">delete</i>
+                                                        </button>
+                                                    </form>
+                                    </div>
+                                </td>
                                 @endforeach
                             </tbody>
                         </table>
@@ -228,30 +225,26 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmer la suppression</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Êtes-vous sûr de vouloir supprimer ce candidat ?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn bg-gradient-danger" id="confirmDeleteButton">Supprimer</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 @section('scripts')
+
+ 
+
 <!-- DataTables Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+       
+
+
+    // Add this at the top of your scripts section
+
+
+
+
+
     $(document).ready(function() {
         $('#candidatsTable').DataTable({
             language: {
@@ -270,12 +263,7 @@
         $('.dataTables_filter label').addClass('search-container');
     });
 
-    function confirmDelete(id) {
-        $('#confirmDeleteModal').modal('show');
-        $('#confirmDeleteButton').off('click').on('click', function() {
-            $('#delete-form-'+id).submit();
-        });
-    }
+  
 </script>
 @endsection
 

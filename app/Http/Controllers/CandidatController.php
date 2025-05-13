@@ -77,16 +77,12 @@ class CandidatController extends Controller
     return redirect()->route('diplomes.create')->with('success', 'Candidat ajouté avec succès.');
 }
 
-public function show($id)
-{
-    $candidats = Candidat::all(); 
-    return view('utilisateur.candidats.show', compact('candidats'));
-}
+
 
     public function edit($id)
     {
         $candidat = Candidat::findOrFail($id);
-        return view('utilisateur.candidats.edit', compact('candidat'));
+        return view('candidats.edit', compact('candidat'));
     }
 
     public function update(Request $request, $id)
@@ -134,23 +130,23 @@ public function show($id)
 
     $candidat->update($data);
 
-    return redirect()->route('utilisateur.candidats.index')->with('success', 'Candidat mis à jour avec succès.');
+    return redirect()->route('candidats.index')->with('success', 'Candidat mis à jour avec succès.');
 }
 
     public function destroy($id)
-    {
-        $candidat = Candidat::findOrFail($id);
-
-        Storage::delete([
-            $candidat->cv,
-            $candidat->demande,
-            $candidat->scan_cartid,
-            $candidat->photo,
-            $candidat->scan_bac
-        ]);
-
-        $candidat->delete();
-
-        return redirect()->route('utilisateur.candidats.index');
-    }
+{
+    $candidat = Candidat::findOrFail($id);
+    
+    // Delete related records first if needed
+    $candidat->diplomes()->delete();
+    $candidat->stages()->delete();
+    $candidat->experiences()->delete();
+    $candidat->attestations()->delete();
+    
+    // Then delete the candidat
+    $candidat->delete();
+    
+    return redirect()->route('candidats.index')
+         ->with('success', 'Candidat supprimé avec succès');
+}
 }

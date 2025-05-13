@@ -49,10 +49,15 @@
                                         <a href="{{ route('administrateurs.edit', $administrateur->id) }}" class="text-secondary font-weight-bold text-xs me-2">
                                             <i class="material-symbols-rounded">edit</i>
                                         </a>
-                                        <form id="delete-form-{{ $administrateur->id }}" action="{{ route('administrateurs.destroy', $administrateur->id) }}" method="POST" style="display: inline-block;">
+                                        <form id="delete-form-{{ $administrateur->id }}" 
+                                            action="{{ route('administrateurs.destroy', $administrateur->id) }}" 
+                                            method="POST" 
+                                            style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-link text-danger font-weight-bold text-xs p-0" onclick="confirmDelete({{ $administrateur->id }})">
+                                            <button type="button" 
+                                                    class="btn btn-link text-danger font-weight-bold text-xs p-0" 
+                                                    onclick="confdelete({{ $administrateur->id }}, this)">
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
                                         </form>
@@ -68,7 +73,6 @@
     </div>
 </div>
 
-{{-- DataTables & SweetAlert --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -76,25 +80,36 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // Confirmation suppression
-    function confirmDelete(id) {
-        Swal.fire({
-            title: 'Êtes-vous sûr ?',
-            text: "Cette action est irréversible !",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Oui, supprimer !',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + id).submit();
-            }
-        });
-    }
-
-    // Activation DataTable
+function confdelete(id, button) {
+    Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Cette action est irréversible !",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer !',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = button.closest('form');
+            
+            button.disabled = true;
+            button.innerHTML = '<i class="material-symbols-rounded">hourglass_top</i>';
+            
+            form.submit();
+            
+            setTimeout(() => {
+                if (!form.submitted) {
+                    button.disabled = false;
+                    button.innerHTML = '<i class="material-symbols-rounded">delete</i>';
+                    Swal.fire('Erreur', 'La suppression a échoué', 'error');
+                }
+            }, 3000);
+        }
+    });
+}
+// Activation DataTable
     $(document).ready(function () {
         $('#adminTable').DataTable({
             language: {
