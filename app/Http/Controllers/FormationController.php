@@ -31,7 +31,7 @@ class FormationController extends Controller
        
     
         Formation::create($validated);
-        return redirect()->route('utilisateur.formations.index')->with('success', 'Formation ajoutée avec succès.');
+        return redirect()->route('formations.index')->with('success', 'Formation ajoutée avec succès.');
     }
     
 
@@ -46,7 +46,7 @@ class FormationController extends Controller
     
     $formation = Formation::findOrFail($id);
     $administrateurs = Administrateur::all();
-    return view('utilisateur.formations.edit', compact('formation', 'administrateurs'));
+    return view('formations.edit', compact('formation', 'administrateurs'));
 }
 
 

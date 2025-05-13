@@ -30,6 +30,7 @@ Route::get('/export-candidats/{formationId}', [ExportController::class, 'export'
 
 Route::resource('administrateurs', AdministrateurController::class);
 Route::resource('formations', FormationController::class);
+
 Route::resource('experiences', ExperienceController::class);
 Route::resource('attestations', AttestationController::class);
 Route::resource('stages', StageController::class);

@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Candidat extends Model
 {
@@ -40,4 +41,11 @@ class Candidat extends Model
 {
     return $this->hasManyThrough(Formation::class, Inscription::class, 'candidat_id', 'id', 'id', 'formation_id');
 }
+
+
+
+public function routeNotificationForMail($notification)
+    {
+        return $this->email;
+    }
 }
