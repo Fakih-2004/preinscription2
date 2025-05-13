@@ -320,58 +320,72 @@
                 <h3>Diplôme Bac+2 </h3>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="diplomes_0_type_diplome_bac_2">Type de diplôme</label>
-                        <input type="text" name="diplomes[0][type_diplome_bac_2]" class="form-control" id="diplomes_0_type_diplome_bac_2" value="{{ old('diplomes.0.type_diplome_bac_2', $data['diplomes'][0]['type_diplome_bac_2'] ?? '') }}" required>
-                        @error('diplomes.0.type_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="diplome_bac_2">Type de diplôme</label>
+                        <input type="text" name="type_diplome_bac_2" class="form-control" id="diplome_bac_2" value="{{ old('diplome_bac_2', $data['type_diplome_bac_2'] ?? '') }}" required>
+                        @error('type_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="diplomes_0_annee_diplome_bac_2">Année d'obtention</label>
-                        <input type="text" name="diplomes[0][annee_diplome_bac_2]" class="form-control" id="diplomes_0_annee_diplome_bac_2" value="{{ old('diplomes.0.annee_diplome_bac_2', $data['diplomes'][0]['annee_diplome_bac_2'] ?? '') }}" required>
-                        @error('diplomes.0.annee_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="annee_diplome_bac_2">Année d'obtention</label>
+                       <select name="annee_diplome_bac_2" class="form-control" id="annee_diplome_bac_2" required>
+                            <option value="">Veuillez sélectionner</option>
+                            @for ($i = now()->year; $i >= 2000; $i--)
+                                <option value="{{ ($i-1) . '/' . $i }}" {{ old('annee_diplome_bac_2', $data['annee_diplome_bac_2'] ?? '') == ($i-1) . '/' . $i ? 'selected' : '' }}>
+                                    {{ ($i-1) . '/' . $i }}
+                                </option>
+                            @endfor
+                        </select>                       
+                         @error('annee_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="diplomes_0_filier_diplome_bac_2">Filière</label>
-                        <input type="text" name="diplomes[0][filier_diplome_bac_2]" class="form-control" id="diplomes_0_filier_diplome_bac_2" value="{{ old('diplomes.0.filier_diplome_bac_2', $data['diplomes'][0]['filier_diplome_bac_2'] ?? '') }}" required>
-                        @error('diplomes.0.filier_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="filier_diplome_bac_2">Filière</label>
+                        <input type="text" name="filier_diplome_bac_2" class="form-control" id="filier_diplome_bac_2" value="{{ old('diplome_bac_2', $data['filier_diplome_bac_2'] ?? '') }}" required>
+                        @error('filier_diplome_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="diplomes_0_scan_bac_2">Scan du diplôme (PDF, JPG, PNG)</label>
-                        <input type="file" name="diplomes[0][scan_bac_2]" class="form-control" id="diplomes_0_scan_bac_2" accept=".pdf,.jpg,.jpeg,.png" required>
-                        @error('diplomes.0.scan_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="scan_bac_2">Scan du diplôme </label>
+                        <input type="file" name="scan_bac_2" class="form-control" id="scan_bac_2" accept=".pdf,.jpg,.jpeg,.png" required>
+                        @error('scan_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="diplomes_0_etablissement_bac_2">Établissement</label>
-                        <input type="text" name="diplomes[0][etablissement_bac_2]" class="form-control" id="diplomes_0_etablissement_bac_2" value="{{ old('diplomes.0.etablissement_bac_2', $data['diplomes'][0]['etablissement_bac_2'] ?? '') }}" required>
-                        @error('diplomes.0.etablissement_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="etablissement_bac_2">Établissement</label>
+                        <input type="text" name="etablissement_bac_2" class="form-control" id="etablissement_bac_2" value="{{ old('etablissement_bac_2', $data['etablissement_bac_2'] ?? '') }}" required>
+                        @error('etablissement_bac_2') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <h3>Diplôme Bac+3</h3>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="diplomes_0_type_diplome_bac_3">Type de diplôme</label>
-                        <input type="text" name="diplomes[0][type_diplome_bac_3]" class="form-control" id="diplomes_0_type_diplome_bac_3" value="{{ old('diplomes.0.type_diplome_bac_3', $data['diplomes'][0]['type_diplome_bac_3'] ?? '') }}">
-                        @error('diplomes.0.type_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="type_diplome_bac_3">Type de diplôme</label>
+                        <input type="text" name="[type_diplome_bac_3" class="form-control" id="type_diplome_bac_3" value="{{ old('type_diplome_bac_3', $data['type_diplome_bac_3'] ?? '') }}">
+                        @error('type_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="diplomes_0_annee_diplome_bac_3">Année d'obtention</label>
-                        <input type="text" name="diplomes[0][annee_diplome_bac_3]" class="form-control" id="diplomes_0_annee_diplome_bac_3" value="{{ old('diplomes.0.annee_diplome_bac_3', $data['diplomes'][0]['annee_diplome_bac_3'] ?? '') }}">
-                        @error('diplomes.0.annee_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="annee_diplome_bac_3">Année d'obtention</label>
+                  <select name="annee_diplome_bac_3" class="form-control" id="annee_diplome_bac_3" >
+                            <option value="">Veuillez sélectionner</option>
+                            @for ($i = now()->year; $i >= 2000; $i--)
+                                <option value="{{ ($i-1) . '/' . $i }}" {{ old('annee_diplome_bac_3', $data['annee_diplome_bac_3'] ?? '') == ($i-1) . '/' . $i ? 'selected' : '' }}>
+                                    {{ ($i-1) . '/' . $i }}
+                                </option>
+                            @endfor
+                        </select>
+                        @error('annee_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="diplomes_0_filier_diplome_bac_3">Filière</label>
-                        <input type="text" name="diplomes[0][filier_diplome_bac_3]" class="form-control" id="diplomes_0_filier_diplome_bac_3" value="{{ old('diplomes.0.filier_diplome_bac_3', $data['diplomes'][0]['filier_diplome_bac_3'] ?? '') }}">
-                        @error('diplomes.0.filier_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input type="text" name="filier_diplome_bac_3" class="form-control" id="filier_diplome_bac_3" value="{{ old('.filier_diplome_bac_3', $data['filier_diplome_bac_3'] ?? '') }}">
+                        @error('filier_diplome_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="diplomes_0_scan_bac_3">Scan du diplôme (PDF, JPG, PNG)</label>
-                        <input type="file" name="diplomes[0][scan_bac_3]" class="form-control" id="diplomes_0_scan_bac_3" accept=".pdf,.jpg,.jpeg,.png">
-                        @error('diplomes.0.scan_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="scan_bac_3">Scan du diplôme </label>
+                        <input type="file" name="scan_bac_3" class="form-control" id="scan_bac_3" accept=".pdf,.jpg,.jpeg,.png">
+                        @error('scan_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="diplomes_0_etablissement_bac_3">Établissement</label>
                         <input type="text" name="diplomes[0][etablissement_bac_3]" class="form-control" id="diplomes_0_etablissement_bac_3" value="{{ old('diplomes.0.etablissement_bac_3', $data['diplomes'][0]['etablissement_bac_3'] ?? '') }}">
-                        @error('diplomes.0.etablissement_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('etablissement_bac_3') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <div class="mt-3 text-center">

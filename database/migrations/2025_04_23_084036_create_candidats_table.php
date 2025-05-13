@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('candidats', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique('email');
+            $table->string('email');
             $table->string('nom');
             $table->string('prenom');
             $table->string('nom_ar');
             $table->string('prenom_ar');
-            $table->string('CNE')->unique('CNE');
-            $table->string('CIN')->unique('CIN');
+            $table->string('CNE');
+            $table->string('CIN');
             $table->date('date_naissance');
             $table->string('ville_naissance');
             $table->string('ville_naissance_ar');
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('ville');
             $table->string('pays');            
             $table->text('adresse');
-            $table->string('cv');
+            $table->string('CV');
             $table->string('demande');
             $table->string('scan_cartid');
             $table->string('photo');
