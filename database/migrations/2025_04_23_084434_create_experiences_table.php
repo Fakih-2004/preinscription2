@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('periode');
             $table->string('attestation');
             $table->string('etablissement');
-            $table->string('discription');
+            $table->string('description');
             $table->timestamps();
         });
     }

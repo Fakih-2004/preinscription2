@@ -210,14 +210,15 @@ class CandidatformController extends Controller
                 $formData['attestations'][$index]['attestation'] = $request->file("attestations.$index.attestation")->store('attestations', 'public');
             }
         }
-        } elseif ($step == 6) {
-        $experiences = $formData['experiences'] ?? [];
-        foreach ($experiences as $index => $experience) {
-            if ($request->hasFile("experiences.$index.attestation")) {
-                $formData['experiences'][$index]['attestation'] = $request->file("experiences.$index.attestation")->store('experiences', 'public');
-            }
+       } elseif ($step == 6) {
+    $experiences = $formData['experiences'] ?? [];
+    foreach ($experiences as $index => $experience) {
+        if ($request->hasFile("experiences.$index.attestation")) {
+            $formData['experiences'][$index]['attestation'] = $request->file("experiences.$index.attestation")->store('experiences', 'public');
         }
-        }
+    }
+}
+        
 
         return $formData;
     }
@@ -257,7 +258,7 @@ class CandidatformController extends Controller
             'nationalite' => $formData['nationalite'],
             'sex' => $formData['sex'],
             'telephone_mob' => $formData['telephone_mob'],
-            'telephone_fix' => $formData['telephone_fix'] ?? null,
+            'telephone_fix' => $formData['telephone_fix'] ?? '',
             'adresse' => $formData['adresse'],
             'ville' => $formData['ville'],
             'pays' => $formData['pays'],
@@ -272,35 +273,41 @@ class CandidatformController extends Controller
 
         // Journalisation des données complètes du formulaire
         Log::info('Données complètes du formulaire dans saveCandidat:', $formData);
-
-        // Sauvegarde des diplômes
-        if (!empty($formData['diplomes']) && is_array($formData['diplomes'])) {
-            foreach ($formData['diplomes'] as $diplome) {
-                Log::info('Données du diplôme:', $diplome);
-                if (!empty($diplome['type_diplome_bac_2'])) {
-                    Diplome::create([
-                        'candidat_id' => $candidat->id,
-                        'type_diplome_bac_2' => $diplome['type_diplome_bac_2'],
-                        'annee_diplome_bac_2' => $diplome['annee_diplome_bac_2'],
-                        'filier_diplome_bac_2' => $diplome['filier_diplome_bac_2'],
-                        'scan_bac_2' => $diplome['scan_bac_2'] ?? null,
-                        'etablissement_bac_2' => $diplome['etablissement_bac_2'] ?? '',
-                    ]);
-                }
-                if (!empty($diplome['type_diplome_bac_3'])) {
-                    Diplome::create([
-                        'candidat_id' => $candidat->id,
-                        'type_diplome_bac_3' => $diplome['type_diplome_bac_3'],
-                        'annee_diplome_bac_3' => $diplome['annee_diplome_bac_3'],
-                        'filier_diplome_bac_3' => $diplome['filier_diplome_bac_3'],
-                        'scan_bac_3' => $diplome['scan_bac_3'] ?? null,
-                        'etablissement_bac_3' => $diplome['etablissement_bac_3'] ?? '',
-                    ]);
-                }
+if (!empty($formData['diplomes']) && is_array($formData['diplomes'])) {
+    foreach ($formData['diplomes'] as $index => $diplome) {
+        Log::info('Données du diplôme:', $diplome);
+        try {
+            // Bac+2
+            if (!empty($diplome['type_diplome_bac_2']) || !empty($diplome['annee_diplome_bac_2']) || !empty($diplome['filier_diplome_bac_2'])) {
+                Diplome::create([
+                    'candidat_id' => $candidat->id,
+                    'type_diplome_bac_2' => $diplome['type_diplome_bac_2'] ?? '',
+                    'annee_diplome_bac_2' => $diplome['annee_diplome_bac_2'] ?? null,
+                    'filier_diplome_bac_2' => $diplome['filier_diplome_bac_2'] ?? '',
+                    'scan_bac_2' => $diplome['scan_bac_2'] ?? null,
+                    'etablissement_bac_2' => $diplome['etablissement_bac_2'] ?? '',
+                ]);
+                Log::info("Diplôme Bac+2 créé pour index $index");
             }
-        } else {
-            Log::warning('Aucune donnée de diplômes trouvée dans formData');
+            // Bac+3
+            if (!empty($diplome['type_diplome_bac_3']) || !empty($diplome['annee_diplome_bac_3']) || !empty($diplome['filier_diplome_bac_3'])) {
+                Diplome::create([
+                    'candidat_id' => $candidat->id,
+                    'type_diplome_bac_3' => $diplome['type_diplome_bac_3'] ?? '',
+                    'annee_diplome_bac_3' => $diplome['annee_diplome_bac_3'] ?? null,
+                    'filier_diplome_bac_3' => $diplome['filier_diplome_bac_3'] ?? '',
+                    'scan_bac_3' => $diplome['scan_bac_3'] ?? null,
+                    'etablissement_bac_3' => $diplome['etablissement_bac_3'] ?? '',
+                ]);
+                Log::info("Diplôme Bac+3 créé pour index $index");
+            }
+        } catch (\Exception $e) {
+            Log::error("Erreur lors de la création du diplôme pour index $index: " . $e->getMessage());
         }
+    }
+} else {
+    Log::warning('Aucune donnée de diplômes trouvée dans formData', ['formData' => $formData]);
+}
 
         // Sauvegarde des stages
         if (!empty($formData['stages']) && is_array($formData['stages'])) {
@@ -310,7 +317,7 @@ class CandidatformController extends Controller
                     'candidat_id' => $candidat->id,
                     'fonction' => $stage['fonction'] ?? '',
                     'periode' => $stage['periode'] ?? '',
-                    'attestation' => $stage['attestation'] ?? null,
+                    'attestation' => $stage['attestation'] ??'',
                     'etablissement' => $stage['etablissement'] ?? '',
                     'description' => $stage['description'] ?? '',
                     'secteur_activite' => $stage['secteur_activite'] ?? '',
@@ -328,7 +335,7 @@ class CandidatformController extends Controller
                     'candidat_id' => $candidat->id,
                     'type_attestation' => $attestation['type_attestation'] ?? '',
                     'description' => $attestation['description'] ?? '',
-                    'attestation' => $attestation['attestation'] ?? null,
+                    'attestation' => $attestation['attestation'] ?? '',
                 ]);
             }
         } else {
@@ -346,7 +353,7 @@ class CandidatformController extends Controller
                     'periode' => $experience['periode'] ?? '',
                     'etablissement' => $experience['etablissement'] ?? '',
                     'description' => $experience['description'] ?? '',
-                    'attestation' => $experience['attestation'] ?? null,
+                    'attestation' => $experience['attestation'] ?? '',
                 ]);
             }
         } else {
