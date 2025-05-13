@@ -4,7 +4,7 @@
     <a class="navbar-brand px-4 py-3 m-0" href="#">
       <img src="{{ asset('dist/assets/img/logo-fsdm-fes.png') }}" 
            class="navbar-brand-img" 
-           style="max-height: 40px; width: auto;" 
+           style="max-height: 40px; width: 40PX;" 
            alt="main_logo">
       <span class="ms-2 font-weight-bold">Pré-Inscription</span>
     </a>
