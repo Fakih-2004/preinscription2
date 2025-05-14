@@ -49,6 +49,50 @@
   @stack('scripts')
   @include('utilisateur.layouts.script')
 
+
+
+
+
+
+
+
+
+
+<!-- SweetAlert2 -->
+<script>
+/**
+ * Global delete confirmation
+ * @param {number} id - Item ID
+ * @param {HTMLElement} button - Clicked button
+ * @param {string} [itemName] - Custom item name for confirmation text
+ */
+function confirmDelete(id, button, itemName = 'cet élément') {
+    Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: `Voulez-vous vraiment supprimer ${itemName} ? Cette action est irréversible !`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#1a4b8c',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer !',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = button.closest('form');
+            button.disabled = true;
+            button.innerHTML = '<i class="material-symbols-rounded">hourglass_top</i>';
+            form.submit();
+        }
+    });
+}
+</script>
+
+
+
+
+
+
+
   <!-- Additional script to initialize form inputs -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {

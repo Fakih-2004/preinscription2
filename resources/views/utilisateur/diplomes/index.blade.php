@@ -49,20 +49,20 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $diplome->candidat->nom ?? 'Inconnu' }} {{ $diplome->candidat->prenom ?? '' }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_diplome_bac+2'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_diplome_bac2'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'anne_bac+2'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'anne_bac2'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_bac+2'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_bac2'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etalissement_bac+2'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etalissement_bac2'} }}</p>
                                     </td>
                                     <td>
-                                        @if ($diplome->{'scan_bac+2'})
-                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac+2'}) }}" 
+                                        @if ($diplome->{'scan_bac2'})
+                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac2'}) }}" 
                                            target="_blank" 
                                            class="badge badge-sm text-white" 
                                            style="background-color: #1a4b8c; padding: 4px 8px;">
@@ -73,20 +73,20 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_bac+3'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_bac3'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'annee_bac+3'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'annee_bac3'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_bac+3'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_bac3'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etablissement_bac+3'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etablissement_bac3'} }}</p>
                                     </td>
                                     <td>
-                                        @if ($diplome->{'scan_bac+3'})
-                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac+3'}) }}" 
+                                        @if ($diplome->{'scan_bac3'})
+                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac3'}) }}" 
                                            target="_blank" 
                                            class="badge badge-sm text-white" 
                                            style="background-color: #1a4b8c; padding: 4px 8px;">
@@ -97,13 +97,15 @@
                                         @endif
                                     </td>
                                     <td class="align-center text-end pe-4">
-                                        <a href="{{ route('diplomes.edit', $diplome->id) }}" class="text-secondary font-weight-bold text-xs me-2">
-                                            <i class="material-symbols-rounded">edit</i>
-                                        </a>
-                                        <form id="delete-form-{{ $diplome->id }}" action="{{ route('diplomes.destroy', $diplome->id) }}" method="POST" style="display: inline-block;">
+                                        <form id="delete-form-{{ $diplome->id }}" 
+                                            action="{{ route('diplomes.destroy', $diplome->id) }}" 
+                                            method="POST" 
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-link text-danger font-weight-bold text-xs p-0" onclick="confDelete({{ $diplome->id }})">
+                                            <button type="button" 
+                                                    onclick="confirmDelete({{ $diplome->id }}, this, 'ce diplôme')" 
+                                                    class="btn btn-link text-danger font-weight-bold text-xs p-0">
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
                                         </form>
@@ -130,39 +132,6 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    // Confirmation suppression
-  function confdelete(id, button) {
-    Swal.fire({
-        title: 'Êtes-vous sûr ?',
-        text: "Cette action est irréversible !",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimer !',
-        cancelButtonText: 'Annuler'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const form = button.closest('form');
-            
-            button.disabled = true;
-            button.innerHTML = '<i class="material-symbols-rounded">hourglass_top</i>';
-            
-            form.submit();
-            
-            setTimeout(() => {
-                if (!form.submitted) {
-                    button.disabled = false;
-                    button.innerHTML = '<i class="material-symbols-rounded">delete</i>';
-                    Swal.fire('Erreur', 'La suppression a échoué', 'error');
-                }
-            }, 3000);
-        }
-    });
-}
 
     // Activation DataTable
     $(document).ready(function () {

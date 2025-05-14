@@ -54,10 +54,15 @@
                                         <a href="{{ route('formations.edit', $formation->id) }}" class="text-secondary font-weight-bold text-xs me-2">
                                             <i class="material-symbols-rounded">edit</i>
                                         </a>
-                                        <form id="delete-form-{{ $formation->id }}" action="{{ route('formations.destroy', $formation->id) }}" method="POST" style="display: inline-block;">
+                                        <form id="delete-form-{{ $formation->id }}" 
+                                            action="{{ route('formations.destroy', $formation->id) }}" 
+                                            method="POST" 
+                                            class="d-inline">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-link text-danger font-weight-bold text-xs p-0" onclick="confirmDelete({{ $formation->id }})">
+                                            @method('DELETE')                                            
+                                            <button type="button" 
+                                                onclick="confirmDelete({{ $formation->id }}, this, 'cette formation')" 
+                                                class="btn btn-link text-danger font-weight-bold text-xs p-0" >
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
                                         </form>
@@ -82,23 +87,7 @@
 
 <script>
     // Confirmation suppression
-    function confirmDelete(id) {
-        Swal.fire({
-            title: 'Êtes-vous sûr ?',
-            text: "Cette action est irréversible !",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Oui, supprimer !',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + id).submit();
-            }
-        });
-    }
-
+   
     // Activation DataTable
     $(document).ready(function () {
         $('#formationTable').DataTable({

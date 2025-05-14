@@ -38,7 +38,7 @@ class FormationController extends Controller
     public function show($id)
     {
         $formation = Formation::findOrFail($id);
-        return view('utilisateur.formations.show', compact('formation'));
+        return view('formations.show', compact('formation'));
     }
 
     public function edit($id)
@@ -56,13 +56,15 @@ class FormationController extends Controller
     {
         $formation = Formation::findOrFail($id);
         $formation->update($request->all());
-        return redirect()->route('utilisateur.formations.index');
+        return redirect()->route('formations.index');
     }
 
     public function destroy($id)
     {
         $formation = Formation::findOrFail($id);
         $formation->delete();
-        return redirect()->route('utilisateur.formations.index');
+        return redirect()->route('formations.index')->with('success', 'Formation supprimée avec succès');
+
     }
+    
 }

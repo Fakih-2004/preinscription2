@@ -95,7 +95,7 @@
                                             <p class="text-xs text-secondary mb-0">À: {{ $candidat->ville_naissance }}  {{ $candidat->ville_naissance_ar }}</p>
                                             <p class="text-xs text-secondary mb-0">Nationalité: {{ $candidat->nationalite }}</p>
                                             @if ($candidat->scan_cartid)
-                                            <a href="{{ asset('storage/cin/' . basename($candidat->scan_cartid)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir CIN</a>
+                                            <a href="{{ asset('storage/cart/' . basename($candidat->scan_cartid)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir CIN</a>
                                             @endif
                                         </div>
                                     </td>
@@ -103,8 +103,8 @@
                                     <!-- Documents -->
                                     <td>
                                         <div class="d-flex flex-wrap">
-                                            @if ($candidat->cv)
-                                            <a href="{{ asset('storage/cv/' . basename($candidat->cv)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none; margin-bottom: 10px;  width: 100px; border-radius: 6px;">CV</a>
+                                            @if ($candidat->CV)
+                                            <a href="{{ asset('storage/CV/' . basename($candidat->CV)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none; margin-bottom: 10px;  width: 100px; border-radius: 6px;">CV</a>
                                             @endif
                                             @if ($candidat->demande)
                                             <a href="{{ asset('storage/demande/' . basename($candidat->demande)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Demande</a>
@@ -125,12 +125,12 @@
                                     <!-- Bac+2 -->
                                     <td>
                                         @if ($diplome)
-                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_diplome_bac+2'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_bac+2'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etalissement_bac+2'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'anne_bac+2'} ?? '' }}</p>
-                                        @if ($diplome->{'scan_bac+2'})
-                                        <a href="{{ asset('storage/bac_2/' . basename($diplome->{'scan_bac+2'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
+                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_diplome_bac2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_bac2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etalissement_bac2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'anne_bac2'} ?? '' }}</p>
+                                        @if ($diplome->{'scan_bac2'})
+                                        <a href="{{ asset('storage/bac2/' . basename($diplome->{'scan_bac2'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
                                         @endif
                                         @else
                                         <p class="text-xs text-secondary mb-0">Aucun diplôme</p>
@@ -140,12 +140,12 @@
                                     <!-- Bac+3 -->
                                     <td>
                                         @if ($diplome)
-                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_bac+3'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_bac+3'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etablissement_bac+3'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'annee_bac+3'} ?? '' }}</p>
-                                        @if ($diplome->{'scan_bac+3'})
-                                        <a href="{{ asset('storage/bac+3/' . basename($diplome->{'scan_bac+3'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
+                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_bac3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_bac3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etablissement_bac3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'annee_bac3'} ?? '' }}</p>
+                                        @if ($diplome->{'scan_bac3'})
+                                        <a href="{{ asset('storage/bac3/' . basename($diplome->{'scan_bac3'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
                                         @endif
                                         @else
                                         <p class="text-xs text-secondary mb-0">Aucun diplôme</p>
@@ -159,8 +159,8 @@
                                             <p class="text-xs font-weight-bold mb-0">{{ $stage->fonction }}</p>
                                             <p class="text-xs text-secondary mb-0">{{ $stage->etablissement }}</p>
                                             <p class="text-xs text-secondary mb-0">{{ $stage->periode }}</p>
-                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $stage->discription }}">
-                                                {{ Str::limit($stage->discription, 20) }}
+                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $stage->description }}">
+                                                {{ Str::limit($stage->description, 20) }}
                                             </p>
                                             @if ($stage->attestation)
                                             <a href="{{ asset('storage/stages/' . basename($stage->attestation)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Attestation</a>
@@ -177,8 +177,8 @@
                                             <p class="text-xs font-weight-bold mb-0">{{ $experience->fonction }}</p>
                                             <p class="text-xs text-secondary mb-0">{{ $experience->etablissement }}</p>
                                             <p class="text-xs text-secondary mb-0">{{ $experience->periode }}</p>
-                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $experience->discription }}">
-                                                {{ Str::limit($experience->discription, 20) }}
+                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $experience->description }}">
+                                                {{ Str::limit($experience->description, 20) }}
                                             </p>
                                             @if ($experience->attestation)
                                             <a href="{{ asset('storage/experiences/' . basename($experience->attestation)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Attestation</a>
@@ -192,8 +192,8 @@
                                         @foreach($attestations as $attestation)
                                         <div class="d-inline-block me-2" style="width: 150px; vertical-align: top;">
                                             <p class="text-xs font-weight-bold mb-0">{{ $attestation->type_attestation }}</p>
-                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $attestation->discription }}">
-                                                {{ Str::limit($attestation->discription, 20) }}
+                                            <p class="text-xs text-secondary mb-0 text-truncate" style="max-width: 150px;" title="{{ $attestation->description }}">
+                                                {{ Str::limit($attestation->description, 20) }}
                                             </p>
                                             @if ($attestation->attestation)
                                             <a href="{{ asset('storage/attestations/' . basename($attestation->attestation)) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
@@ -202,18 +202,23 @@
                                         @endforeach
                                     </td>
                                     <!-- Actions -->
-                                 <td class="align-middle">
-                                    <div class="d-flex">       
-                                        <form action="{{ route('candidats.destroy', $candidat->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" 
-                                                         class="btn btn-link text-danger font-weight-bold text-xs p-0 border-0 bg-transparent" 
-                                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet candidat ?')">
-                                                         <i class="material-symbols-rounded">delete</i>
-                                                        </button>
-                                                    </form>
-                                    </div>
+                                 <td class="align-center text-end pe-4">                                    
+                                    <form id="delete-form-{{ $candidat->id }}" 
+                                        action="{{ route('candidats.destroy', $candidat->id) }}" 
+                                        method="POST" 
+                                        class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" 
+                                                onclick="confirmDelete({{ $candidat->id }}, this, {
+                                                    itemName: 'cet candidat',
+                                                    customWarning: 'Tous les éléments associés seront également affectés.'
+                                                })" 
+                                                class="btn btn-link text-danger font-weight-bold text-xs p-0 border-0 bg-transparent"
+                                                title="Supprimer">
+                                            <i class="material-symbols-rounded">delete</i>
+                                        </button>
+                                    </form>
                                 </td>
                                 @endforeach
                             </tbody>
@@ -226,25 +231,14 @@
 </div>
 
 
-
 @section('scripts')
-
- 
-
 <!-- DataTables Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-       
-
-
-    // Add this at the top of your scripts section
-
-
-
-
-
     $(document).ready(function() {
         $('#candidatsTable').DataTable({
             language: {
@@ -255,16 +249,43 @@
                     next: '<i class="material-symbols-rounded">chevron_right</i>'
                 }
             },
-            dom: '<"d-flex justify-content-between"lf>rt<"d-flex justify-content-between"ip>'
+            dom: '<"d-flex justify-content-start"f>t',
+            initComplete: function() {
+                // Style the search bar
+                $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '500px');
+                $('.dataTables_filter label').addClass('me-2');
+            },
+            scrollX: true, // Enable horizontal scrolling for the wide table
+            responsive: true // Enable responsive features
         });
-
-        // Style the search bar
-        $('.dataTables_filter input').addClass('form-control');
-        $('.dataTables_filter label').addClass('search-container');
     });
 
-  
-</script>
-@endsection
+    // Your existing delete confirmation function
+    </script>
 
+<style>
+    /* Add this to your existing styles */
+    .dataTables_wrapper .dataTables_filter {
+        float: none;
+        text-align: left;
+        margin-bottom: 20px;
+        padding: 0 15px;
+    }
+    
+    /* For horizontal scrolling */
+    .dataTables_scrollBody {
+        overflow-x: auto !important;
+    }
+    
+    /* Keep your existing hover effects */
+    .card:hover {
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+    
+    .btn[style*="#1a4b8c"]:hover {
+        background-color: #0d3a73 !important;
+    }
+</style>
+@endsection
 @endsection

@@ -13,6 +13,11 @@
 <!-- Material Dashboard JS -->
 <script src="dist/assets/js/material-dashboard.min.js?v=3.2.0"></script>
 
+
+
+
+
+
 <!-- Your custom scripts -->
 <script>
     // Initialize scrollbar (existing code)

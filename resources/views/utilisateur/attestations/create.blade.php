@@ -48,7 +48,7 @@
 
                         <div class="input-group input-group-outline my-3 is-filled">
                             <label class="form-label">Description</label>
-                            <textarea name="discription" class="form-control" rows="3" required></textarea>
+                            <textarea name="description" class="form-control" rows="3" required></textarea>
                         </div>
 
                         <div class="input-group input-group-outline my-3 is-filled">

@@ -36,10 +36,10 @@ class CandidatController extends Controller
     $baseName = strtoupper($request->CNE) . strtolower(str_replace(' ', '', $request->nom)) . strtolower(str_replace(' ', '', $request->prenom));
     $timestamp = now()->format('YmdHis');
 
-    if ($request->hasFile('cv')) {
-        $cvExtension = $request->file('cv')->getClientOriginalExtension();
-        $cvName = $baseName . '_cv_' . $timestamp . '.' . $cvExtension;
-        $data['cv'] = $request->file('cv')->storeAs('cv', $cvName, 'public');
+    if ($request->hasFile('CV')) {
+        $CVExtension = $request->file('CV')->getClientOriginalExtension();
+        $CVName = $baseName . '_CV_' . $timestamp . '.' . $CVExtension;
+        $data['CV'] = $request->file('CV')->storeAs('CV', $CVName, 'public');
     }
 
     if ($request->hasFile('demande')) {
@@ -93,11 +93,11 @@ class CandidatController extends Controller
     $baseName = strtoupper($candidat->CNE) . strtolower(str_replace(' ', '', $candidat->nom)) . strtolower(str_replace(' ', '', $candidat->prenom));
     $timestamp = now()->format('YmdHis');
 
-    if ($request->hasFile('cv')) {
-        Storage::delete($candidat->cv);
-        $cvExtension = $request->file('cv')->getClientOriginalExtension();
-        $cvName = $baseName . '_cv_' . $timestamp . '.' . $cvExtension;
-        $data['cv'] = $request->file('cv')->storeAs('cv', $cvName, 'public');
+    if ($request->hasFile('CV')) {
+        Storage::delete($candidat->CV);
+        $CVExtension = $request->file('CV')->getClientOriginalExtension();
+        $CVName = $baseName . '_CV_' . $timestamp . '.' . $CVExtension;
+        $data['CV'] = $request->file('CV')->storeAs('CV', $CVName, 'public');
     }
 
     if ($request->hasFile('demande')) {

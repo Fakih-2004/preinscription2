@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('diplomes', function (Blueprint $table) {
             $table->id();
-            $table->string('type_diplome_bac+2');
-            $table->string('anne_bac+2');
-            $table->string('filiere_bac+2');
-            $table->string('scan_bac+2');
-            $table->string('etalissement_bac+2');
-            $table->string('type_bac+3');
-            $table->string('annee_bac+3');
-            $table->string('filiere_bac+3');
-            $table->string('etablissement_bac+3');
-            $table->string('scan_bac+3');
+            $table->string('type_diplome_bac2');
+            $table->string('annee_bac2');
+            $table->string('filiere_bac2');
+            $table->string('scan_bac2');
+            $table->string('etalissement_bac2');
+            $table->string('type_bac3');
+            $table->string('annee_bac3');
+            $table->string('filiere_bac3');
+            $table->string('etablissement_bac3');
+            $table->string('scan_bac3');
             $table->unsignedBigInteger('candidat_id');
             $table->foreign('candidat_id')->references('id')->on('candidats')->onDelete('cascade');
             $table->timestamps();

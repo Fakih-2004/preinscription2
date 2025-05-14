@@ -14,7 +14,7 @@ class StageController extends Controller
         $stages = Stage::with('candidat')->get();
         return view('utilisateur.stages.index', compact('stages'));
     }
-
+ 
     public function create()
     {
         $candidats = Candidat::all();
@@ -30,7 +30,7 @@ class StageController extends Controller
         'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
         'etablissement' => 'required|string',
         'secteur_activite' => 'required|string',
-        'discription' => 'required|string',
+        'description' => 'required|string',
     ]);
 
     $candidat = Candidat::findOrFail($request->candidat_id);
@@ -77,7 +77,7 @@ class StageController extends Controller
             'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             'etablissement' => 'required|string',
             'secteur_activite' => 'required|string',
-            'discription' => 'required|string',
+            'description' => 'required|string',
         ]);
     
         $candidat = Candidat::findOrFail($request->candidat_id);

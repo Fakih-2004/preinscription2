@@ -52,12 +52,16 @@
                                         <form id="delete-form-{{ $administrateur->id }}" 
                                             action="{{ route('administrateurs.destroy', $administrateur->id) }}" 
                                             method="POST" 
-                                            style="display: inline-block;">
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" 
-                                                    class="btn btn-link text-danger font-weight-bold text-xs p-0" 
-                                                    onclick="confdelete({{ $administrateur->id }}, this)">
+                                                    onclick="confirmDelete({{ $administrateur->id }}, this, {
+                                                        itemName: 'cet administrateur',
+                                                        customWarning: 'Tous les éléments associés seront également affectés.'
+                                                    })" 
+                                                    class="btn btn-link text-danger font-weight-bold text-xs p-0 border-0 bg-transparent"
+                                                    title="Supprimer">
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
                                         </form>
@@ -80,36 +84,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-function confdelete(id, button) {
-    Swal.fire({
-        title: 'Êtes-vous sûr ?',
-        text: "Cette action est irréversible !",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimer !',
-        cancelButtonText: 'Annuler'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const form = button.closest('form');
-            
-            button.disabled = true;
-            button.innerHTML = '<i class="material-symbols-rounded">hourglass_top</i>';
-            
-            form.submit();
-            
-            setTimeout(() => {
-                if (!form.submitted) {
-                    button.disabled = false;
-                    button.innerHTML = '<i class="material-symbols-rounded">delete</i>';
-                    Swal.fire('Erreur', 'La suppression a échoué', 'error');
-                }
-            }, 3000);
-        }
-    });
-}
-// Activation DataTable
     $(document).ready(function () {
         $('#adminTable').DataTable({
             language: {
@@ -120,7 +94,7 @@ function confdelete(id, button) {
         });
 
         // Style champ recherche
-        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '300px');
+        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '500px');
         $('.dataTables_filter label').addClass('me-2');
     });
 </script>

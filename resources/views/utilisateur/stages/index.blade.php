@@ -69,19 +69,21 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $stage->secteur_activite }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0 text-truncate" style="max-width: 200px;">{{ $stage->discription }}</p>
+                                        <p class="text-xs font-weight-bold mb-0 text-truncate" style="max-width: 200px;">{{ $stage->description }}</p>
                                     </td>
                                     <td class="align-center text-end pe-4">
-                                        <a href="{{ route('stages.edit', $stage->id) }}" class="text-secondary font-weight-bold text-xs me-2">
-                                            <i class="material-symbols-rounded">edit</i>
-                                        </a>
-                                        <form id="delete-form-{{ $stage->id }}" action="{{ route('stages.destroy', $stage->id) }}" method="POST" style="display: inline-block;">
+                                        <form id="delete-form-{{ $stage->id }}" 
+                                            action="{{ route('stages.destroy', $stage->id) }}" 
+                                            method="POST" 
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-link text-danger font-weight-bold text-xs p-0" onclick="confirmDelete({{ $stage->id }})">
+                                            <button type="button" 
+                                                    onclick="confirmDelete({{ $stage->id }}, this, 'ce stage')" 
+                                                    class="btn btn-link text-danger p-0">
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
-                                        </form>
+                                        </form>                     
                                     </td>
                                 </tr>
                                 @endforeach
@@ -108,23 +110,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // Confirmation suppression
-    function confirmDelete(id) {
-        Swal.fire({
-            title: 'Êtes-vous sûr ?',
-            text: "Cette action est irréversible !",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Oui, supprimer !',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + id).submit();
-            }
-        });
-    }
+  
 
     // Activation DataTable
     $(document).ready(function () {

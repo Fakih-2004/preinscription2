@@ -77,7 +77,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
             $candidat->pays,
 
             // Main Documents
-            $makeLink($candidat->cv, 'Voir CV'),
+            $makeLink($candidat->CV, 'Voir CV'),
             $makeLink($candidat->demande, 'Voir Demande'),
             $makeLink($candidat->scan_cartid, 'Voir CIN'),
             $makeLink($candidat->photo, 'Voir Photo'),
@@ -88,18 +88,18 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
             $makeLink($candidat->scan_bac, ' Bac'),
 
             // Bac+2
-            $candidat->diplomes->pluck('type_diplome_bac+2')->first() ?? '',
-            $candidat->diplomes->pluck('annee_bac+2')->first() ?? '',
-            $candidat->diplomes->pluck('filiere_bac+2')->first() ?? '',
-            $candidat->diplomes->pluck('etalissement_bac+2')->first() ?? '',
-            $makeLink($candidat->diplomes->pluck('scan_bac+2')->first(), 'Bac+2'),
+            $candidat->diplomes->pluck('type_diplome_bac2')->first() ?? '',
+            $candidat->diplomes->pluck('annee_bac2')->first() ?? '',
+            $candidat->diplomes->pluck('filiere_bac2')->first() ?? '',
+            $candidat->diplomes->pluck('etalissement_bac2')->first() ?? '',
+            $makeLink($candidat->diplomes->pluck('scan_bac2')->first(), 'Bac2'),
 
-            // Bac+3
-            $candidat->diplomes->pluck('type_bac+3')->first() ?? '',
-            $candidat->diplomes->pluck('annee_bac+3')->first() ?? '',
-            $candidat->diplomes->pluck('filiere_bac+3')->first() ?? '',
-            $candidat->diplomes->pluck('etablissement_bac+3')->first() ?? '',
-            $makeLink($candidat->diplomes->pluck('scan_bac+3')->first(), 'Bac+3'),
+            // Bac3
+            $candidat->diplomes->pluck('type_bac3')->first() ?? '',
+            $candidat->diplomes->pluck('annee_bac3')->first() ?? '',
+            $candidat->diplomes->pluck('filiere_bac3')->first() ?? '',
+            $candidat->diplomes->pluck('etablissement_bac3')->first() ?? '',
+            $makeLink($candidat->diplomes->pluck('scan_bac3')->first(), 'Bac3'),
 
             // Stages (Internships)
             ...$this->getStageData($candidat->stages),
@@ -124,7 +124,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
             $stageData[] = $stage->attestation 
                 ? '=HYPERLINK("' . $this->baseUrl . $stage->attestation . '", "Stage Attestation")' 
                 : '';
-            $stageData[] = $stage->discription ?? '';
+            $stageData[] = $stage->description ?? '';
         }
         
         return array_pad($stageData, 18, '');
@@ -142,7 +142,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
             $experienceData[] = $experience->attestation 
                 ? '=HYPERLINK("' . $this->baseUrl . $experience->attestation . '", "Work Attestation")' 
                 : '';
-            $experienceData[] = $experience->discription ?? '';
+            $experienceData[] = $experience->description ?? '';
         }
         
         return array_pad($experienceData, 18, '');
@@ -157,7 +157,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
             $attestationData[] = $attestation->attestation 
                 ? '=HYPERLINK("' . $this->baseUrl . $attestation->attestation . '", "Certificate")' 
                 : '';
-            $attestationData[] = $attestation->discription ?? '';
+            $attestationData[] = $attestation->description ?? '';
         }
         
         return array_pad($attestationData, 9, '');
@@ -179,10 +179,10 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
             'Bac Type', 'Bac Year', 'Bac Scan',
 
             // Bac+2 Headers
-            'Type Bac+2', 'Year Bac+2', 'Filière Bac+2', 'Establishment Bac+2', 'Bac+2 Scan',
+            'Type Bac2', 'Year Bac2', 'Filière Bac2', 'Establishment Bac2', 'Bac2 Scan',
 
-            // Bac+3 Headers
-            'Type Bac+3', 'Year Bac+3', 'Filière Bac+3', 'Establishment Bac+3', 'Bac+3 Scan',
+            // Bac3 Headers
+            'Type Bac3', 'Year Bac3', 'Filière Bac3', 'Establishment Bac3', 'Bac3 Scan',
 
             // Stage Headers (3 stages)
             'Stage 1 Function', 'Stage 1 '.$sector, 'Stage 1 Period', 'Stage 1 Establishment', 'Stage 1 Attestation', 'Stage 1 Description',
@@ -204,7 +204,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
     public function styles($sheet)
     {
         // Header styling
-        $sheet->getStyle('A1:CD1')->applyFromArray([
+        $sheet->getStyle('A1:CE1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => Color::COLOR_WHITE],
@@ -221,7 +221,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
         ]);
     
         // Cell borders
-        $sheet->getStyle('A1:CD' . $sheet->getHighestRow())->applyFromArray([
+        $sheet->getStyle('A1:CE' . $sheet->getHighestRow())->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => Border::BORDER_THIN,
@@ -234,7 +234,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
             'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 
             'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ', 'BA', 'BB', 'BC', 'BD', 'BE', 'BF', 
             'BG', 'BH', 'BI', 'BJ', 'BK', 'BL', 'BM', 'BN', 'BO', 'BP', 'BQ', 'BR', 'BS', 'BT', 'BU', 'BV', 'BW', 'BX', 
-            'BY', 'BZ', 'CA', 'CB', 'CC', 'CD'
+            'BY', 'BZ', 'CA', 'CB', 'CC', 'CD', 'CE'
         ];
     
         // Auto-size the columns to fit their content

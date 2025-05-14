@@ -30,7 +30,7 @@ class ExperienceController extends Controller
             'periode' => 'required',
             'attestation' => 'required|file|mimes:pdf,jpg,jpeg,png',
             'etablissement' => 'required|string',
-            'discription' => 'required|string',
+            'description' => 'required|string',
         ]);
         $candidat = Candidat::findOrFail($request->candidat_id);
 

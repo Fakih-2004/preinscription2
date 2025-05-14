@@ -46,7 +46,7 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $attestation->type_attestation }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0 text-truncate" style="max-width: 200px;">{{ $attestation->discription }}</p>
+                                        <p class="text-xs font-weight-bold mb-0 text-truncate" style="max-width: 200px;">{{ $attestation->description }}</p>
                                     </td>
                                     <td>
                                         <a href="{{ asset('storage/' . $attestation->attestation) }}" 
@@ -57,15 +57,15 @@
                                         </a>
                                     </td>
                                     <td class="align-center text-end pe-4">
-                                        <a href="{{ route('attestations.edit', $attestation->id) }}" class="text-secondary font-weight-bold text-xs me-2">
-                                            <i class="material-symbols-rounded">edit</i>
-                                        </a>
-                                        <form id="delete-form-{{ $attestation->id }}" action="{{ route('attestations.destroy', $attestation->id) }}" method="POST" style="display: inline-block;">
+                                        <form id="delete-form-{{ $attestation->id }}" 
+                                            action="{{ route('attestations.destroy', $attestation->id) }}" 
+                                            method="POST" 
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" 
-                                                    class="btn btn-link text-danger font-weight-bold text-xs p-0" 
-                                                    onclick="confdelete({{ $attestation->id }}, this)">
+                                                    onclick="confirmDelete({{ $attestation->id }}, this, 'cette attestation')" 
+                                                    class="btn btn-link text-danger p-0">
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
                                         </form>

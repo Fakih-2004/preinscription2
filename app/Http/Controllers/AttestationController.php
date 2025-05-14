@@ -26,7 +26,7 @@ class AttestationController extends Controller
         $validated = $request->validate([
             'candidat_id' => 'required|exists:candidats,id',
             'attestation' => 'required|file|mimes:pdf,jpg,jpeg,png',
-            'discription' => 'required|string',
+            'description' => 'required|string',
             'type_attestation' => 'required|string',
         ]);
     
@@ -60,7 +60,7 @@ class AttestationController extends Controller
     $request->validate([
         'candidat_id' => 'required|exists:candidats,id',
         'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
-        'discription' => 'required|string',
+        'description' => 'string',
         'type_attestation' => 'required|string',
     ]);
 
@@ -94,7 +94,7 @@ class AttestationController extends Controller
     }
 
     $attestation->candidat_id = $request->candidat_id;
-    $attestation->discription = $request->discription;
+    $attestation->description = $request->description;
     $attestation->type_attestation = $request->type_attestation;
     $attestation->save();
 
