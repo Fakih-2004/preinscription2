@@ -152,3 +152,4 @@ class CandidatController extends Controller
          ->with('success', 'Candidat supprimé avec succès');
 }
 }
+

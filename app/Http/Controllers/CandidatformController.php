@@ -8,6 +8,8 @@ use App\Models\Stage;
 use App\Models\Attestation;
 use App\Models\Experience;
 use App\Models\Diplome;
+use App\Models\Inscription;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -64,9 +66,7 @@ class CandidatformController extends Controller
 
     // Gérer les tableaux et préserver les données existantes
     $formData['diplomes'] = $request->has('diplomes') ? array_map(function ($diplome) {
-        if (isset($diplome['scan_bac_2']) && $diplome['scan_bac_2'] instanceof \Illuminate\Http\UploadedFile) {
-            unset($diplome['scan_bac_2']);
-        }
+      
         if (isset($diplome['scan_bac_3']) && $diplome['scan_bac_3'] instanceof \Illuminate\Http\UploadedFile) {
             unset($diplome['scan_bac_3']);
         }
@@ -79,13 +79,6 @@ class CandidatformController extends Controller
         }
         return $stage;
     }, $request->input('stages', [])) : ($formData['stages'] ?? []);
-
-    $formData['attestations'] = $request->has('attestations') ? array_map(function ($attestation) {
-        if (isset($attestation['attestation']) && $attestation['attestation'] instanceof \Illuminate\Http\UploadedFile) {
-            unset($attestation['attestation']);
-        }
-        return $attestation;
-    }, $request->input('attestations', [])) : ($formData['attestations'] ?? []);
 
     $formData['experiences'] = $request->has('experiences') ? array_map(function ($experience) {
         if (isset($experience['attestation']) && $experience['attestation'] instanceof \Illuminate\Http\UploadedFile) {
@@ -231,6 +224,7 @@ class CandidatformController extends Controller
     } elseif ($step == 2) {
         $filePaths['scan_bac'] = $request->hasFile('scan_bac') ? $request->file('scan_bac')->store('bacs', 'public') : null;
     } elseif ($step == 3) {
+        
         $filePaths['diplomes'] = $request->input('diplomes', []);
         foreach ($filePaths['diplomes'] as $index => $diplome) {
             if ($request->hasFile("diplomes.$index.scan_bac_2")) {
@@ -314,43 +308,59 @@ private function saveCandidat(array $formData)
 
             // Journalisation des données complètes du formulaire
             Log::info('Données complètes du formulaire dans saveCandidat:', $formData);
+            // Ajouter une inscription
+    Inscription::create([
+        'formation_id' => $formData['titre_id'],
+        'candidat_id' => $candidat->id,
+        'annee' => now()->format('Y-m-d'), // Utiliser l'année en cours au format date
+    ]);
 
             // Sauvegarde des diplômes
- 
-if (!empty($formData['diplomes']) && is_array($formData['diplomes'])) {
+ if (!empty($formData['diplomes']) && is_array($formData['diplomes'])) {
+    // دمج الدبلومات في سجل واحد
+    $mergedDiplome = [];
     foreach ($formData['diplomes'] as $diplome) {
-        if (!isset($diplome['type_diplome_bac_2']) || empty(trim($diplome['type_diplome_bac_2'])) ||
-            !isset($diplome['annee_diplome_bac_2']) || empty(trim($diplome['annee_diplome_bac_2'])) ||
-            !isset($diplome['filiere_diplome_bac_2']) || empty(trim($diplome['filiere_diplome_bac_2'])) ||
-            !isset($diplome['etablissement_bac_2']) || empty(trim($diplome['etablissement_bac_2'])) ||
-            !isset($diplome['scan_bac_2']) || empty(trim($diplome['scan_bac_2']))) {
-            continue;
-        }
-
-        Log::info('Données du diplôme:', $diplome);
-        try {
-            Diplome::create([
-                'candidat_id' => $candidat->id,
-                'type_diplome_bac_2' => $diplome['type_diplome_bac_2'],
-                'annee_diplome_bac_2' => $diplome['annee_diplome_bac_2'],
-                'filiere_diplome_bac_2' => $diplome['filiere_diplome_bac_2'],
-                'etablissement_bac_2' => $diplome['etablissement_bac_2'],
-                'scan_bac_2' => $diplome['scan_bac_2'],
-                'type_diplome_bac_3' => $diplome['type_diplome_bac_3'] ?? null,
-                'annee_diplome_bac_3' => $diplome['annee_diplome_bac_3'] ?? null,
-                'filiere_diplome_bac_3' => $diplome['filiere_diplome_bac_3'] ?? null,
-                'etablissement_bac_3' => $diplome['etablissement_bac_3'] ?? null,
-                'scan_bac_3' => $diplome['scan_bac_3'] ?? null,
-            ]);
-        } catch (\Exception $e) {
-            throw $e; 
-        }
+        $mergedDiplome = array_merge($mergedDiplome, array_filter($diplome, fn($value) => !is_null($value) && trim($value) !== ''));
     }
-    Log::info('Diplômes enregistrés');
-} else {
-    Log::warning('Aucune donnée de diplômes trouvée dans formData');
-}
 
+    // التحقق من بيانات Bac+2 الإلزامية
+    if (!isset($mergedDiplome['type_diplome_bac_2']) || empty(trim($mergedDiplome['type_diplome_bac_2'])) ||
+        !isset($mergedDiplome['annee_diplome_bac_2']) || empty(trim($mergedDiplome['annee_diplome_bac_2'])) ||
+        !isset($mergedDiplome['filiere_diplome_bac_2']) || empty(trim($mergedDiplome['filiere_diplome_bac_2'])) ||
+        !isset($mergedDiplome['etablissement_bac_2']) || empty(trim($mergedDiplome['etablissement_bac_2'])) ||
+        !isset($mergedDiplome['scan_bac_2']) || empty(trim($mergedDiplome['scan_bac_2']))) {
+        Log::error('Les informations obligatoires du Bac+2 sont manquantes.', $mergedDiplome);
+        throw new \Exception('Les informations obligatoires du Bac+2 sont incomplètes.');
+    }
+
+    Log::info('Données du diplôme avant enregistrement', $mergedDiplome);
+    try {
+        $diplomeEntry = Diplome::create([
+            'candidat_id' => $candidat->id,
+            'type_diplome_bac_2' => $mergedDiplome['type_diplome_bac_2'],
+            'annee_diplome_bac_2' => $mergedDiplome['annee_diplome_bac_2'],
+            'filiere_diplome_bac_2' => $mergedDiplome['filiere_diplome_bac_2'],
+            'etablissement_bac_2' => $mergedDiplome['etablissement_bac_2'],
+            'scan_bac_2' => $mergedDiplome['scan_bac_2'],
+            'type_diplome_bac_3' => $mergedDiplome['type_diplome_bac_3'] ?? null,
+            'annee_diplome_bac_3' => $mergedDiplome['annee_diplome_bac_3'] ?? null,
+            'filiere_diplome_bac_3' => $mergedDiplome['filiere_diplome_bac_3'] ?? null,
+            'etablissement_bac_3' => $mergedDiplome['etablissement_bac_3'] ?? null,
+            'scan_bac_3' => $mergedDiplome['scan_bac_3'] ?? null,
+        ]);
+        Log::info('Le diplôme a été enregistré avec succès', $diplomeEntry->toArray());
+    } catch (\Exception $e) {
+        Log::error("Erreur lors de l'enregistrement du diplôm", [
+            'diplome' => $mergedDiplome,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+        throw $e;
+    }
+} else {
+    Log::error('Aucune donnée de diplômes trouvée dans formData');
+    throw new \Exception('Aucune donnée de diplômes');
+}
            // Sauvegarde des stages
 if (!empty($formData['stages']) && is_array($formData['stages'])) {
     foreach (array_slice($formData['stages'], 0, 3) as $stage) {
