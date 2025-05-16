@@ -65,9 +65,10 @@
                                             @method('DELETE')
                                             <button type="button" 
                                                     onclick="confirmDelete({{ $attestation->id }}, this, 'cette attestation')" 
-                                                    class="btn btn-link text-danger p-0">
+                                                    class="btn btn-link text-danger font-weight-bold text-xs p-0">
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
+                                            
                                         </form>
                                     </td>
                                 </tr>
@@ -93,54 +94,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-    // Confirmation suppression
-function confdelete(id, button) {
-    Swal.fire({
-        title: 'Êtes-vous sûr ?',
-        text: "Cette action est irréversible !",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimer !',
-        cancelButtonText: 'Annuler'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const form = button.closest('form');
-            
-            button.disabled = true;
-            button.innerHTML = '<i class="material-symbols-rounded">hourglass_top</i>';
-            
-            form.submit();
-            
-            setTimeout(() => {
-                if (!form.submitted) {
-                    button.disabled = false;
-                    button.innerHTML = '<i class="material-symbols-rounded">delete</i>';
-                    Swal.fire('Erreur', 'La suppression a échoué', 'error');
-                }
-            }, 3000);
-        }
-    });
-}
 
-
-    // Activation DataTable
-    $(document).ready(function () {
-        $('#attestationTable').DataTable({
-            language: {
-                search: "",
-                searchPlaceholder: "Rechercher une attestation..."
-            },
-            dom: '<"d-flex justify-content-start"f>t',
-        });
-
-        // Style champ recherche
-        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '300px');
-        $('.dataTables_filter label').addClass('me-2');
-    });
-</script>
 
 <style>
     /* Style for the "Voir" button hover */

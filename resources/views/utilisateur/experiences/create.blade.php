@@ -45,14 +45,14 @@
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Période</label>
-                                    <input type="date" name="periode" class="form-control" required>
+                                    <input type="text" name="periode" class="form-control" placeholder="ex:3 Ans" required>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Établissement</label>
-                                    <input type="text" name="etablissement" class="form-control" required>
+                                    <input type="text" name="etablissement" class="form-control" placeholder="FST" required>
                                 </div>
                             </div>
                         </div>

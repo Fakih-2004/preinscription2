@@ -20,7 +20,7 @@
                 
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive p-3">
-                        <table id="candidatsTable" class="table align-items-center mb-0">
+                        <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-items-center">Photo & Info</th>
@@ -202,25 +202,22 @@
                                         @endforeach
                                     </td>
                                     <!-- Actions -->
-                                 <td class="align-center text-end pe-4">                                    
-                                    <form id="delete-form-{{ $candidat->id }}" 
-                                        action="{{ route('candidats.destroy', $candidat->id) }}" 
-                                        method="POST" 
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" 
-                                                onclick="confirmDelete({{ $candidat->id }}, this, {
-                                                    itemName: 'cet candidat',
-                                                    customWarning: 'Tous les éléments associés seront également affectés.'
-                                                })" 
-                                                class="btn btn-link text-danger font-weight-bold text-xs p-0 border-0 bg-transparent"
-                                                title="Supprimer">
-                                            <i class="material-symbols-rounded">delete</i>
-                                        </button>
-                                    </form>
-                                </td>
-                                @endforeach
+                                 <td class="align-center text-end pe-4">
+                                       <form id="delete-form-{{ $candidat->id }}" 
+                                            action="{{ route('candidats.destroy', $candidat->id) }}" 
+                                            method="POST" 
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" 
+                                                    onclick="confirmDelete({{ $candidat->id }}, this, 'cette Candidat')" 
+                                                    class="btn btn-link text-danger p-0">
+                                                <i class="material-symbols-rounded">delete</i>
+                                            </button>
+                                        </form>
+                                    </td>
+                            </tr>
+                            @endforeach                                
                             </tbody>
                         </table>
                     </div>
@@ -238,44 +235,8 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-    $(document).ready(function() {
-        $('#candidatsTable').DataTable({
-            language: {
-                search: "",
-                searchPlaceholder: "Rechercher un candidat...",
-                paginate: {
-                    previous: '<i class="material-symbols-rounded">chevron_left</i>',
-                    next: '<i class="material-symbols-rounded">chevron_right</i>'
-                }
-            },
-            dom: '<"d-flex justify-content-start"f>t',
-            initComplete: function() {
-                // Style the search bar
-                $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '500px');
-                $('.dataTables_filter label').addClass('me-2');
-            },
-            scrollX: true, // Enable horizontal scrolling for the wide table
-            responsive: true // Enable responsive features
-        });
-    });
-
-    // Your existing delete confirmation function
-    </script>
-
 <style>
     /* Add this to your existing styles */
-    .dataTables_wrapper .dataTables_filter {
-        float: none;
-        text-align: left;
-        margin-bottom: 20px;
-        padding: 0 15px;
-    }
-    
-    /* For horizontal scrolling */
-    .dataTables_scrollBody {
-        overflow-x: auto !important;
-    }
     
     /* Keep your existing hover effects */
     .card:hover {

@@ -133,22 +133,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
 
-    // Activation DataTable
-    $(document).ready(function () {
-        $('#diplomeTable').DataTable({
-            language: {
-                search: "",
-                searchPlaceholder: "Rechercher un diplôme..."
-            },
-            scrollX: true,
-            dom: '<"d-flex justify-content-start"f>t',
-        });
-
-        // Style champ recherche
-        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '300px');
-        $('.dataTables_filter label').addClass('me-2');
-    });
-</script>
 
 <style>
     /* Button hover effect */

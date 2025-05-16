@@ -44,24 +44,20 @@
                                     </td>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">{{ $administrateur->email }}</p>
-                                    </td>
+                                    </td>                                    
                                     <td class="align-center text-end pe-4">
                                         <a href="{{ route('administrateurs.edit', $administrateur->id) }}" class="text-secondary font-weight-bold text-xs me-2">
                                             <i class="material-symbols-rounded">edit</i>
                                         </a>
-                                        <form id="delete-form-{{ $administrateur->id }}" 
+                                       <form id="delete-form-{{ $administrateur->id }}" 
                                             action="{{ route('administrateurs.destroy', $administrateur->id) }}" 
                                             method="POST" 
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" 
-                                                    onclick="confirmDelete({{ $administrateur->id }}, this, {
-                                                        itemName: 'cet administrateur',
-                                                        customWarning: 'Tous les éléments associés seront également affectés.'
-                                                    })" 
-                                                    class="btn btn-link text-danger font-weight-bold text-xs p-0 border-0 bg-transparent"
-                                                    title="Supprimer">
+                                                    onclick="confirmDelete({{ $administrateur->id }}, this, 'cette administrateur')" 
+                                                    class="btn btn-link text-danger p-0">
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
                                         </form>

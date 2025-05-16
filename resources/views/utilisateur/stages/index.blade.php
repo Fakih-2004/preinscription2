@@ -52,7 +52,7 @@
                                     </td>
                                     <td>
                                         @if ($stage->attestation)
-                                        <a href="{{ asset(str_replace('public/', 'storage/', $stage->attestation)) }}" 
+                                        <a href="{{ asset('storage/' . $stage->attestation) }}" 
                                            target="_blank" 
                                            class="badge badge-sm text-white" 
                                            style="background-color: #1a4b8c; padding: 4px 8px;">
@@ -61,7 +61,7 @@
                                         @else
                                         <p class="text-xs text-secondary mb-0">Aucune</p>
                                         @endif
-                                    </td>
+                                    </td>                                
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">{{ $stage->etablissement }}</p>
                                     </td>
