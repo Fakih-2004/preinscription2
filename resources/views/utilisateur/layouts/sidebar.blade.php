@@ -1,14 +1,19 @@
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2 bg-white my-2" id="sidenav-main">
-  <div class="sidenav-header">
+
+<aside id="sidenav-main" class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2 bg-white my-2">
+   <div class="sidenav-header text-center py-4 d-flex flex-column align-items-center justify-content-center">
     <i class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-    <a class="navbar-brand px-4 py-3 m-0" href="#">
+    
+    <div class="d-flex flex-column align-items-center">
       <img src="{{ asset('dist/assets/img/logo-fsdm-fes.png') }}" 
-           class="navbar-brand-img" 
-           style="max-height: 40px; width: 40PX;" 
+           class="navbar-brand-img mb-2" 
+           style="max-height: 40px; " 
            alt="main_logo">
-      <span class="ms-2 font-weight-bold">Pré-Inscription</span>
-    </a>
+    <span class="font-weight-bold" style="color: red;">
+        <span style="color: green; font-size: 1em; font-weight: bold;">FST FES</span> Pré-Inscription
+    </span>
+    </div>
   </div>
+
   <hr class="horizontal dark mt-0 mb-2">
   <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">

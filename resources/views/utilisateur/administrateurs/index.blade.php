@@ -18,9 +18,11 @@
                             <span>Ajouter un administrateur</span>
                         </a>
                     </div>
-                    
+                    @php
+                        $placeholder = 'Rechercher un Administrateur...';
+                    @endphp
                     <div class="table-responsive p-3">
-                        <table id="adminTable" class="table align-items-center mb-0">
+                        <table id="searshTable" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">ID</th>
@@ -78,22 +80,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#adminTable').DataTable({
-            language: {
-                search: "",
-                searchPlaceholder: "Rechercher un administrateur..."
-            },
-            dom: '<"d-flex justify-content-start"f>t',
-        });
-
-        // Style champ recherche
-        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '500px');
-        $('.dataTables_filter label').addClass('me-2');
-    });
-</script>
 
 <style>
     /* Hover effect for admin cards */

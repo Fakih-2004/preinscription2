@@ -30,57 +30,93 @@
     }
 
     // Initialize DataTables with Material Dashboard styling
-    $(document).ready(function() {
-        $('.datatable').each(function() {
-            $(this).DataTable({
-                language: {
-                    search: "",
-                    searchPlaceholder: "Rechercherdist.",
-                    paginate: {
-                        previous: '<i class="material-icons">chevron_left</i>',
-                        next: '<i class="material-icons">chevron_right</i>'
-                    },
-                    info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées"
-                },
-                dom: '<"row"<"col-sm-12 col-md-6"lf><"col-sm-12 col-md-6"p>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-                initComplete: function() {
-                    // Style the search input
-                    $('.dataTables_filter input').addClass('form-control');
-                    $('.dataTables_filter label').contents().filter(function() {
-                        return this.nodeType === 3;
-                    }).remove();
-                }
-            });
-        });
-    });
-
-    // Global delete confirmation with SweetAlert
-    window.confirmDelete = function(formId, itemName = 'cet élément') {
-        Swal.fire({
-            title: 'Êtes-vous sûr?',
-            text: "Vous êtes sur le point de supprimer " + itemName + ". Cette action est irréversible!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Oui, supprimer!',
-            cancelButtonText: 'Annuler',
-            buttonsStyling: false,
-            customClass: {
-                confirmButton: 'btn bg-gradient-danger me-2',
-                cancelButton: 'btn bg-gradient-secondary'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById(formId).submit();
-            }
-        });
-    };
-
-    // Github buttons (existing)
+   // Global delete confirmation with SweetAlert
+   // Github buttons (existing)
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof GithubButtons !== 'undefined') {
             GithubButtons.init();
         }
     });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        $('#searshTable').DataTable({
+            language: {
+                search: "",
+                searchPlaceholder: "{{ $placeholder ?? 'Rechercher...' }}"
+            },
+            dom: '<"d-flex justify-content-start align-items-center mb-3"f>t',
+        });
+
+        // Style and behavior for search input
+        const $searchInput = $('.dataTables_filter input');
+        
+        $searchInput
+            .addClass('form-control ps-3 shadow-sm custom-search')
+            .css({
+                'width': '400px',
+                'border-radius': '12px',
+                'transition': 'all 0.3s ease'
+            });
+
+        $('.dataTables_filter label').contents().filter(function() {
+            return this.nodeType === 3;
+        }).remove();
+    });
+</script>
+
+<style> 
+    
+    .custom-search:focus {
+        border-color: #0d3a73 !important;
+        box-shadow: 0 0 5px rgba(13, 58, 115, 0.4);
+    }
+</style>
+
+<script>
+/**
+ * Global delete confirmation
+ * @param {number} id - Item ID
+ * @param {HTMLElement} button - Clicked button
+ * @param {string} [itemName] - Custom item name for confirmation text
+ */
+function confirmDelete(id, button, itemName = 'cet élément') {
+    Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: `Voulez-vous vraiment supprimer ${itemName} ? Cette action est irréversible !`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor:'#d33', 
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Oui, supprimer !',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = button.closest('form');
+            button.disabled = true;
+            button.innerHTML = '<i class="material-symbols-rounded">hourglass_top</i>';
+            form.submit();
+        }
+    });
+}
+</script>
+<script>
+document.getElementById('toggleSidebarBtn').addEventListener('click', function() {
+  const sidebar = document.getElementById('sidenav-main');
+  sidebar.classList.toggle('d-none'); // Hide/show sidebar
+  
+  // Toggle content width
+  document.getElementById('main-content').classList.toggle('content-full-width');
+});
+</script>
+
+
+<script>
+    
+</script>
+
+

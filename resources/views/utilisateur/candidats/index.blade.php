@@ -17,10 +17,13 @@
                             <span class="text-white">Ajouter un Candidat</span>
                         </a>
                     </div>
+                    @php
+                        $placeholder = 'Rechercher un candidat...';
+                    @endphp
                 
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive p-3">
-                        <table class="table align-items-center mb-0">
+                        <table id="searshTable" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-items-center">Photo & Info</th>
@@ -228,17 +231,8 @@
 </div>
 
 
-@section('scripts')
-<!-- DataTables Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <style>
-    /* Add this to your existing styles */
-    
-    /* Keep your existing hover effects */
+   
     .card:hover {
         transform: translateY(-2px);
         transition: all 0.3s ease;
@@ -248,5 +242,4 @@
         background-color: #0d3a73 !important;
     }
 </style>
-@endsection
 @endsection

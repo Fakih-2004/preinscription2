@@ -19,9 +19,12 @@
                             <span>Ajouter un diplôme</span>
                         </a>
                     </div>
+                    @php
+                        $placeholder = 'Rechercher un   diplôme...';
+                    @endphp
                     
                     <div class="table-responsive p-3">
-                        <table id="diplomeTable" class="table align-items-center mb-0">
+                        <table id="searshTable" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">ID</th>
@@ -127,10 +130,6 @@
     </div>
 </div>
 
-{{-- DataTables & SweetAlert --}}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
 
 

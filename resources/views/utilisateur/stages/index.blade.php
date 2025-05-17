@@ -19,9 +19,12 @@
                             <span>Ajouter un stage</span>
                         </a>
                     </div>
+                    @php
+                        $placeholder = 'Rechercher un Stage...';
+                    @endphp
                     
                     <div class="table-responsive p-3">
-                        <table id="stageTable" class="table align-items-center mb-0">
+                        <table id="searshTable" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">ID</th>
@@ -101,32 +104,6 @@
         </div>
     </div>
 </div>
-
-{{-- DataTables & SweetAlert --}}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-  
-
-    // Activation DataTable
-    $(document).ready(function () {
-        $('#stageTable').DataTable({
-            language: {
-                search: "",
-                searchPlaceholder: "Rechercher un stage..."
-            },
-            dom: '<"d-flex justify-content-start"f>t',
-        });
-
-        // Style champ recherche
-        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '300px');
-        $('.dataTables_filter label').addClass('me-2');
-    });
-</script>
 
 <style>
     /* Button hover effect */

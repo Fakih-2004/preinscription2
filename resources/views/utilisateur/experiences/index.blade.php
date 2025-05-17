@@ -16,12 +16,15 @@
                     <div class="d-flex justify-content-end mx-3 mb-3">
                         <a href="{{ route('experiences.create') }}" class="btn btn-sm text-white" style="background-color: #1a4b8c;">
                             <i class="material-symbols-rounded me-1">add</i>
-                            <span>Ajouter une expérience</span>
+                            <span>Ajouter une Expérience</span>
                         </a>
                     </div>
+                    @php
+                        $placeholder = 'Rechercher un Expérience...';
+                    @endphp
                     
                     <div class="table-responsive p-3">
-                        <table id="experienceTable" class="table align-items-center mb-0">
+                        <table id="searshTable" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">ID</th>
@@ -102,31 +105,6 @@
     </div>
 </div>
 
-{{-- DataTables & SweetAlert --}}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-   
-
-    // Activation DataTable
-    $(document).ready(function () {
-        $('#experienceTable').DataTable({
-            language: {
-                search: "",
-                searchPlaceholder: "Rechercher une expérience..."
-            },
-            dom: '<"d-flex justify-content-start"f>t',
-        });
-
-        // Style champ recherche
-        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '300px');
-        $('.dataTables_filter label').addClass('me-2');
-    });
-</script>
 
 <style>
     /* Button hover effect */
