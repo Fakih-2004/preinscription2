@@ -104,22 +104,4 @@
         </div>
     </div>
 </div>
-
-<style>
-    /* Button hover effect */
-    .btn[style*="#1a4b8c"]:hover {
-        background-color: #0d3a73 !important;
-    }
-    
-    /* View button hover */
-    a.badge[style*="#1a4b8c"]:hover {
-        background-color: #0d3a73 !important;
-        text-decoration: none;
-    }
-    
-    /* Table row hover effect */
-    .table-hover tbody tr:hover {
-        background-color: rgba(26, 75, 140, 0.05);
-    }
-</style>
 @endsection

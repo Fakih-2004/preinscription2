@@ -16,21 +16,16 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link id="pagestyle" href="{{ asset('dist/assets/css/material-dashboard.css?v=3.2.0') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('dist/assets/css/plus-style.css') }}">
 
   <style>
-    body {
-      background-color: #f1f2f6;
-      font-family: 'Inter', sans-serif;
-    }
+    
 
-    #layout-wrapper {
-      display: flex;
-      min-height: 100vh;
-    }
+   
 
-    #sidenav-main {
+    #sidenav-main,#nsidenav-main {
       width: 250px;
-      transition: all 0.3s ease;
+      transition: all 0.5s ease;
       padding-top: 1rem;
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
       border-radius: 0 10px 10px 0;
@@ -57,7 +52,7 @@
 
     .nav-link:hover {
       background-color: #0d3a73;
-      color: white !important;
+      color: green !important;
     }
 
     .navbar,
@@ -71,7 +66,7 @@
 
     /* Responsive Sidebar */
     @media (max-width: 900px) {
-      #sidenav-main {
+      #sidenav-main,#nsidenav-main {
         position: fixed;
         left: -250px;
         z-index: 1031;
@@ -104,9 +99,9 @@
 <body class="bg-gray-100">
   <div class="d-flex">
     <!-- Sidebar -->
-    <aside id="sidenav-main" class="sidenav bg-white" style="width: 230px ;min-height: 100vh;" >
+    <div id="nsidenav-main" class="nsidenav " style="width: 240px ;min-height: 100vh;" >
       @include('utilisateur.layouts.sidebar')
-    </aside>
+    </div>
 
     <!-- Main Content -->
     <main id="main-content" class="flex-grow-1">
@@ -122,32 +117,6 @@
   @stack('scripts')
   @include('utilisateur.layouts.script')
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const toggleBtn = document.getElementById('toggleSidebarBtn');
-      const sidebar = document.getElementById('sidenav-main');
-      const overlay = document.querySelector('.sidebar-overlay');
-
-      if (window.innerWidth <= 900) {
-        sidebar.classList.remove('sidebar-visible');
-      }
-
-      function toggleSidebar() {
-        sidebar.classList.toggle('sidebar-visible');
-        overlay.style.display = sidebar.classList.contains('sidebar-visible') ? 'block' : 'none';
-      }
-
-      toggleBtn?.addEventListener('click', toggleSidebar);
-      overlay?.addEventListener('click', toggleSidebar);
-
-      window.addEventListener('resize', function () {
-        if (window.innerWidth > 900) {
-          sidebar.classList.add('sidebar-visible');
-          overlay.style.display = 'none';
-        }
-      });
-    });
-  </script>
 </body>
 
 </html>

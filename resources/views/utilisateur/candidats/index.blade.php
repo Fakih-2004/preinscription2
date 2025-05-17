@@ -229,17 +229,4 @@
         </div>
     </div>
 </div>
-
-
-<style>
-   
-    .card:hover {
-        transform: translateY(-2px);
-        transition: all 0.3s ease;
-    }
-    
-    .btn[style*="#1a4b8c"]:hover {
-        background-color: #0d3a73 !important;
-    }
-</style>
 @endsection

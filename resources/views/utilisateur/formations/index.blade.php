@@ -77,42 +77,4 @@
         </div>
     </div>
 </div>
-
-{{-- DataTables & SweetAlert --}}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    // Confirmation suppression
-   
-    // Activation DataTable
-    $(document).ready(function () {
-        $('#formationTable').DataTable({
-            language: {
-                search: "",
-                searchPlaceholder: "Rechercher une formation..."
-            },
-            dom: '<"d-flex justify-content-start"f>t',
-        });
-
-        // Style champ recherche
-        $('.dataTables_filter input').addClass('form-control border ps-3').css('width', '300px');
-        $('.dataTables_filter label').addClass('me-2');
-    });
-</script>
-
-<style>
-    /* Button hover effect */
-    .btn[style*="#1a4b8c"]:hover {
-        background-color: #0d3a73 !important;
-    }
-    
-    /* Table row hover effect */
-    .table-hover tbody tr:hover {
-        background-color: rgba(26, 75, 140, 0.05);
-    }
-</style>
 @endsection

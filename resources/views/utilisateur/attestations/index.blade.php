@@ -89,14 +89,4 @@
         </div>
     </div>
 </div>
-
-
-
-<style>
-    /* Style for the "Voir" button hover */
-    a.badge[style*="#1a4b8c"]:hover {
-        background-color: #0d3a73 !important;
-        text-decoration: none;
-    }
-</style>
 @endsection

@@ -129,25 +129,4 @@
         </div>
     </div>
 </div>
-
-
-
-
-<style>
-    /* Button hover effect */
-    .btn[style*="#1a4b8c"]:hover {
-        background-color: #0d3a73 !important;
-    }
-    
-    /* View button hover */
-    a.badge[style*="#1a4b8c"]:hover {
-        background-color: #0d3a73 !important;
-        text-decoration: none;
-    }
-    
-    /* Horizontal scrolling for wide tables */
-    .table-responsive {
-        overflow-x: auto;
-    }
-</style>
 @endsection

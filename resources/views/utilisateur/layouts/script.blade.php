@@ -38,6 +38,7 @@
         }
     });
 </script>
+{{-- for the searsh  --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -52,7 +53,6 @@
             dom: '<"d-flex justify-content-start align-items-center mb-3"f>t',
         });
 
-        // Style and behavior for search input
         const $searchInput = $('.dataTables_filter input');
         
         $searchInput
@@ -69,13 +69,6 @@
     });
 </script>
 
-<style> 
-    
-    .custom-search:focus {
-        border-color: #0d3a73 !important;
-        box-shadow: 0 0 5px rgba(13, 58, 115, 0.4);
-    }
-</style>
 
 <script>
 /**
@@ -107,16 +100,40 @@ function confirmDelete(id, button, itemName = 'cet élément') {
 <script>
 document.getElementById('toggleSidebarBtn').addEventListener('click', function() {
   const sidebar = document.getElementById('sidenav-main');
+  const sidebar2 = document.getElementById('nsidenav-main');
   sidebar.classList.toggle('d-none'); // Hide/show sidebar
+    sidebar2.classList.toggle('d-none'); // Hide/show sidebar
+
   
   // Toggle content width
   document.getElementById('main-content').classList.toggle('content-full-width');
 });
 </script>
+{{-- for the menu  --}}
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggleBtn = document.getElementById('toggleSidebarBtn');
+      const sidebar = document.getElementById('sidenav-main');
+      const overlay = document.querySelector('.sidebar-overlay');
 
-<script>
-    
-</script>
+      if (window.innerWidth <= 900) {
+        sidebar.classList.remove('sidebar-visible');
+      }
 
+      function toggleSidebar() {
+        sidebar.classList.toggle('sidebar-visible');
+        overlay.style.display = sidebar.classList.contains('sidebar-visible') ? 'block' : 'none';
+      }
 
+      toggleBtn?.addEventListener('click', toggleSidebar);
+      overlay?.addEventListener('click', toggleSidebar);
+
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 900) {
+          sidebar.classList.add('sidebar-visible');
+          overlay.style.display = 'none';
+        }
+      });
+    });
+  </script>
