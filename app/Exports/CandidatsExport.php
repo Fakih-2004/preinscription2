@@ -44,11 +44,12 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
     public function map($candidat): array
     {
         $makeLink = function ($path, $displayText) {
-            if (is_string($path) && trim($path) !== '' && $path !== '0') {
-                return '=HYPERLINK("' . $this->baseUrl . $path . '", "' . $displayText . '")';
-            }
-            return '';
-        };
+    // Fix: Modified condition to check if path exists and create a proper hyperlink
+    if (!empty($path) && $path !== '0') {
+        return '=HYPERLINK("' . $this->baseUrl . $path . '", "' . $displayText . '")';
+    }
+    return ''; // Return empty string if no document
+};
         
         
 

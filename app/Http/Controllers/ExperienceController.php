@@ -53,4 +53,10 @@ class ExperienceController extends Controller
         Experience::create($validated);
         return redirect()->route('experiences.index')->with('success', 'Expérience ajoutée avec succès.');
     }
+    public function destroy($id)
+    {
+        $experience = Experience::findOrFail($id);
+        $experience->delete();
+        return redirect()->route('experiences.index')->with('success', 'experience supprimée avec succès.');
+    }
 }

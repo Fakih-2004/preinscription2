@@ -42,21 +42,4 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .card.shadow-sm {
-            transition: transform 0.2s ease-in-out;
-        }
-        .card.shadow-sm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .badge.bg-gradient-info {
-            background-color: #1a4b8c;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-    </style>
-  
 </div>

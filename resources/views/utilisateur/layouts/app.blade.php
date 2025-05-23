@@ -5,123 +5,118 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('dist/assets/img/apple-icon.png') }}">
-  <link rel="icon" type="image/png" href="{{ asset('dist/assets/img/logo-fsdm-fes.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('dist/assets/img/fst.png') }}">
   <title>PreInscription FST</title>
+
   @livewireStyles
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-  <!-- Fonts and icons -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
-  <!-- Nucleo Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
   <link href="{{ asset('dist/assets/css/nucleo-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('dist/assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <!-- Material Icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('dist/assets/css/material-dashboard.css?v=3.2.0') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('dist/assets/css/plus-style.css') }}">
+
+  <style>
+    
+
+   
+
+    #sidenav-main,#nsidenav-main {
+      width: 250px;
+      transition: all 0.5s ease;
+      padding-top: 1rem;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      border-radius: 0 10px 10px 0;
+    }
+
+    #sidenav-main.collapsed {
+      transform: translateX(-100%);
+      width: 0;
+      margin-left: 0;
+      overflow: hidden;
+    }
+
+    #main-content {
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .nav-link {
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin-bottom: 5px;
+      transition: background 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background-color: #0d3a73;
+      color: green !important;
+    }
+
+    .navbar,
+    .btn-primary,
+    .sidebar-header {
+      background-color: #0d3a73;
+      color: white;
+    }
+
+    
+
+    /* Responsive Sidebar */
+    @media (max-width: 900px) {
+      #sidenav-main,#nsidenav-main {
+        position: fixed;
+        left: -250px;
+        z-index: 1031;
+      }
+
+      #sidenav-main.sidebar-visible {
+        left: 0;
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1030;
+        display: none;
+      }
+    }
+
+    @media (min-width: 901px) {
+      #main-content {
+        width: calc(100% - 250px);
+      }
+    }
+  </style>
 </head>
 
-<body class="g-sidenav-show  bg-gray-100">
-
-  @include('utilisateur.layouts.sidebar')
-
-  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-    <!-- Navbar -->
-    @include('utilisateur.layouts.header')
-    
-    <!-- End Navbar -->
-    <div class="container-fluid py-2">
-      <div class="row min-vh-80">
-        @yield('content')
-      </div>
-
-      @include('utilisateur.layouts.footer')
+<body class="bg-gray-100">
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div id="nsidenav-main" class="nsidenav " style="width: 240px ;min-height: 100vh;" >
+      @include('utilisateur.layouts.sidebar')
     </div>
-  </main>
 
-  <div class="fixed-plugin">
-    <!-- Fixed plugin content remains the same -->
+    <!-- Main Content -->
+    <main id="main-content" class="flex-grow-1">
+      @include('utilisateur.layouts.header')
+      @yield('content')
+    </main>
   </div>
-  
-  <!-- Core JS Files -->
+
+  <!-- Overlay for mobile -->
+  <div class="sidebar-overlay"></div>
+
   @livewireScripts
   @stack('scripts')
   @include('utilisateur.layouts.script')
 
-
-
-
-
-
-
-
-
-
-<!-- SweetAlert2 -->
-<script>
-/**
- * Global delete confirmation
- * @param {number} id - Item ID
- * @param {HTMLElement} button - Clicked button
- * @param {string} [itemName] - Custom item name for confirmation text
- */
-function confirmDelete(id, button, itemName = 'cet élément') {
-    Swal.fire({
-        title: 'Êtes-vous sûr ?',
-        text: `Voulez-vous vraiment supprimer ${itemName} ? Cette action est irréversible !`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#1a4b8c',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimer !',
-        cancelButtonText: 'Annuler'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const form = button.closest('form');
-            button.disabled = true;
-            button.innerHTML = '<i class="material-symbols-rounded">hourglass_top</i>';
-            form.submit();
-        }
-    });
-}
-</script>
-
-
-
-
-
-
-
-  <!-- Additional script to initialize form inputs -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize Material Dashboard forms
-      if (typeof MaterialDashboard !== 'undefined') {
-        MaterialDashboard.initFormExtendedDatetimepickers();
-      }
-
-      // Initialize input groups
-      var inputs = document.querySelectorAll('.input-group.input-group-outline');
-      inputs.forEach(function(input) {
-        // Add focused class when input is focused
-        input.querySelector('input').addEventListener('focus', function() {
-          input.classList.add('focused', 'is-focused');
-        });
-        
-        // Remove focused class when input loses focus
-        input.querySelector('input').addEventListener('blur', function() {
-          if (this.value === '') {
-            input.classList.remove('focused', 'is-focused');
-          }
-        });
-        
-        // Check if input has value on page load
-        if (input.querySelector('input').value !== '') {
-          input.classList.add('focused', 'is-focused');
-        }
-      });
-    });
-  </script>
 </body>
+
 </html>
