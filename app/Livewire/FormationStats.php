@@ -17,7 +17,7 @@ class FormationStats extends Component
     
     \Log::info('Formations data:', ['count' => $formations->count(), 'data' => $formations->toArray()]);
     
-    return view('utilisateur.livewire.formation-stats', [
+    return view('livewire.formation-stats', [
         'formations' => $formations
     ])->extends('utilisateur.layouts.app')->section('content');
 }
