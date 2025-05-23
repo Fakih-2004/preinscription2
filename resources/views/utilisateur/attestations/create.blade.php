@@ -29,14 +29,14 @@
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Type d'attestation</label>
-                                    <input type="text" name="type_attestation" class="form-control" required>
+                                    <input type="text" name="type_attestation" class="form-control">
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Candidat</label>
-                                    <select name="candidat_id" class="form-control" required>
+                                    <select name="candidat_id" class="form-control" >
                                         <option value="">-- Choisir un candidat --</option>
                                         @foreach ($candidats as $candidat)
                                             <option value="{{ $candidat->id }}">{{ $candidat->nom }} {{ $candidat->prenom }}</option>
@@ -48,12 +48,12 @@
 
                         <div class="input-group input-group-outline my-3 is-filled">
                             <label class="form-label">Description</label>
-                            <textarea name="description" class="form-control" rows="3" required></textarea>
+                            <textarea name="discription" class="form-control" rows="3" required></textarea>
                         </div>
 
                         <div class="input-group input-group-outline my-3 is-filled">
                             <label class="form-label">Fichier (PDF, JPG, PNG)</label>
-                            <input type="file" name="attestation" class="form-control" required>
+                            <input type="file" name="attestation" class="form-control" >
                         </div>
 
                         <div class="text-center mt-4">

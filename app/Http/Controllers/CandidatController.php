@@ -39,17 +39,14 @@ class CandidatController extends Controller
     {
         $data = $request->except('formation_id');
 
-        $baseName = strtoupper($request->CNE) . strtolower(str_replace(' ', '', $request->nom)) . strtolower(str_replace(' ', '', $request->prenom));
-        $timestamp = now()->format('YmdHis');
+    $baseName = strtoupper($request->CNE) . strtolower(str_replace(' ', '', $request->nom)) . strtolower(str_replace(' ', '', $request->prenom));
+    $timestamp = now()->format('YmdHis');
 
-        // Handle CV file
-        if ($request->hasFile('CV')) {
-            $CVExtension = $request->file('CV')->getClientOriginalExtension();
-            $CVName = $baseName . '_CV_' . $timestamp . '.' . $CVExtension;
-            $data['CV'] = $request->file('CV')->storeAs('CV', $CVName, 'public');
-        } else {
-            $data['CV'] = null;
-        }
+    if ($request->hasFile('CV')) {
+        $CVExtension = $request->file('CV')->getClientOriginalExtension();
+        $CVName = $baseName . '_CV_' . $timestamp . '.' . $CVExtension;
+        $data['CV'] = $request->file('CV')->storeAs('CV', $CVName, 'public');
+    }
 
         // Handle demande file
         if ($request->hasFile('demande')) {
@@ -113,17 +110,12 @@ class CandidatController extends Controller
         $baseName = strtoupper($candidat->CNE) . strtolower(str_replace(' ', '', $candidat->nom)) . strtolower(str_replace(' ', '', $candidat->prenom));
         $timestamp = now()->format('YmdHis');
 
-        // Handle CV file
-        if ($request->hasFile('CV')) {
-            if ($candidat->CV && Storage::exists($candidat->CV)) {
-                Storage::delete($candidat->CV);
-            }
-            $CVExtension = $request->file('CV')->getClientOriginalExtension();
-            $CVName = $baseName . '_CV_' . $timestamp . '.' . $CVExtension;
-            $data['CV'] = $request->file('CV')->storeAs('CV', $CVName, 'public');
-        } else {
-            $data['CV'] = $candidat->CV ?? null;
-        }
+    if ($request->hasFile('CV')) {
+        Storage::delete($candidat->CV);
+        $CVExtension = $request->file('CV')->getClientOriginalExtension();
+        $CVName = $baseName . '_CV_' . $timestamp . '.' . $CVExtension;
+        $data['CV'] = $request->file('CV')->storeAs('CV', $CVName, 'public');
+    }
 
         // Handle demande file
         if ($request->hasFile('demande')) {

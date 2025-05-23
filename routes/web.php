@@ -11,6 +11,9 @@ use App\Http\Controllers\StageController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\CandidatformController;
+
+use App\Mail\InscriptionConfirmation;
+
 use App\Http\Controllers\ExportController;
 use App\Livewire\FormationStats;
 
