@@ -50,8 +50,45 @@ class DiplomeController extends Controller
             . strtolower(str_replace(' ', '', $candidat->prenom))
             . '_bac2_' . $count . '_' . now()->format('YmdHis') . '.' . $extensionBac2;
         
+
         $pathBac2 = $fileBac2->storeAs('bac2', $filenameBac2, 'public');
         $validated['scan_bac2'] = $pathBac2;
+
+        if ($request->hasFile('scan_bac_2')) {
+            $count = Diplome::where('candidat_id', $candidat->id)->count() + 1;
+    
+            $file = $request->file('scan_bac_2');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
+    
+            $filename = strtoupper($candidat->CNE)
+                .'_'. strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . '_bac_2_' . $count . '_' . $timestamp . '.' . $extension;
+    
+            $path = $file->storeAs('bac_2', $filename, 'public');
+            $validated['scan_bac_2'] = $path;
+        }
+        if ($request->hasFile('scan_bac_3')) {
+            $count = Diplome::where('candidat_id', $candidat->id)->count() + 1;
+    
+            $file = $request->file('scan_bac_3');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
+    
+            $filename = strtoupper($candidat->CNE)
+                .'_'. strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . '_bac_3_' . $count . '_' . $timestamp . '.' . $extension;
+    
+            $path = $file->storeAs('bac_3', $filename, 'public');
+            $validated['scan_bac_3'] = $path;
+        }
+    
+        Diplome::create($validated);
+
+        
+        return redirect()->route('utilisateur.diplomes.index');
     }
 
     // Handle BAC+3 file upload
@@ -116,22 +153,36 @@ class DiplomeController extends Controller
                 Storage::disk('public')->delete($diplome->scan_bac3);
             }
             $data['scan_bac3'] = $request->file('scan_bac3')->store('bac3', 'public');
+        // Handle scan_bac+2
+        if ($request->hasFile('scan_bac_2')) {
+            if ($diplome->scan_bac_2 && Storage::disk('public')->exists($diplome->scan_bac_2)) {
+                Storage::disk('public')->delete($diplome->scan_bac_2);
+            }
+            $data['scan_bac_2'] = $request->file('scan_bac_2')->store('bac_2', 'public');
+        }
+
+        // Handle scan_bac+3
+        if ($request->hasFile('scan_bac_3')) {
+            if ($diplome->scan_bac_3 && Storage::disk('public')->exists($diplome->scan_bac_3)) {
+                Storage::disk('public')->delete($diplome->scan_bac_3);
+            }
+            $data['scan_bac_3'] = $request->file('scan_bac_3')->store('bac_3', 'public');
         }
 
         $diplome->update($data);
         return redirect()->route('diplomes.create');
     }
-
-    public function destroy($id)
+    }
+     public function destroy($id)
     {
         $diplome = Diplome::findOrFail($id);
 
         // Delete scan files
-        if ($diplome->scan_bac2 && Storage::disk('public')->exists($diplome->scan_bac2)) {
-            Storage::disk('public')->delete($diplome->scan_bac2);
+        if ($diplome->scan_bac_2 && Storage::disk('public')->exists($diplome->scan_bac_2)) {
+            Storage::disk('public')->delete($diplome->scan_bac_2);
         }
-        if ($diplome->scan_bac3 && Storage::disk('public')->exists($diplome->scan_bac3)) {
-            Storage::disk('public')->delete($diplome->scan_bac3);
+        if ($diplome->scan_bac_3 && Storage::disk('public')->exists($diplome->scan_bac_3)) {
+            Storage::disk('public')->delete($diplome->scan_bac_3);
         }
 
         $diplome->delete();

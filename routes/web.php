@@ -21,7 +21,7 @@ use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\FormationController;
 use App\Livewire\FormationStats;
 use App\Http\Controllers\CandidatformController;
-
+use App\Mail\InscriptionConfirmation;
 
 use App\Http\Controllers\ExportController;
 
@@ -43,3 +43,4 @@ Route::get('/stats-formations', FormationStats::class)->name('formation-stats');
 Route::get('/candidat/form', [CandidatformController::class, 'showForm'])->name('candidat.form');
 Route::post('/candidat/form/submit', [CandidatformController::class, 'submitStep'])->name('candidat.submit');
 Route::post('/candidat/form/previous', [CandidatformController::class, 'previousStep'])->name('candidat.previous');
+

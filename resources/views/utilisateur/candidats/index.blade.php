@@ -125,12 +125,12 @@
                                     <!-- Bac+2 -->
                                     <td>
                                         @if ($diplome)
-                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_diplome_bac2'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_bac2'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etalissement_bac2'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'anne_bac2'} ?? '' }}</p>
-                                        @if ($diplome->{'scan_bac2'})
-                                        <a href="{{ asset('storage/bac2/' . basename($diplome->{'scan_bac2'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
+                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_diplome_bac_2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_diplome_bca_2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etablissement_bac_2'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'annee_diplome_bac_2'} ?? '' }}</p>
+                                        @if ($diplome->{'scan_bac_2'})
+                                        <a href="{{ asset('storage/bac_2/' . basename($diplome->{'scan_bac_2'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
                                         @endif
                                         @else
                                         <p class="text-xs text-secondary mb-0">Aucun diplôme</p>
@@ -140,12 +140,12 @@
                                     <!-- Bac+3 -->
                                     <td>
                                         @if ($diplome)
-                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_bac3'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_bac3'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etablissement_bac3'} ?? '' }}</p>
-                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'annee_bac3'} ?? '' }}</p>
-                                        @if ($diplome->{'scan_bac3'})
-                                        <a href="{{ asset('storage/bac3/' . basename($diplome->{'scan_bac3'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
+                                        <p class="text-xs font-weight-bold mb-0">Type: {{ $diplome->{'type_bac_3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Filière: {{ $diplome->{'filiere_diplome_bac_3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Étab: {{ $diplome->{'etablissement_bca_3'} ?? '' }}</p>
+                                        <p class="text-xs text-secondary mb-0">Année: {{ $diplome->{'annee_diplome_bac_3'} ?? '' }}</p>
+                                        @if ($diplome->{'scan_bac_3'})
+                                        <a href="{{ asset('storage/bac_3/' . basename($diplome->{'scan_bac_3'})) }}" target="_blank" class="badge badge-sm text-white" style="background-color: #1a4b8c; border: none;  width: 100px; border-radius: 6px;">Voir</a>
                                         @endif
                                         @else
                                         <p class="text-xs text-secondary mb-0">Aucun diplôme</p>

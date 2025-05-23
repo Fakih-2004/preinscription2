@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('candidat_id');
             $table->foreign('candidat_id')->references('id')->on('candidats')->onDelete('cascade');
-            $table->string('attestation');
-            $table->string('description');
-            $table->string('type_attestation');
+            $table->string('attestation')->nullable();
+            $table->string('description')->nullable();
+            $table->string('type_attestation')->nullable();
             $table->timestamps();
         });
     }

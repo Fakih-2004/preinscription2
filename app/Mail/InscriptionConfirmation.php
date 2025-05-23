@@ -8,26 +8,25 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-namespace App\Mail;
+use Illuminate\Support\Facades\Log; // Add this import
 
 
 class InscriptionConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $candidateName;
+    public $candidatName;
 
-    public function __construct($candidateName)
+    public function __construct($candidatName)
     {
-        $this->candidateName = $candidateName;
+        $this->candidatName = $candidatName;
     }
 
     public function build()
     {
-        return $this->subject('Confirmation de votre inscription - FST Fès')
-                    ->view('emails.inscription_confirmation')
-                    ->with([
-                        'candidateName' => $this->candidateName,
-                    ]);
+        Log::info('Construction de l\'email de confirmation:', ['candidatName' => $this->candidatName]);
+        return $this->subject('Confirmation d\'inscription')
+                    ->view('mails.inscription_confirmation')
+                    ->with(['candidatName' => $this->candidatName]);
     }
 }

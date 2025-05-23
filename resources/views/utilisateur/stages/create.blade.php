@@ -29,14 +29,14 @@
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Fonction</label>
-                                    <input type="text" name="fonction" class="form-control" required>
+                                    <input type="text" name="fonction" class="form-control">
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Période</label>
-                                    <input type="text" name="periode" class="form-control" required>
+                                    <input type="text" name="periode" class="form-control" >
                                 </div>
                             </div>
                         </div>
@@ -45,14 +45,14 @@
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Établissement</label>
-                                    <input type="text" name="etablissement" class="form-control" required>
+                                    <input type="text" name="etablissement" class="form-control" >
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Secteur d'activité</label>
-                                    <input type="text" name="secteur_activite" class="form-control" required>
+                                    <input type="text" name="secteur_activite" class="form-control" >
                                 </div>
                             </div>
                         </div>
@@ -60,6 +60,7 @@
                         <div class="input-group input-group-outline my-3 is-filled">
                             <label class="form-label">Description</label>
                             <textarea name="description" class="form-control" rows="3" required></textarea>
+                            <textarea name="description" class="form-control" rows="3" ></textarea>
                         </div>
 
                         <div class="row">
@@ -73,7 +74,7 @@
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline my-3 is-filled">
                                     <label class="form-label">Candidat</label>
-                                    <select name="candidat_id" class="form-control" required>
+                                    <select name="candidat_id" class="form-control">
                                         <option value="">-- Choisir un candidat --</option>
                                         @foreach ($candidats as $candidat)
                                             <option value="{{ $candidat->id }}">{{ $candidat->nom }} {{ $candidat->prenom }}</option>

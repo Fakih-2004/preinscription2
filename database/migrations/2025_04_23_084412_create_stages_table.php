@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('candidat_id');
             $table->foreign('candidat_id')->references('id')->on('candidats')->onDelete('cascade');
-            $table->string('fonction');
-            $table->string('periode');
-            $table->string('attestation');
-            $table->string('etablissement');
-            $table->string('secteur_activite');
-            $table->string('description');
+            $table->string('fonction')->nullable();
+            $table->string('periode')->nullable();
+            $table->string('attestation')->nullable();
+            $table->string('etablissement')->nullable();
+            $table->string('secteur_activite')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

@@ -49,20 +49,22 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $diplome->candidat->nom ?? 'Inconnu' }} {{ $diplome->candidat->prenom ?? '' }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_diplome_bac2'} }}</p>
+
+            
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_diplome_bac_2'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'anne_bac2'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'annee_diplome_bac_2'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_bac2'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_diplome_bac_2'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etalissement_bac2'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etablissement_bac_2'} }}</p>
                                     </td>
                                     <td>
-                                        @if ($diplome->{'scan_bac2'})
-                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac2'}) }}" 
+                                        @if ($diplome->{'scan_bac_2'})
+                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac_2'}) }}" 
                                            target="_blank" 
                                            class="badge badge-sm text-white" 
                                            style="background-color: #1a4b8c; padding: 4px 8px;">
@@ -73,20 +75,21 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_bac3'} }}</p>
+                                      
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'type_diplome_bac_3'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'annee_bac3'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'annee_diplome_bac_3'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_bac3'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'filiere_diplome_bac_3'} }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etablissement_bac3'} }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $diplome->{'etablissement_bac_3'} }}</p>
                                     </td>
                                     <td>
-                                        @if ($diplome->{'scan_bac3'})
-                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac3'}) }}" 
+                                        @if ($diplome->{'scan_bac_3'})
+                                        <a href="{{ asset('storage/' . $diplome->{'scan_bac_3'}) }}" 
                                            target="_blank" 
                                            class="badge badge-sm text-white" 
                                            style="background-color: #1a4b8c; padding: 4px 8px;">
