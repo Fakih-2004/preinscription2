@@ -17,18 +17,18 @@ class StoreDiplomeRequest extends FormRequest
             'candidat_id' => 'required|exists:candidats,id',
             
             // BAC+2 Information
-            'type_diplome_bac2' => 'required|string|max:100',
-            'annee_bac2' => 'required' ,
-            'filiere_bac2' => 'required|string|max:100',
-            'etablissement_bac2' => 'required|string|max:100',
-            'scan_bac2' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240',
+            'type_diplome_bac_2' => 'required|string|max:100',
+            'annee_diplome_bac_2' => 'required' ,
+            'filiere_diplome_bac_2' => 'required|string|max:100',
+            'etablissement_bac_2' => 'required|string|max:100',
+            'scan_bac_2' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240',
             
             // BAC+3 Information (for Master)
-            'type_bac3' => 'nullable|string|max:100',
-            'annee_bac3' => 'nullable',
-            'filiere_bac3' => 'nullable|string|max:100',
-            'etablissement_bac3' => 'nullable|string|max:100',
-            'scan_bac3' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
+            'type_diplome_bac_3' => 'nullable|string|max:100',
+            'annee_diplome_bac_3' => 'nullable',
+            'filiere_diplome_bac_3' => 'nullable|string|max:100',
+            'etablissement_bac_3' => 'nullable|string|max:100',
+            'scan_bac_3' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
         ];
     }
 
