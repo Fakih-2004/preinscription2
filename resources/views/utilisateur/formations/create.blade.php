@@ -25,6 +25,9 @@
                     <form action="{{ route('formations.store') }}" method="POST">
                         @csrf
                         
+                        <!-- Hidden field for the authenticated user -->
+                        <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                        
                         <div class="input-group input-group-outline my-3 is-filled">
                             <label class="form-label">Type de formation</label>
                             <select name="type_formation" class="form-control" required>
@@ -47,16 +50,6 @@
                         <div class="input-group input-group-outline my-3 is-filled">
                             <label class="form-label">Date fin</label>
                             <input type="date" name="date_fin" class="form-control" required>
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Administrateur</label>
-                            <select name="administrateur_id" class="form-control" required>
-                                <option value="">Sélectionner un administrateur</option>
-                                @foreach ($administrateurs as $admin)
-                                    <option value="{{ $admin->id }}">{{ $admin->prenom }} {{ $admin->nom }}</option>
-                                @endforeach
-                            </select>
                         </div>
 
                         <div class="text-center mt-4">

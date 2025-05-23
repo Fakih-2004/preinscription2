@@ -12,9 +12,9 @@
                         <h6 class="text-white text-capitalize ps-3">Ajouter un nouveau candidat</h6>
                     </div>
                 </div>
-                <div class="card-body px-4 pb-2">
+                <div class="card-body px-4 pb-4">
                     @if ($errors->any())
-                        <div class="alert alert-danger text-white">
+                        <div class="alert alert-danger text-white mb-4" style="border-left: 4px solid #dc3545;">
                             <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -23,13 +23,13 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('candidats.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('candidats.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                         @csrf
                         
                         <!-- Formation Selection -->
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Type de formation</label>
-                            <select name="formation_id" class="form-control" >
+                        <div class="mb-4">
+                            <label for="formation_id" class="form-label text-primary fw-bold">Type de formation</label>
+                            <select name="formation_id" id="formation_id" class="form-select form-control-lg bg-light border-0 shadow-sm">
                                 <option value="">-- Choisir --</option>
                                 @foreach ($formations as $formation)
                                 <option value="{{ $formation->id }}">
@@ -40,153 +40,197 @@
                         </div>
 
                         <!-- Personal Information -->
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Nom</label>
-                            <input type="text" name="nom" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Prénom</label>
-                            <input type="text" name="prenom" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">الاسم العائلي</label>
-                            <input type="text" name="nom_ar" class="form-control text-end" dir="rtl" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">الاسم الشخصي</label>
-                            <input type="text" name="prenom_ar" class="form-control text-end" dir="rtl" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">CNE</label>
-                            <input type="text" name="CNE" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">CIN</label>
-                            <input type="text" name="CIN" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Date de naissance</label>
-                            <input type="date" name="date_naissance" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Ville naissance</label>
-                            <input type="text" name="ville_naissance" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">مدينة الولادة</label>
-                            <input type="text" name="ville_naissance_ar" class="form-control text-end" dir="rtl" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Province</label>
-                            <input type="text" name="province" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Pays naissance</label>
-                            <input type="text" name="pay_naissance" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Nationalité</label>
-                            <input type="text" name="nationalite" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Sexe</label>
-                            <select name="sexe" class="form-control" >
-                                <option value="M">Masculin</option>
-                                <option value="F">Féminin</option>
-                            </select>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="nom" class="form-label text-primary fw-bold">Nom</label>
+                                    <input type="text" name="nom" id="nom" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="prenom" class="form-label text-primary fw-bold">Prénom</label>
+                                    <input type="text" name="prenom" id="prenom" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="nom_ar" class="form-label text-primary fw-bold">الاسم العائلي</label>
+                                    <input type="text" name="nom_ar" id="nom_ar" class="form-control form-control-lg bg-light border-0 shadow-sm text-end" dir="rtl" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="prenom_ar" class="form-label text-primary fw-bold">الاسم الشخصي</label>
+                                    <input type="text" name="prenom_ar" id="prenom_ar" class="form-control form-control-lg bg-light border-0 shadow-sm text-end" dir="rtl" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="CNE" class="form-label text-primary fw-bold">CNE</label>
+                                    <input type="text" name="CNE" id="CNE" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="CIN" class="form-label text-primary fw-bold">CIN</label>
+                                    <input type="text" name="CIN" id="CIN" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="email" class="form-label text-primary fw-bold">Email</label>
+                                    <input type="email" name="email" id="email" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="date_naissance" class="form-label text-primary fw-bold">Date de naissance</label>
+                                    <input type="date" name="date_naissance" id="date_naissance" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="ville_naissance" class="form-label text-primary fw-bold">Ville naissance</label>
+                                    <input type="text" name="ville_naissance" id="ville_naissance" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="ville_naissance_ar" class="form-label text-primary fw-bold">مدينة الولادة</label>
+                                    <input type="text" name="ville_naissance_ar" id="ville_naissance_ar" class="form-control form-control-lg bg-light border-0 shadow-sm text-end" dir="rtl" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="province" class="form-label text-primary fw-bold">Province</label>
+                                    <input type="text" name="province" id="province" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="pay_naissance" class="form-label text-primary fw-bold">Pays naissance</label>
+                                    <input type="text" name="pay_naissance" id="pay_naissance" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="nationalite" class="form-label text-primary fw-bold">Nationalité</label>
+                                    <input type="text" name="nationalite" id="nationalite" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <label class="form-label text-primary fw-bold">Sexe</label>
+                                    <div class="d-flex align-items-center gap-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="sexe" id="sexe_masculin" value="M" checked>
+                                            <label class="form-check-label text-dark fw-medium" for="sexe_masculin">Masculin</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="sexe" id="sexe_feminin" value="F">
+                                            <label class="form-check-label text-dark fw-medium" for="sexe_feminin">Féminin</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Contact Information -->
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Téléphone mobile</label>
-                            <input type="text" name="telephone_mob" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Téléphone fixe</label>
-                            <input type="text" name="telephone_fix" class="form-control">
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Ville</label>
-                            <input type="text" name="ville" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Pays</label>
-                            <input type="text" name="pays" class="form-control" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Adresse</label>
-                            <textarea name="adresse" class="form-control" rows="2" ></textarea>
+                        <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="telephone_mob" class="form-label text-primary fw-bold">Téléphone mobile</label>
+                                    <input type="text" name="telephone_mob" id="telephone_mob" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="telephone_fix" class="form-label text-primary fw-bold">Téléphone fixe</label>
+                                    <input type="text" name="telephone_fix" id="telephone_fix" class="form-control form-control-lg bg-light border-0 shadow-sm">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="ville" class="form-label text-primary fw-bold">Ville</label>
+                                    <input type="text" name="ville" id="ville" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="pays" class="form-label text-primary fw-bold">Pays</label>
+                                    <input type="text" name="pays" id="pays" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <label for="adresse" class="form-label text-primary fw-bold">Adresse</label>
+                                    <textarea name="adresse" id="adresse" class="form-control form-control-lg bg-light border-0 shadow-sm" rows="3" required></textarea>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Documents -->
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">CV (PDF)</label>
-                            <input type="file" name="CV" class="form-control" accept="application/pdf" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Demande (PDF)</label>
-                            <input type="file" name="demande" class="form-control" accept="application/pdf" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Carte d'identité (scan)</label>
-                            <input type="file" name="scan_cartid" class="form-control" accept="application/pdf,image/*" >
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Photo</label>
-                            <input type="file" name="photo" class="form-control" accept="image/*" >
+                        <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="CV" class="form-label text-primary fw-bold">CV (PDF)</label>
+                                    <input type="file" name="CV" id="CV" class="form-control form-control-lg bg-light border-0 shadow-sm" accept="application/pdf" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="demande" class="form-label text-primary fw-bold">Demande (PDF)</label>
+                                    <input type="file" name="demande" id="demande" class="form-control form-control-lg bg-light border-0 shadow-sm" accept="application/pdf" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="scan_cartid" class="form-label text-primary fw-bold">Carte d'identité (scan)</label>
+                                    <input type="file" name="scan_cartid" id="scan_cartid" class="form-control form-control-lg bg-light border-0 shadow-sm" accept="application/pdf,image/*" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="photo" class="form-label text-primary fw-bold">Photo</label>
+                                    <input type="file" name="photo" id="photo" class="form-control form-control-lg bg-light border-0 shadow-sm" accept="image/*" required>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Bac Information -->
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Série Bac</label>
-                            <input type="text" name="serie_bac" class="form-control" >
+                        <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="serie_bac" class="form-label text-primary fw-bold">Série Bac</label>
+                                    <input type="text" name="serie_bac" id="serie_bac" class="form-control form-control-lg bg-light border-0 shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="annee_bac" class="form-label text-primary fw-bold">Année Bac</label>
+                                    <select name="annee_bac" id="annee_bac" class="form-select form-control-lg bg-light border-0 shadow-sm">
+                                        <option value="">-- Sélectionnez --</option>
+                                        @for ($i = now()->year; $i >= 2000; $i--)
+                                            <option value="{{ ($i-1) . '/' . $i }}">{{ ($i-1) . '/' . $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="scan_bac" class="form-label text-primary fw-bold">Scan Bac</label>
+                                    <input type="file" name="scan_bac" id="scan_bac" class="form-control form-control-lg bg-light border-0 shadow-sm" accept="application/pdf,image/*" required>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Année Bac</label>
-                            <select name="annee_bac" class="form-control" >
-                                <option value="">-- Sélectionnez --</option>
-                                @for ($i = now()->year; $i >= 2000; $i--)
-                                    <option value="{{ ($i-1) . '/' . $i }}">{{ ($i-1) . '/' . $i }}</option>
-                                @endfor
-                            </select>
-                        </div>
-
-                        <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Scan Bac</label>
-                            <input type="file" name="scan_bac" class="form-control" accept="application/pdf,image/*" >
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-lg text-white" style="background-color: #1a4b8c;">
-                                <i class="material-symbols-rounded me-1">save</i> Enregistrer
+                        <div class="text-center mt-5">
+                            <button type="submit" class="btn btn-lg text-white" style="background-color: #1a4b8c; padding: 10px 30px; border-radius: 8px; transition: all 0.3s;">
+                                <i class="material-symbols-rounded me-2">save</i> Enregistrer
                             </button>
-                            <a href="{{ route('candidats.index') }}" class="btn btn-outline-secondary btn-lg ms-2">
-                                <i class="material-symbols-rounded me-1">cancel</i> Annuler
+                            <a href="{{ route('candidats.index') }}" class="btn btn-outline-secondary btn-lg ms-3" style="padding: 10px 30px; border-radius: 8px; transition: all 0.3s;">
+                                <i class="material-symbols-rounded me-2">cancel</i> Annuler
                             </a>
                         </div>
                     </form>

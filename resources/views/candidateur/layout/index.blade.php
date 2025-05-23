@@ -117,12 +117,28 @@
         }
 
         /* Styles pour le pied de page */
-        footer {
-            background-color: #1a4b8c;
-            color: #FFFFFF;
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
+        html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1; /* This will allow the content to take the remaining space */
+}
+
+footer {
+    margin-top: auto; /* Push the footer to the bottom */
+    background-color: #1a4b8c;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 1rem 0;
+}
+
         }
     </style>
 </head>

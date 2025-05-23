@@ -10,9 +10,9 @@ class Formation extends Model
 
     protected $guarded = ['id'];
 
-    public function administrateur()
+    public function user()
     {
-        return $this->belongsTo(Administrateur::class);
+        return $this->belongsTo(User::class);
     }
 
     public function inscriptions()

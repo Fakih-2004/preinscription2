@@ -137,3 +137,22 @@ document.getElementById('toggleSidebarBtn').addEventListener('click', function()
       });
     });
   </script>
+
+
+
+
+
+
+
+
+
+<script>
+  function confirmLogout() {
+    const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+    logoutModal.show();
+  }
+  
+  function performLogout() {
+    document.getElementById('logout-form').submit();
+  }
+</script>

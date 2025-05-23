@@ -16,6 +16,9 @@
                         @csrf
                         @method('PUT')
 
+                        <!-- Hidden field for the authenticated user -->
+                        <input type="hidden" name="administrateur_id" value="{{ auth()->id() }}">
+
                         <div class="input-group input-group-outline my-3 is-filled">
                             <label class="form-label">Type de formation</label>
                             <input type="text" name="type_formation" class="form-control" value="{{ $formation->type_formation }}" required>
@@ -31,15 +34,12 @@
                             <input type="date" name="date_fin" class="form-control" value="{{ $formation->date_fin }}" required>
                         </div>
 
+                        <!-- Display current responsible user (readonly) -->
                         <div class="input-group input-group-outline my-3 is-filled">
-                            <label class="form-label">Administrateur</label>
-                            <select name="administrateur_id" class="form-control" required>
-                                @foreach ($administrateurs as $administrateur)
-                                    <option value="{{ $administrateur->id }}" {{ $administrateur->id == $formation->administrateur_id ? 'selected' : '' }}>
-                                        {{ $administrateur->nom }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <label class="form-label">Responsable</label>
+                            <input type="text" class="form-control" 
+                                   value="{{ $formation->administrateur->name ?? 'Non assigné' }}" 
+                                   readonly>
                         </div>
 
                         <div class="text-center mt-4">
@@ -66,17 +66,9 @@
     .input-group.input-group-outline.is-focused .form-label {
         color: #1a4b8c;
     }
-    .input-group.input-group-outline .form-control:focus,
-    .input-group.input-group-outline .form-select:focus {
+    .input-group.input-group-outline .form-control:focus {
         border-color: #1a4b8c;
         box-shadow: 0 0 0 2px rgba(26, 75, 140, 0.2);
-    }
-    
-    /* Select dropdown styling */
-    .form-select {
-        padding: 0.5rem;
-        border-radius: 0.375rem;
-        border: 1px solid #d2d6da;
     }
     
     /* Button hover effects */

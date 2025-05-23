@@ -28,7 +28,7 @@
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Titre</th>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Date Début</th>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Date Fin</th>
-                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Administrateur</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Responsable</th>
                                     <th class="text-secondary opacity-7 text-end pe-4">Actions</th>
                                 </tr>
                             </thead>
@@ -41,14 +41,16 @@
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">{{ $formation->titre }}</p>
                                     </td>
-                                    <td>
+                                    <td>           
                                         <p class="text-xs font-weight-bold mb-0">{{ $formation->date_debut }}</p>
                                     </td>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">{{ $formation->date_fin }}</p>
                                     </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $formation->administrateur->nom ?? 'Non défini' }}</p>
+                                   <td>
+                                        <p class="text-xs font-weight-bold mb-0">
+                                            {{ $formation->user->name ?? 'Non défini' }}
+                                        </p>
                                     </td>
                                     <td class="align-center text-end pe-4">
                                         <a href="{{ route('formations.edit', $formation->id) }}" class="text-secondary font-weight-bold text-xs me-2">

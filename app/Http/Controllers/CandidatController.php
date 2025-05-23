@@ -24,9 +24,16 @@ class CandidatController extends Controller
 
     public function create()
     {
-        $formations = Formation::all();
+       
+        $currentDate = now()->toDateString(); 
+
+        $formations = Formation::where('date_debut', '<=', $currentDate)
+                               ->where('date_fin', '>=', $currentDate)
+                               ->get();
+
         return view('utilisateur.candidats.create', compact('formations'));
     }
+      
 
     public function store(StoreCandidatRequest $request)
     {

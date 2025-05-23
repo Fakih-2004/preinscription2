@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('titre');
             $table->date('date_debut');
             $table->date('date_fin');
-            $table->unsignedBigInteger('administrateur_id');
-            $table->foreign('administrateur_id')->references('id')->on('administrateurs')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
         
