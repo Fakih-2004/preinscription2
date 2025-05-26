@@ -20,8 +20,11 @@
                         </a>
                     </div>
                     
+                    @php
+                        $placeholder = 'Rechercher un Formation...'; 
+                    @endphp
                     <div class="table-responsive p-3">
-                        <table id="formationTable" class="table align-items-center mb-0">
+                        <table id="searshTable" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Type</th>
@@ -53,7 +56,7 @@
                                         </p>
                                     </td>
                                     <td class="align-center text-end pe-4">
-                                        <a href="{{ route('formations.edit', $formation->id) }}" class="text-secondary font-weight-bold text-xs me-2">
+                                         <a href="{{ route('formations.edit', $formation->id) }}" class="btn btn-link text-info p-0">
                                             <i class="material-symbols-rounded">edit</i>
                                         </a>
                                         <form id="delete-form-{{ $formation->id }}" 

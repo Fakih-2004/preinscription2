@@ -23,7 +23,7 @@ class FormationStats extends Component
 }
     public function exportCandidats($formationId)
     {
-        return redirect()->route('export.candidats', ['formationId' => $formationId]);
+        return redirect()->route('export.candidats', ['id' => $formationId]);
     }
     
 }

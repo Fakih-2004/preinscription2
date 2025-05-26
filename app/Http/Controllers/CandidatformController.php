@@ -213,52 +213,111 @@ class CandidatformController extends Controller
         return $rules;
     }
    private function handleFileUploads(Request $request, $step)
-{
-    $filePaths = [];
+    {
+        $filePaths = [];
+        $formData = session('form_data', []);
+        $candidatName = isset($formData['CNE']) ? strtoupper($formData['CNE']) . 
+                        strtolower(str_replace(' ', '', $formData['nom'])) . 
+                        strtolower(str_replace(' ', '', $formData['prenom'])) : 'unknown';
 
-    if ($step == 1) {
-        $filePaths['CV'] = $request->hasFile('CV') ? $request->file('CV')->store('cvs', 'public') : null;
-        $filePaths['demande'] = $request->hasFile('demande') ? $request->file('demande')->store('cartes', 'public') : null;
-        $filePaths['scan_cartid'] = $request->hasFile('scan_cartid') ? $request->file('scan_cartid')->store('cartes', 'public') : null;
-        $filePaths['photo'] = $request->hasFile('photo') ? $request->file('photo')->store('photos', 'public') : null;
-    } elseif ($step == 2) {
-        $filePaths['scan_bac'] = $request->hasFile('scan_bac') ? $request->file('scan_bac')->store('bacs', 'public') : null;
-    } elseif ($step == 3) {
-        
-        $filePaths['diplomes'] = $request->input('diplomes', []);
-        foreach ($filePaths['diplomes'] as $index => $diplome) {
-            if ($request->hasFile("diplomes.$index.scan_bac_2")) {
-                $filePaths['diplomes'][$index]['scan_bac_2'] = $request->file("diplomes.$index.scan_bac_2")->store('diplomes', 'public');
+        if ($step == 1) {
+            $timestamp = now()->format('YmdHis');
+            
+            if ($request->hasFile('CV')) {
+                $file = $request->file('CV');
+                $extension = $file->getClientOriginalExtension();
+                $filename = $candidatName . '_CV_' . $timestamp . '.' . $extension;
+                $filePaths['CV'] = $file->storeAs('CV', $filename, 'public');
             }
-            if ($request->hasFile("diplomes.$index.scan_bac_3")) {
-                $filePaths['diplomes'][$index]['scan_bac_3'] = $request->file("diplomes.$index.scan_bac_3")->store('diplomes', 'public');
+            
+            if ($request->hasFile('demande')) {
+                $file = $request->file('demande');
+                $extension = $file->getClientOriginalExtension();
+                $filename = $candidatName . '_demande_' . $timestamp . '.' . $extension;
+                $filePaths['demande'] = $file->storeAs('demande', $filename, 'public');
+            }
+            
+            if ($request->hasFile('scan_cartid')) {
+                $file = $request->file('scan_cartid');
+                $extension = $file->getClientOriginalExtension();
+                $filename = $candidatName . '_cin_' . $timestamp . '.' . $extension;
+                $filePaths['scan_cartid'] = $file->storeAs('cart', $filename, 'public');
+            }
+            
+            if ($request->hasFile('photo')) {
+                $file = $request->file('photo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = $candidatName . '_photo_' . $timestamp . '.' . $extension;
+                $filePaths['photo'] = $file->storeAs('photos', $filename, 'public');
+            }
+            
+        } elseif ($step == 2) {
+            if ($request->hasFile('scan_bac')) {
+                $file = $request->file('scan_bac');
+                $extension = $file->getClientOriginalExtension();
+                $timestamp = now()->format('YmdHis');
+                $filename = $candidatName . '_bac_' . $timestamp . '.' . $extension;
+                $filePaths['scan_bac'] = $file->storeAs('bac', $filename, 'public');
+            }
+            
+        } elseif ($step == 3) {
+            $filePaths['diplomes'] = $request->input('diplomes', []);
+            foreach ($filePaths['diplomes'] as $index => $diplome) {
+                if ($request->hasFile("diplomes.$index.scan_bac_2")) {
+                    $file = $request->file("diplomes.$index.scan_bac_2");
+                    $extension = $file->getClientOriginalExtension();
+                    $timestamp = now()->format('YmdHis');
+                    $filename = $candidatName . '_bac_2_' . ($index + 1) . '_' . $timestamp . '.' . $extension;
+                    $filePaths['diplomes'][$index]['scan_bac_2'] = $file->storeAs('bac_2', $filename, 'public');
+                }
+                if ($request->hasFile("diplomes.$index.scan_bac_3")) {
+                    $file = $request->file("diplomes.$index.scan_bac_3");
+                    $extension = $file->getClientOriginalExtension();
+                    $timestamp = now()->format('YmdHis');
+                    $filename = $candidatName . '_bac_3_' . ($index + 1) . '_' . $timestamp . '.' . $extension;
+                    $filePaths['diplomes'][$index]['scan_bac_3'] = $file->storeAs('bac_3', $filename, 'public');
+                }
+            }
+            
+        } elseif ($step == 4) {
+            $filePaths['stages'] = $request->input('stages', []);
+            foreach ($filePaths['stages'] as $index => $stage) {
+                if ($request->hasFile("stages.$index.attestation")) {
+                    $file = $request->file("stages.$index.attestation");
+                    $extension = $file->getClientOriginalExtension();
+                    $timestamp = now()->format('YmdHis');
+                    $filename = $candidatName . '_stage_' . ($index + 1) . '_' . $timestamp . '.' . $extension;
+                    $filePaths['stages'][$index]['attestation'] = $file->storeAs('stages', $filename, 'public');
+                }
+            }
+            
+        } elseif ($step == 5) {
+            $filePaths['attestations'] = $request->input('attestations', []);
+            foreach ($filePaths['attestations'] as $index => $attestation) {
+                if ($request->hasFile("attestations.$index.attestation")) {
+                    $file = $request->file("attestations.$index.attestation");
+                    $extension = $file->getClientOriginalExtension();
+                    $timestamp = now()->format('YmdHis');
+                    $filename = $candidatName . '_attestation_' . ($index + 1) . '_' . $timestamp . '.' . $extension;
+                    $filePaths['attestations'][$index]['attestation'] = $file->storeAs('attestations', $filename, 'public');
+                }
+            }
+            
+        } elseif ($step == 6) {
+            $filePaths['experiences'] = $request->input('experiences', []);
+            foreach ($filePaths['experiences'] as $index => $experience) {
+                if ($request->hasFile("experiences.$index.attestation")) {
+                    $file = $request->file("experiences.$index.attestation");
+                    $extension = $file->getClientOriginalExtension();
+                    $timestamp = now()->format('YmdHis');
+                    $filename = $candidatName . '_experience_' . ($index + 1) . '_' . $timestamp . '.' . $extension;
+                    $filePaths['experiences'][$index]['attestation'] = $file->storeAs('experiences', $filename, 'public');
+                }
             }
         }
-    } elseif ($step == 4) {
-        $filePaths['stages'] = $request->input('stages', []);
-        foreach ($filePaths['stages'] as $index => $stage) {
-            if ($request->hasFile("stages.$index.attestation")) {
-                $filePaths['stages'][$index]['attestation'] = $request->file("stages.$index.attestation")->store('stages', 'public');
-            }
-        }
-    } elseif ($step == 5) {
-        $filePaths['attestations'] = $request->input('attestations', []);
-        foreach ($filePaths['attestations'] as $index => $attestation) {
-            if ($request->hasFile("attestations.$index.attestation")) {
-                $filePaths['attestations'][$index]['attestation'] = $request->file("attestations.$index.attestation")->store('attestations', 'public');
-            }
-        }
-    } elseif ($step == 6) {
-        $filePaths['experiences'] = $request->input('experiences', []);
-        foreach ($filePaths['experiences'] as $index => $experience) {
-            if ($request->hasFile("experiences.$index.attestation")) {
-                $filePaths['experiences'][$index]['attestation'] = $request->file("experiences.$index.attestation")->store('experiences', 'public');
-            }
-        }
+
+        return $filePaths;
     }
-
-    return $filePaths;
-}
 private function saveCandidat(array $formData)
 {
     // Valider les champs de base

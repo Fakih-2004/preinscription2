@@ -9,12 +9,13 @@
            style="max-height: 40px; " 
            alt="main_logo">
     <span class="font-weight-bold" style="color: red;">
-        <span style="color: green; font-size: 1em; font-weight: bold;">FST FES</span> Pré-Inscription
+         Pré-Inscription
+         <P style="color: green; font-size: 1em; font-weight: bold;">FST FES</P>
     </span>
     </div>
   </div>
 
-  <hr class="horizontal dark mt-0 mb-2">
+  <hr class="horizontal dark mt-0 mb-2" >
   <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">
       <li class="nav-item">

@@ -2,7 +2,7 @@
 namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreStageRequest extends FormRequest
+class UpdateStageRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,7 +14,7 @@ class StoreStageRequest extends FormRequest
         return [
             'candidat_id' => 'required|exists:candidats,id',
             'fonction' => 'required|string',
-            'periode' => 'required|string',
+            'periode' => 'required|date',
             'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             'etablissement' => 'required|string',
             'secteur_activite' => 'required|string',
@@ -29,6 +29,7 @@ class StoreStageRequest extends FormRequest
             'candidat_id.exists' => 'Le candidat sélectionné est invalide.',
             'fonction.required' => 'La fonction est obligatoire.',
             'periode.required' => 'La période est obligatoire.',
+            'periode.date' => 'La période doit être une date valide.',
             'attestation.mimes' => 'Le fichier doit être de type PDF, JPG, JPEG ou PNG.',
             'etablissement.required' => 'L\'établissement est obligatoire.',
             'secteur_activite.required' => 'Le secteur d\'activité est obligatoire.',

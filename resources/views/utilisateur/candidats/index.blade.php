@@ -66,7 +66,16 @@
                                                 <h6 class="mb-0 text-sm"> {{ $candidat->nom_ar }}{{ $candidat->prenom_ar }}</h6>
                                                 <p class="text-xs text-secondary mb-0">CNE: {{ $candidat->CNE }}</p>
                                                 <p class="text-xs text-secondary mb-0">CIN: {{ $candidat->CIN }}</p>
-                                                <p class="text-xs text-secondary mb-0">Sexe: {{ $candidat->sexe }}</p>
+                                                <p class="text-xs text-secondary mb-0">
+                                                     Sexe: 
+                                                    @if ($candidat->sexe === 'M')
+                                                        <i class="fas fa-male" style="color: #1a4b8c;"></i> Homme
+                                                    @elseif ($candidat->sexe === 'F')
+                                                        <i class="fas fa-female" style="color: #1a4b8c;"></i> Femme
+                                                    @else
+                                                        {{ $candidat->sexe }}
+                                                    @endif
+                                                </p>
                                             </div>
                                         </div>
                                     </td>

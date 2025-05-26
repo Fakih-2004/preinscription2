@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFormationRequest extends FormRequest
+class UpdateFormationRequest extends FormRequest
 {
     public function authorize()
     {

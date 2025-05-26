@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Attestation;
 use App\Models\Candidat;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreAttestationRequest;
+use App\Http\Requests\UpdateAttestationRequest;
 use Illuminate\Support\Facades\Storage;
+use Brian2694\Toastr\Facades\Toastr;
 
 class AttestationController extends Controller
 {
@@ -21,87 +21,70 @@ class AttestationController extends Controller
         return view('utilisateur.attestations.create', compact('candidats'));
     }
 
-    public function store(Request $request)
+    public function store(StoreAttestationRequest $request)
     {
-        $validated = $request->validate([
-            'candidat_id' => 'required|exists:candidats,id',
-            'attestation' => 'required|file|mimes:pdf,jpg,jpeg,png',
-            'description' => 'required|string',
-            'type_attestation' => 'required|string',
-        ]);
-    
-        $candidat = Candidat::findOrFail($request->candidat_id);
-    
-        
+        $validated = $request->validated();
+        $candidat = Candidat::findOrFail($validated['candidat_id']);
+
         if ($request->hasFile('attestation')) {
             $count = Attestation::where('candidat_id', $candidat->id)->count() + 1;
-    
             $file = $request->file('attestation');
             $extension = $file->getClientOriginalExtension();
             $timestamp = now()->format('YmdHis');
-    
             $filename = strtoupper($candidat->CNE)
                 . strtolower(str_replace(' ', '', $candidat->nom))
                 . strtolower(str_replace(' ', '', $candidat->prenom))
                 . 'attestation' . $count . '_' . $timestamp . '.' . $extension;
-    
             $path = $file->storeAs('attestations', $filename, 'public');
             $validated['attestation'] = $path;
         }
-    
+
         Attestation::create($validated);
-    
-        return redirect()->route('attestations.index')->with('success', 'Attestation ajoutée avec succès.');
+
+        return redirect()->route('attestations.index')
+            ->with('toastr', [
+                'type' => 'success',
+                'message' => 'Attestation ajoutée avec succès'
+            ]);
     }
-    
 
-    public function update(Request $request, $id)
-{
-    $request->validate([
-        'candidat_id' => 'required|exists:candidats,id',
-        'attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
-        'description' => 'string',
-        'type_attestation' => 'required|string',
-    ]);
+    public function update(UpdateAttestationRequest $request, $id)
+    {
+        $attestation = Attestation::findOrFail($id);
+        $validated = $request->validated();
+        $candidat = Candidat::findOrFail($validated['candidat_id']);
 
-    $attestation = Attestation::findOrFail($id);
-    $candidat = Candidat::findOrFail($request->candidat_id);
-
-    if ($request->hasFile('attestation')) {
-        if ($attestation->attestation && \Storage::disk('public')->exists($attestation->attestation)) {
-            \Storage::disk('public')->delete($attestation->attestation);
+        if ($request->hasFile('attestation')) {
+            if ($attestation->attestation && Storage::disk('public')->exists($attestation->attestation)) {
+                Storage::disk('public')->delete($attestation->attestation);
+            }
+            $count = Attestation::where('candidat_id', $candidat->id)
+                ->where('type_attestation', $validated['type_attestation'])
+                ->where('id', '!=', $attestation->id)
+                ->count() + 1;
+            $file = $request->file('attestation');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
+            $filename = strtoupper($candidat->CNE)
+                . strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . '_' . strtolower($validated['type_attestation'])
+                . '_' . $count
+                . '_' . $timestamp
+                . '.' . $extension;
+            $path = $file->storeAs('attestations', $filename, 'public');
+            $validated['attestation'] = $path;
         }
 
-        $count = Attestation::where('candidat_id', $candidat->id)
-            ->where('type_attestation', $request->type_attestation)
-            ->where('id', '!=', $attestation->id)
-            ->count() + 1;
+        $attestation->update($validated);
 
-        $file = $request->file('attestation');
-        $extension = $file->getClientOriginalExtension();
-        $timestamp = now()->format('YmdHis');
-
-        $filename = strtoupper($candidat->CNE)
-            . strtolower(str_replace(' ', '', $candidat->nom))
-            . strtolower(str_replace(' ', '', $candidat->prenom))
-            . '_' . strtolower($request->type_attestation)
-            . '_' . $count
-            . '_' . $timestamp
-            . '.' . $extension;
-
-        $path = $file->storeAs('attestations', $filename, 'public');
-        $attestation->attestation = $path;
+        return redirect()->route('attestations.index')
+            ->with('toastr', [
+                'type' => 'success',
+                'message' => 'Attestation modifiée avec succès'
+            ]);
     }
 
-    $attestation->candidat_id = $request->candidat_id;
-    $attestation->description = $request->description;
-    $attestation->type_attestation = $request->type_attestation;
-    $attestation->save();
-
-    return redirect()->route('attestations.index')->with('success', 'Attestation modifiée avec succès.');
-}
-
-    
     public function edit($id)
     {
         $attestation = Attestation::findOrFail($id);
@@ -109,12 +92,17 @@ class AttestationController extends Controller
         return view('utilisateur.attestations.edit', compact('attestation', 'candidats'));
     }
 
-   
-
     public function destroy($id)
     {
         $attestation = Attestation::findOrFail($id);
+        if ($attestation->attestation && Storage::disk('public')->exists($attestation->attestation)) {
+            Storage::disk('public')->delete($attestation->attestation);
+        }
         $attestation->delete();
-        return redirect()->route('attestations.index')->with('success', 'Attestation supprimée avec succès.');
+        return redirect()->route('attestations.index')
+            ->with('toastr', [
+                'type' => 'success',
+                'message' => 'Attestation supprimée avec succès'
+            ]);
     }
 }

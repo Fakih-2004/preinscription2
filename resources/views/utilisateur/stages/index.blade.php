@@ -10,8 +10,7 @@
                     <div class="border-radius-lg pt-4 pb-3" style="background-color: #1a4b8c; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                         <h6 class="text-white text-capitalize ps-3">Liste des Stages</h6>
                     </div>
-                </div>
-                
+                </div>                
                 <div class="card-body px-0 pb-2">
                     <div class="d-flex justify-content-end mx-3 mb-3">
                         <a href="{{ route('stages.create') }}" class="btn btn-sm text-white" style="background-color: #1a4b8c;">
@@ -19,10 +18,9 @@
                             <span>Ajouter un stage</span>
                         </a>
                     </div>
-                    @php
-                        $placeholder = 'Rechercher un Stage...';
+                     @php
+                        $placeholder = 'Rechercher un Stages...'; 
                     @endphp
-                    
                     <div class="table-responsive p-3">
                         <table id="searshTable" class="table align-items-center mb-0">
                             <thead>
@@ -33,19 +31,17 @@
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Période</th>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Attestation</th>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Établissement</th>
-                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Secteur</th>
-                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Description</th>
                                     <th class="text-secondary opacity-7 text-end pe-4">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($stages as $stage)
+                                @forelse ($stages as $stage)
                                 <tr>
                                     <td class="ps-4">
                                         <p class="text-xs font-weight-bold mb-0">{{ $stage->id }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $stage->candidat->nom ?? 'Unknown' }} {{ $stage->candidat->prenom ?? '' }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $stage->candidat->nom ?? 'N/A' }} {{ $stage->candidat->prenom ?? '' }}</p>
                                     </td>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">{{ $stage->fonction }}</p>
@@ -62,19 +58,13 @@
                                            Voir
                                         </a>
                                         @else
-                                        <p class="text-xs text-secondary mb-0">Aucune</p>
+                                        <span class="badge badge-sm bg-secondary">Aucune</span>
                                         @endif
                                     </td>                                
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">{{ $stage->etablissement }}</p>
                                     </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $stage->secteur_activite }}</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0 text-truncate" style="max-width: 200px;">{{ $stage->description }}</p>
-                                    </td>
-                                    <td class="align-center text-end pe-4">
+                                    <td class="align-center text-end pe-4">                                       
                                         <form id="delete-form-{{ $stage->id }}" 
                                             action="{{ route('stages.destroy', $stage->id) }}" 
                                             method="POST" 
@@ -89,13 +79,11 @@
                                         </form>                     
                                     </td>
                                 </tr>
-                                @endforeach
-                                
-                                @if ($stages->isEmpty())
+                                @empty
                                 <tr>
-                                    <td colspan="9" class="text-center text-muted py-4">Aucun stage trouvé</td>
+                                    <td colspan="7" class="text-center text-muted py-4">Aucun stage trouvé</td>
                                 </tr>
-                                @endif
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

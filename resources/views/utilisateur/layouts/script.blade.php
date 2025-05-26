@@ -13,7 +13,18 @@
 <!-- Material Dashboard JS -->
 <script src="dist/assets/js/material-dashboard.min.js?v=3.2.0"></script>
 
+{{-- toastr --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "timeOut": "1500"
+        
+    };
+</script>
 
 
 
@@ -43,6 +54,8 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <script>
     $(document).ready(function () {
         $('#searshTable').DataTable({
@@ -81,7 +94,7 @@ function confirmDelete(id, button, itemName = 'cet élément') {
     Swal.fire({
         title: 'Êtes-vous sûr ?',
         text: `Voulez-vous vraiment supprimer ${itemName} ? Cette action est irréversible !`,
-        icon: 'warning',
+        icon: 'error',
         showCancelButton: true,
         confirmButtonColor:'#d33', 
         cancelButtonColor: '#6c757d',
@@ -96,7 +109,10 @@ function confirmDelete(id, button, itemName = 'cet élément') {
         }
     });
 }
+
 </script>
+
+
 <script>
 document.getElementById('toggleSidebarBtn').addEventListener('click', function() {
   const sidebar = document.getElementById('sidenav-main');
@@ -144,15 +160,20 @@ document.getElementById('toggleSidebarBtn').addEventListener('click', function()
 
 
 
-
-
 <script>
-  function confirmLogout() {
-    const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-    logoutModal.show();
-  }
-  
-  function performLogout() {
-    document.getElementById('logout-form').submit();
-  }
+  document.addEventListener('DOMContentLoaded', function() {
+    // Confirm logout function
+    window.confirmLogout = function() {
+      const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+      logoutModal.show();
+    };
+
+    // Perform logout function
+    window.performLogout = function() {
+      document.getElementById('logout-form').submit();
+    };
+  });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="{{ asset('dist/assets/js/form-validation.js') }}"></script>

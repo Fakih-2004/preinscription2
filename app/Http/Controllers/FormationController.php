@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Formation;
-use App\Models\User; // Corrected case for User
-use Brian2694\Toastr\Facades\Toastr; // Import Toastr facade
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Http\Requests\StoreFormationRequest;
+use App\Http\Requests\UpdateFormationRequest;
+use Brian2694\Toastr\Facades\Toastr;
 
 class FormationController extends Controller
 {
@@ -16,24 +18,19 @@ class FormationController extends Controller
 
     public function create()
     {
-        $users = User::all(); // Fixed case: user -> User
+        $users = User::all();
         return view('utilisateur.formations.create', compact('users'));
     }
     
-    public function store(Request $request)
+    public function store(StoreFormationRequest $request)
     {
-        $validated = $request->validate([
-            'type_formation' => 'required|string',
-            'titre' => 'required|string',
-            'date_debut' => 'required|date',
-            'date_fin' => 'required|date|after_or_equal:date_debut',
-            'user_id' => 'required|exists:users,id'
-        ]);
-   
-        Formation::create($validated);
+        Formation::create($request->validated());
     
-        Toastr::success('Formation ajoutée avec succès', 'Succès');
-        return redirect()->route('formations.index');
+        return redirect()->route('formations.index')
+        ->with('toastr', [
+            'type' => 'success',
+            'message' => 'Formation ajoutée avec succès'
+        ]); 
     }
 
     public function show($id)
@@ -43,29 +40,22 @@ class FormationController extends Controller
     }
 
     public function edit($id)
+{
+    $formation = Formation::findOrFail($id);
+    $users = User::all();
+    return view('utilisateur.formations.edit', compact('formation', 'users'));
+}
+
+    public function update(UpdateFormationRequest $request, $id)
     {
         $formation = Formation::findOrFail($id);
-        $users = User::all();
-        return view('formations.edit', compact('formation', 'users'));
-    }
+        $formation->update($request->validated());
 
-    public function update(Request $request, $id)
-    {
-        $formation = Formation::findOrFail($id);
-
-        // Validate the request data before updating
-        $validated = $request->validate([
-            'type_formation' => 'required|string',
-            'titre' => 'required|string',
-            'date_debut' => 'required|date',
-            'date_fin' => 'required|date|after_or_equal:date_debut',
-            'user_id' => 'required|exists:users,id'
+        return redirect()->route('formations.index')
+        ->with('toastr', [
+            'type' => 'success',
+            'message' => 'Formation mise à jour avec succès'
         ]);
-
-        $formation->update($validated);
-
-        Toastr::success('Formation mise à jour avec succès', 'Succès');
-        return redirect()->route('formations.index');
     }
 
     public function destroy($id)
@@ -73,7 +63,10 @@ class FormationController extends Controller
         $formation = Formation::findOrFail($id);
         $formation->delete();
 
-        Toastr::success('Formation supprimée avec succès', 'Succès');
-        return redirect()->route('formations.index');
+       return redirect()->route('formations.index')
+        ->with('toastr', [
+            'type' => 'success',
+            'message' => 'Formation supprimée avec succès'
+        ]);
     }
 }

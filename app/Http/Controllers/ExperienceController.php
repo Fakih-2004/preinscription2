@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Experience;
 use App\Models\Candidat;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreExperienceRequest;
+use App\Http\Requests\UpdateExperienceRequest;
 use Illuminate\Support\Facades\Storage;
+use Brian2694\Toastr\Facades\Toastr;
 
 class ExperienceController extends Controller
 {
@@ -21,42 +21,77 @@ class ExperienceController extends Controller
         return view('utilisateur.experiences.create', compact('candidats'));
     }
 
-    public function store(Request $request)
+    public function store(StoreExperienceRequest $request)
     {
-        $validated = $request->validate([
-            'candidat_id' => 'required|exists:candidats,id',
-            'fonction' => 'required|string',
-            'secteur_activite' => 'required|string',
-            'periode' => 'required',
-            'attestation' => 'required|file|mimes:pdf,jpg,jpeg,png',
-            'etablissement' => 'required|string',
-            'description' => 'required|string',
-        ]);
-        $candidat = Candidat::findOrFail($request->candidat_id);
+        $validated = $request->validated();
+        $candidat = Candidat::findOrFail($validated['candidat_id']);
 
         if ($request->hasFile('attestation')) {
             $count = Experience::where('candidat_id', $candidat->id)->count() + 1;
-    
             $file = $request->file('attestation');
             $extension = $file->getClientOriginalExtension();
             $timestamp = now()->format('YmdHis');
-    
             $filename = strtoupper($candidat->CNE)
                 . strtolower(str_replace(' ', '', $candidat->nom))
                 . strtolower(str_replace(' ', '', $candidat->prenom))
                 . 'experiences' . $count . '_' . $timestamp . '.' . $extension;
-    
             $path = $file->storeAs('experiences', $filename, 'public');
             $validated['attestation'] = $path;
         }
-    
+
         Experience::create($validated);
-        return redirect()->route('experiences.index')->with('success', 'Expérience ajoutée avec succès.');
+
+        return redirect()->route('experiences.index')
+            ->with('toastr', [
+                'type' => 'success',
+                'message' => 'Expérience ajoutée avec succès'
+            ]);
     }
+
+    public function update(UpdateExperienceRequest $request, $id)
+    {
+        $experience = Experience::findOrFail($id);
+        $validated = $request->validated();
+        $candidat = Candidat::findOrFail($validated['candidat_id']);
+
+        if ($request->hasFile('attestation')) {
+            if ($experience->attestation && Storage::disk('public')->exists($experience->attestation)) {
+                Storage::disk('public')->delete($experience->attestation);
+            }
+            $count = Experience::where('candidat_id', $candidat->id)
+                ->where('id', '!=', $experience->id)
+                ->count() + 1;
+            $file = $request->file('attestation');
+            $extension = $file->getClientOriginalExtension();
+            $timestamp = now()->format('YmdHis');
+            $filename = strtoupper($candidat->CNE)
+                . strtolower(str_replace(' ', '', $candidat->nom))
+                . strtolower(str_replace(' ', '', $candidat->prenom))
+                . 'experiences' . $count . '_' . $timestamp . '.' . $extension;
+            $path = $file->storeAs('experiences', $filename, 'public');
+            $validated['attestation'] = $path;
+        }
+
+        $experience->update($validated);
+
+        return redirect()->route('experiences.index')
+            ->with('toastr', [
+                'type' => 'success',
+                'message' => 'Expérience mise à jour avec succès'
+            ]);
+    }
+
     public function destroy($id)
     {
         $experience = Experience::findOrFail($id);
+        if ($experience->attestation && Storage::disk('public')->exists($experience->attestation)) {
+            Storage::disk('public')->delete($experience->attestation);
+        }
         $experience->delete();
-        return redirect()->route('experiences.index')->with('success', 'experience supprimée avec succès.');
+        return redirect()->route('experiences.index')
+            ->with('toastr', [
+                'type' => 'success',
+                'message' => 'Expérience supprimée avec succès'
+            ]);
     }
 }

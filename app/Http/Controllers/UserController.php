@@ -1,48 +1,81 @@
 <?php
-
 namespace App\Http\Controllers;
+use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Facades\Hash;
+use Brian2694\Toastr\Facades\Toastr;
 
-use App\Models\User; // Changed from Administrateur to User
-use Illuminate\Http\Request;
-
-class UserController extends Controller // Changed from AdministrateurController to UserController
+class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all(); // Changed variable name from administrateurs to users
-        return view('utilisateur.administrateurs.index', compact('users')); // Changed view path and variable
+        $users = User::all();
+        return view('utilisateur.administrateurs.index', compact('users'));
     }
 
     public function create()
     {
-        return view('utilisateur.administrateurs.create'); // Changed view path
+        return view('utilisateur.administrateurs.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        User::create($request->all()); // Changed model
-        return redirect()->route('administrateurs.index'); // Changed route name
+        $validated = $request->validated();
+
+        User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return redirect()->route('administrateurs.index')
+        ->with('toastr', [
+            'type' => 'success',
+            'message' => 'Utilisateur créé avec succès'
+        ]);
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::findOrFail($id); // Changed variable name and model
-        return view('utilisateur.administrateurs.edit', compact('user')); // Changed view path and variable
+        return view('utilisateur.administrateurs.edit', compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $user = User::findOrFail($id); // Changed variable name and model
-        $user->update($request->all());
-        return redirect()->route('administrateurs.index'); // Changed route name
+        $validated = $request->validated();
+
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ];
+
+        // Update password only if provided
+        if (!empty($validated['password'])) {
+            $data['password'] = Hash::make($validated['password']);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('administrateurs.index')
+        ->with('toastr', [
+            'type' => 'success',
+            'message' => 'Profil mis à jour avec succès'
+        ]);
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id); // Changed variable name and model
-        $user->delete();
-        
-        return redirect()->route('administrateurs.index') // Changed route name
-            ->with('success', 'Utilisateur supprimé avec succès'); // Changed success message
+        try {
+            $user->delete();
+            return redirect()->route('administrateurs.index')
+        ->with('toastr', [
+            'type' => 'success',
+            'message' => 'Utilisateur supprimé avec succès'
+        ]);
+        } catch (\Exception $e) {
+            Toastr::error('Erreur lors de la suppression: ' . $e->getMessage(), 'Erreur');
+            return back();
+        }
     }
 }

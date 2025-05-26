@@ -9,7 +9,7 @@ class Inscription extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-
+    protected $appends = ['candidate_info'];
     public function candidat()
     {
         return $this->belongsTo(Candidat::class, 'candidat_id');
@@ -19,4 +19,23 @@ class Inscription extends Model
     {
         return $this->belongsTo(Formation::class, 'formation_id');
     }
+   
+
+
+public function getCandidateInfoAttribute()
+{
+    if ($this->candidate) {
+        return [
+            'name' => trim($this->candidate->nom . ' ' . $this->candidate->prenom),
+            'email' => $this->candidate->email,
+            'photo' => $this->candidate->photo
+        ];
+    }
+    
+    return [
+        'name' => $this->candidate_email ?? 'N/A',
+        'email' => $this->candidate_email ?? 'N/A',
+        'photo' => null
+    ];
+}
 }

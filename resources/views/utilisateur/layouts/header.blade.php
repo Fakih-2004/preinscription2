@@ -13,7 +13,7 @@
         <li class="nav-item d-flex align-items-center">
           <a href="#" class="nav-link text-body font-weight-bold px-2 d-flex align-items-center" style="color: #344767;" onclick="confirmLogout()">
             @auth
-              <span>{{ Auth::user()->name }}</span> <!-- User's name -->
+              <span>{{ Auth::user()->name }}</span> 
             @endauth
             <i class="material-symbols-rounded ms-1" style="font-size: 28px; cursor: pointer; color: #344767;">account_circle</i>
           </a>
