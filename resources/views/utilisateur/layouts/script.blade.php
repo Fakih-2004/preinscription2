@@ -177,3 +177,18 @@ document.getElementById('toggleSidebarBtn').addEventListener('click', function()
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="{{ asset('dist/assets/js/form-validation.js') }}"></script>
+
+
+
+
+
+{{-- copy le cnadidats email  --}}
+<script>
+function copyEmail(email) {
+    navigator.clipboard.writeText(email).then(() => {
+        alert('Email copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy email:', err);
+    });
+}
+</script>

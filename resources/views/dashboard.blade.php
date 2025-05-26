@@ -170,7 +170,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Candidat</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Formation</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
-                                    <th class="text-center text-uppercase text-xxs font-weight-bolder opacity-7">Statut</th>
+                                    <th class="text-center text-uppercase text-xxs font-weight-bolder opacity-7">Ville</th>
                                 </tr>
                             </thead>
                             <tbody>

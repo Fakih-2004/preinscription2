@@ -41,79 +41,77 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
         ->get();
     }
 
-    public function map($candidat): array
-    {
-        $makeLink = function ($path, $displayText) {
-    // Fix: Modified condition to check if path exists and create a proper hyperlink
-    if (!empty($path) && $path !== '0') {
-        return '=HYPERLINK("' . $this->baseUrl . $path . '", "' . $displayText . '")';
-    }
-    return ''; // Return empty string if no document
-};
-        
-        
+   public function map($candidat): array
+{
+    $makeLink = function ($path, $displayText) {
+        if (!empty($path) && $path !== '0') {
+            return '=HYPERLINK("' . $this->baseUrl . $path . '", "' . $displayText . '")';
+        }
+        return '';
+    };
 
-        return [
-            // Personal Information
-            $candidat->id,
-            $candidat->inscriptions->first()->formation->type_formation .' (' . $candidat->inscriptions->first()->formation->titre .')',
-            $candidat->nom,
-            $candidat->prenom,
-            $candidat->nom_ar,
-            $candidat->prenom_ar,
-            $candidat->CNE,
-            $candidat->CIN,
-            $candidat->email,
-            $candidat->date_naissance,
-            $candidat->ville_naissance,
-            $candidat->ville_naissance_ar,
-            $candidat->province,
-            $candidat->pay_naissance,
-            $candidat->nationalite,
-            $candidat->sexe,
-            $candidat->telephone_mob,
-            $candidat->telephone_fix,
-            $candidat->adresse,
-            $candidat->ville,
-            $candidat->pays,
+    return [
+        // Personal Information
+        $candidat->id,
+        $candidat->inscriptions->first()->formation->type_formation .' (' . $candidat->inscriptions->first()->formation->titre .')',
+        $candidat->nom,
+        $candidat->prenom,
+        $candidat->nom_ar,
+        $candidat->prenom_ar,
+        $candidat->CNE,
+        $candidat->CIN,
+        // Modified email field to open Gmail compose window
+        !empty($candidat->email) ? '=HYPERLINK("https://mail.google.com/mail/?view=cm&to=' . urlencode($candidat->email) . '", "' . $candidat->email . '")' : 'Email not provided',
+        $candidat->date_naissance,
+        $candidat->ville_naissance,
+        $candidat->ville_naissance_ar,
+        $candidat->province,
+        $candidat->pay_naissance,
+        $candidat->nationalite,
+        $candidat->sexe,
+       !empty($candidat->telephone_mob) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_mob) . '", "' . $candidat->telephone_mob . '")' : 'Phone not provided',
+       !empty($candidat->telephone_fix) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_fix) . '", "' . $candidat->telephone_fix . '")' : 'Phone not provided',
 
-            // Main Documents
-            $makeLink($candidat->CV, 'Voir CV'),
-            $makeLink($candidat->demande, 'Voir Demande'),
-            $makeLink($candidat->scan_cartid, 'Voir CIN'),
-            $makeLink($candidat->photo, 'Voir Photo'),
+       $candidat->telephone_fix,
+        $candidat->adresse,
+        $candidat->ville,
+        $candidat->pays,
 
-            // Baccalaureate
-            $candidat->serie_bac,
-            $candidat->annee_bac,
-            $makeLink($candidat->scan_bac, ' Bac'),
+        // Main Documents
+        $makeLink($candidat->CV, 'Voir CV'),
+        $makeLink($candidat->demande, 'Voir Demande'),
+        $makeLink($candidat->scan_cartid, 'Voir CIN'),
+        $makeLink($candidat->photo, 'Voir Photo'),
 
-            // Bac+2
-            $candidat->diplomes->pluck('type_diplome_bac2')->first() ?? '',
-            $candidat->diplomes->pluck('annee_bac2')->first() ?? '',
-            $candidat->diplomes->pluck('filiere_bac2')->first() ?? '',
-            $candidat->diplomes->pluck('etalissement_bac2')->first() ?? '',
-            $makeLink($candidat->diplomes->pluck('scan_bac2')->first(), 'Bac2'),
+        // Baccalaureate
+        $candidat->serie_bac,
+        $candidat->annee_bac,
+        $makeLink($candidat->scan_bac, 'Bac'),
 
-            // Bac3
-            $candidat->diplomes->pluck('type_bac3')->first() ?? '',
-            $candidat->diplomes->pluck('annee_bac3')->first() ?? '',
-            $candidat->diplomes->pluck('filiere_bac3')->first() ?? '',
-            $candidat->diplomes->pluck('etablissement_bac3')->first() ?? '',
-            $makeLink($candidat->diplomes->pluck('scan_bac3')->first(), 'Bac3'),
+        // Bac+2
+        $candidat->diplomes->pluck('type_diplome_bac2')->first() ?? '',
+        $candidat->diplomes->pluck('annee_bac2')->first() ?? '',
+        $candidat->diplomes->pluck('filiere_bac2')->first() ?? '',
+        $candidat->diplomes->pluck('etablissement_bac2')->first() ?? '',
+        $makeLink($candidat->diplomes->pluck('scan_bac2')->first(), 'Bac2'),
 
-            // Stages (Internships)
-            ...$this->getStageData($candidat->stages),
+        // Bac3
+        $candidat->diplomes->pluck('type_bac3')->first() ?? '',
+        $candidat->diplomes->pluck('annee_bac3')->first() ?? '',
+        $candidat->diplomes->pluck('filiere_bac3')->first() ?? '',
+        $candidat->diplomes->pluck('etablissement_bac3')->first() ?? '',
+        $makeLink($candidat->diplomes->pluck('scan_bac3')->first(), 'Bac3'),
 
-            // Work Experiences
-            ...$this->getExperienceData($candidat->experiences),
+        // Stages (Internships)
+        ...$this->getStageData($candidat->stages),
 
-            // Attestations
-            ...$this->getAttestationData($candidat->attestations),
-        ];
-    }
+        // Work Experiences
+        ...$this->getExperienceData($candidat->experiences),
 
-    protected function getStageData($stages)
+        // Attestations
+        ...$this->getAttestationData($candidat->attestations),
+    ];
+}    protected function getStageData($stages)
     {
         $stageData = [];
         
