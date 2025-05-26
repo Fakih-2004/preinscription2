@@ -68,8 +68,7 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
         $candidat->province,
         $candidat->pay_naissance,
         $candidat->nationalite,
-        $candidat->sexe,
-       !empty($candidat->telephone_mob) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_mob) . '", "' . $candidat->telephone_mob . '")' : 'Phone not provided',
+$sexe = $candidat->sexe === 'M' ? 'Masculin' : ($candidat->sexe === 'F' ? 'Féminin' : $candidat->sexe),      !empty($candidat->telephone_mob) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_mob) . '", "' . $candidat->telephone_mob . '")' : 'Phone not provided',
        !empty($candidat->telephone_fix) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_fix) . '", "' . $candidat->telephone_fix . '")' : 'Phone not provided',
 
        $candidat->telephone_fix,
@@ -167,8 +166,8 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
         $sector = "Secteur d'activité";
         return [
             // Personal Information Headers
-            'ID', 'Type De Formation', 'Nom', 'Prénom', 'Nom AR', 'Prénom AR', 'CNE', 'CIN', 'Email', 'Date de naissance',
-            'Ville naissance', 'Ville naissance AR', 'Province', 'Pays naissance', 'Nationalité', 'Sexe', 'Téléphone mobile',
+            'ID', 'Type De Formation', 'Nom', 'Prénom', 'الاسم العائلي', 'الاسم الشخصي', 'CNE', 'CIN', 'Email', 'Date de naissance',
+            'Ville naissance', 'مدينة الولادة', 'Province', 'Pays naissance', 'Nationalité', 'Sexe', 'Téléphone mobile',
             'Téléphone fixe', 'Adresse', 'Ville', 'Pays',
 
             // Documents Headers

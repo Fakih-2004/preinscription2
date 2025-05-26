@@ -91,21 +91,21 @@
                                     <!-- Contact -->
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">
-    Mobile: 
-    @if($candidat->telephone_mob)
-        <a href="tel:{{ htmlspecialchars($candidat->telephone_mob) }}">{{ htmlspecialchars($candidat->telephone_mob) }}</a>
-    @else
-        Phone not provided
-    @endif
-</p>
-<p class="text-xs text-secondary mb-0">
-    Fix: 
-    @if($candidat->telephone_fix)
-        <a href="tel:{{ htmlspecialchars($candidat->telephone_fix) }}">{{ htmlspecialchars($candidat->telephone_fix) }}</a>
-    @else
-        Phone not provided
-    @endif
-</p>
+                                            Mobile: 
+                                            @if($candidat->telephone_mob)
+                                                <a href="tel:{{ htmlspecialchars($candidat->telephone_mob) }}">{{ htmlspecialchars($candidat->telephone_mob) }}</a>
+                                            @else
+                                                Phone not provided
+                                            @endif
+                                        </p>
+                                        <p class="text-xs text-secondary mb-0">
+                                            Fix: 
+                                            @if($candidat->telephone_fix)
+                                                <a href="tel:{{ htmlspecialchars($candidat->telephone_fix) }}">{{ htmlspecialchars($candidat->telephone_fix) }}</a>
+                                            @else
+                                                Phone not provided
+                                            @endif
+                                        </p>
                                         <p class="text-xs text-secondary mb-0" ><a href="#" onclick="copyEmail('{{ $candidat->email }}')"> Email:</a>
                                         @if($candidat->email)
                                         <a href="#"><span class="material-symbols-outlined"  style="font-size: 14px; vertical-align: middle;" onclick="copyEmail('{{ $candidat->email }}')">email</span></a>
