@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\InscriptionConfirmation;
 use Illuminate\Support\Facades\Mail;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class CandidatformController extends Controller
 {
@@ -396,7 +398,37 @@ class CandidatformController extends Controller
             'formation_id' => $formData['titre_id'],
             'candidat_id' => $candidat->id,
             'annee' => now()->format('Y-m-d'),
+        
         ]);
+       $candidatName = $candidat->prenom . ' ' . $candidat->nom;
+        $candidatEmail = $candidat->email;
+        $personalInfo = [
+            'nom' => $formData['nom'],
+            'prenom' => $formData['prenom'],
+            'CNE' => $formData['CNE'],
+            'CIN' => $formData['CIN'],
+            'email' => $formData['email'],
+            'telephone' => $formData['telephone_mob'],
+            'date_naissance' => $formData['date_naissance'],
+            'ville_naissance' => $formData['ville_naissance'],
+            'nationalite' => $formData['nationalite'],
+            'sex' => $formData['sex'],
+            'adresse' => $formData['adresse'],
+            'ville' => $formData['ville'],
+            'pays' => $formData['pays'],
+        ];
+
+        $diplomas = [];
+        $diplomas[] = [
+            'type' => 'Baccalauréat',
+            'filiere' => $formData['serie_bac'],
+            'annee' => $formData['annee_bac'],
+            'etablissement' => 'Non spécifié',
+        ];
+
+
+
+
 
         if (!empty($formData['diplomes']) && is_array($formData['diplomes'])) {
             $mergedDiplome = [];
@@ -412,7 +444,12 @@ class CandidatformController extends Controller
                 Log::error('Les informations obligatoires du Bac+2 sont manquantes.', $mergedDiplome);
                 throw new \Exception('Les informations obligatoires du Bac+2 sont incomplètes.');
             }
-
+            $diplomas[] = [
+                'type' => $mergedDiplome['type_diplome_bac_2'],
+                'filiere' => $mergedDiplome['filiere_diplome_bac_2'],
+                'annee' => $mergedDiplome['annee_diplome_bac_2'],
+                'etablissement' => $mergedDiplome['etablissement_bac_2'],
+            ];
             Log::info('Données du diplôme avant enregistrement', $mergedDiplome);
             try {
                 $diplomeEntry = Diplome::create([
@@ -459,6 +496,24 @@ class CandidatformController extends Controller
             Log::info('Aucune donnée de stages fournie dans formData');
         }
 
+ // Initialisation des champs facultatifs à des tableaux vides si non définis
+        $stages = isset($formData['stages']) && is_array($formData['stages']) ? $formData['stages'] : [];
+        $attestations = isset($formData['attestations']) && is_array($formData['attestations']) ? $formData['attestations'] : [];
+        $experiences = isset($formData['experiences']) && is_array($formData['experiences']) ? $formData['experiences'] : [];
+
+        Log::info('Données avant envoi email:', [
+            'stages' => $stages,
+            'attestations' => $attestations,
+            'experiences' => $experiences,
+        ]);
+
+
+
+
+
+
+
+
         if (!empty($formData['attestations']) && is_array($formData['attestations'])) {
             foreach (array_slice($formData['attestations'], 0, 3) as $attestation) {
                 Log::info('Données de l’attestation:', $attestation);
@@ -490,16 +545,54 @@ class CandidatformController extends Controller
             Log::info('Aucune donnée d’expériences fournie dans formData');
         }
 
-        try {
-            $candidatName = $candidat->nom . ' ' . $candidat->prenom;
-            Log::info('Tentative d\'envoi d\'email à:', ['email' => $candidat->email]);
-            Mail::to($candidat->email)->send(new InscriptionConfirmation($candidatName));
-            Log::info('Email de confirmation envoyé avec succès à:', ['email' => $candidat->email]);
-        } catch (\Exception $e) {
-            Log::error('Email sending failed: ' . $e->getMessage());
-            // Note: We don't redirect here, just log the error
+     // Génération du PDF
+     // Génération du PDF
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', false);
+        $dompdf = new Dompdf($options);
+
+        $html = view('mails.inscription_confirmation', [
+            'candidatName' => $candidatName,
+            'personalInfo' => $personalInfo,
+            'diplomas' => $diplomas,
+            'stages' => $stages,
+            'experiences' => $experiences,
+            'attestations' => $attestations,
+        ])->render();
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $pdfOutput = $dompdf->output();
+        $filename = 'inscription_' . str_replace(' ', '_', $candidatName) . '_' . now()->format('YmdHis') . '.pdf';
+        $pdfPath = 'inscriptions/pdf/' . $filename;
+
+        // Vérifier et créer le dossier si nécessaire
+        if (!Storage::disk('local')->exists('inscriptions/pdf')) {
+            Storage::disk('local')->makeDirectory('inscriptions/pdf');
         }
 
-        return true;
+        Storage::disk('local')->put($pdfPath, $pdfOutput);
+
+        // Envoi de l'email avec le PDF
+        try {
+            Log::info('Envoi de l’email avec PDF', ['email' => $candidat->email]);
+            Mail::to($candidat->email)->send(new InscriptionConfirmation(
+                $candidatName,
+                $candidatEmail,
+                $personalInfo,
+                $diplomas,
+                $stages,
+                $experiences,
+                $attestations,
+                storage_path('app/' . $pdfPath)
+            ));
+            Log::info('Email envoyé avec succès', ['email' => $candidat->email]);
+            Storage::disk('local')->delete($pdfPath);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de l’envoi de l’email : ' . $e->getMessage());
+        }
     }
 }
