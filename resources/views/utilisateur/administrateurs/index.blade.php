@@ -26,7 +26,7 @@
                             <thead>
                                 <tr>                                    
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Nom et Prénom</th>
-                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Email</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Email</th>
                                     <th class="text-secondary opacity-7">Actions</th>
                                 </tr>
                             </thead>
@@ -36,19 +36,22 @@
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">{{ $user->name }}</p> 
                                     </td>
-                                   
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">{{ $user->email }}</p> 
                                     </td>                                    
                                     <td class="align-center text-end pe-4">
-                                         <a href="{{ route('administrateurs.edit', $user->id) }}" class="btn btn-link text-info p-0">
+                                        <a href="{{ route('administrateurs.edit', $user->id) }}" class="btn btn-link text-info p-0">
                                             <i class="material-symbols-rounded">edit</i>
                                         </a>
-                                        <form action="{{ route('administrateurs.destroy', $user->id) }}" method="POST" class="d-inline">
+                                        <form id="delete-form-{{ $user->id }}" 
+                                              action="{{ route('administrateurs.destroy', $user->id) }}" 
+                                              method="POST" 
+                                              class="d-inline">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-link text-danger p-0" 
-                                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur?')">
+                                            @method('DELETE')                                            
+                                            <button type="button" 
+                                                    onclick="confirmDelete({{ $user->id }}, this, 'cet administrateur')" 
+                                                    class="btn btn-link text-danger font-weight-bold text-xs p-0">
                                                 <i class="material-symbols-rounded">delete</i>
                                             </button>
                                         </form>
@@ -64,33 +67,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    // If you want to use SweetAlert instead of confirm
-    document.addEventListener('DOMContentLoaded', function() {
-        const deleteForms = document.querySelectorAll('form[action*="destroy"]');
-        
-        deleteForms.forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                Swal.fire({
-                    title: 'Êtes-vous sûr?',
-                    text: "Vous ne pourrez pas annuler cette action!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#1a4b8c',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Oui, supprimer!',
-                    cancelButtonText: 'Annuler'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-    });
-</script>
-@endpush

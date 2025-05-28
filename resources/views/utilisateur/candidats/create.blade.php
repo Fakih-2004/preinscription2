@@ -35,21 +35,23 @@
                                 <h5 class="section-title">Information de formation</h5>
                             </div>
                             <div class="col-md-12 form-group">
-                                <label for="formation_id" class="form-label">Type de formation <span class="text-danger">*</span></label>
-                                <select name="formation_id" id="formation_id" class="form-select @error('formation_id') is-invalid @enderror" required>
-                                    <option value="">-- Choisir --</option>
-                                    @foreach ($formations as $formation)
-                                        <option value="{{ $formation->id }}" @if(old('formation_id') == $formation->id) selected @endif>
-                                            {{ ucfirst($formation->type_formation) }} ({{ $formation->titre }})
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('formation_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @else
-                                    <div class="invalid-feedback">Veuillez sélectionner un type de formation.</div>
-                                @enderror
-                            </div>
+    <label for="formation_id" class="form-label">Type de formation <span class="text-danger">*</span></label>
+    <select name="formation_id" id="formation_id" class="form-select @error('formation_id') is-invalid @enderror" required>
+        <option value="">-- Choisir --</option>
+        @forelse ($formations as $formation)
+            <option value="{{ $formation->id }}" @if(old('formation_id') == $formation->id) selected @endif>
+                {{ ucfirst($formation->type_formation) }} ({{ $formation->titre }})
+            </option>
+        @empty
+            <option value="" disabled>Aucun type de formation active disponible</option>
+        @endforelse
+    </select>
+    @error('formation_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @else
+        <div class="invalid-feedback">Veuillez sélectionner un type de formation.</div>
+    @enderror
+</div>
                         </div>
 
                         <!-- Personal Information Section -->

@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
         // Insert Candidats
         DB::table('candidats')->insert([
             [
-                'email' => 'candidat1@example.com',
+                'email' => 'nourayazami2004@gmail.com',
                 'nom' => 'Martin',
                 'prenom' => 'Pierre',
                 'nom_ar' => 'مارتن',
@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
                 'pay_naissance' => 'Maroc',
                 'nationalite' => 'Marocaine',
                 'sexe' => 'M',
-                'telephone_mob' => '0612345678',
+                'telephone_mob' => '+212617365256',
                 'telephone_fix' => '0522123456',
                 'ville' => 'Casablanca',
                 'pays' => 'Maroc',

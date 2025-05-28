@@ -14,7 +14,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
         <link rel="stylesheet" href="{{ asset('dist/assets/css/formacandidats.css') }}">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
   <title>
    
@@ -157,6 +157,14 @@ footer {
 }
 
         }
+    <style>
+        .toastify-success {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            padding: 15px 25px;
+        }
     </style>
 </head>
 <body>
@@ -178,5 +186,29 @@ footer {
     </footer>
 
     @livewireScripts
+    @if(session('toast'))
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Toastify({
+                    text: "{{ session('toast.message') }}",
+                    duration: 5000,
+                    close: true,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "#4CAF50",
+                    className: "toastify-success",
+                    callback: function() {
+                        window.location.href = "{{ session('toast.redirect') }}";
+                    }
+                }).showToast();
+
+                // Auto-redirect after 5 seconds
+                setTimeout(function() {
+                    window.location.href = "{{ session('toast.redirect') }}";
+                }, 5000);
+            });
+        </script>
+    @endif
 </body>
 </html>
