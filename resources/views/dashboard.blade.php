@@ -7,8 +7,8 @@
     {{-- Page Header --}}
     <div class="row mb-4"> {{-- Added mb-4 for spacing below the header --}}
         <div class="col-lg-12"> {{-- Ensured the header takes full width --}}
-            <h3 class="mb-0 h4 font-weight-bolder">Tableau de Bord</h3>
-            <p class="text-secondary mb-0" style="margin-bottom: 22px"> {{-- Used text-secondary for lighter text color --}}
+            <h3 class="mb-0 h4 font-weight-bolder" style="color: #1a4b8c">Tableau de Bord</h3>
+            <p class="mb-0" style="margin-bottom: 22px ;color: black "> {{-- Used text-secondary for lighter text color --}}
                 Aperçu des statistiques et activités récentes.
             </p>
         </div>
