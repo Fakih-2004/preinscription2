@@ -17,6 +17,12 @@
                             <span class="text-white">Ajouter un Candidat</span>
                         </a>
                     </div>
+                    <div class="d-flex justify-content-end mx-3 mb-3">
+                        <a href="{{ route('formation-stats') }}" class="btn btn-sm text-white" style="background-color: #1a4b8c;">
+                            <i class="material-symbols-rounded me-1 text-white">add</i>
+                            <span class="text-white">Exporter le Candidats</span>
+                        </a>
+                    </div>
                     @php
                         $placeholder = 'Rechercher un candidat...';
                     @endphp
