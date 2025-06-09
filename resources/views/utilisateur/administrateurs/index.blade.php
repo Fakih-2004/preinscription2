@@ -49,7 +49,7 @@
                                               class="d-inline">
                                             @csrf
                                             @method('DELETE')                                            
-                                            <button type="button" 
+                                            <button type="button"  hidden
                                                     onclick="confirmDelete({{ $user->id }}, this, 'cet administrateur')" 
                                                     class="btn btn-link text-danger font-weight-bold text-xs p-0">
                                                 <i class="material-symbols-rounded">delete</i>
