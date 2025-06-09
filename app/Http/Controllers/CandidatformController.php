@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\InscriptionConfirmation;
 use Illuminate\Support\Facades\Mail;
-use Dompdf\Dompdf;
+
 use Dompdf\Options;
+
 
 class CandidatformController extends Controller
 {
@@ -545,54 +546,27 @@ class CandidatformController extends Controller
             Log::info('Aucune donnée d’expériences fournie dans formData');
         }
 
-     // Génération du PDF
-     // Génération du PDF
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $options->set('isRemoteEnabled', false);
-        $dompdf = new Dompdf($options);
+    
+        // Préparer les données pour l'e-mail
+        $candidat = (object) [
+            'email' => $personalInfo['email'],
+            'nom' => $personalInfo['nom'] ?? '',
+            'prenom' => $personalInfo['prenom'] ?? '',
+        ];
+        $candidatName = trim($candidat->nom . ' ' . $candidat->prenom);
+        $candidatEmail = $candidat->email;
 
-        $html = view('mails.inscription_confirmation', [
-            'candidatName' => $candidatName,
-            'personalInfo' => $personalInfo,
-            'diplomas' => $diplomas,
-            'stages' => $stages,
-            'experiences' => $experiences,
-            'attestations' => $attestations,
-        ])->render();
-
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        $pdfOutput = $dompdf->output();
-        $filename = 'inscription_' . str_replace(' ', '_', $candidatName) . '_' . now()->format('YmdHis') . '.pdf';
-        $pdfPath = 'inscriptions/pdf/' . $filename;
-
-        // Vérifier et créer le dossier si nécessaire
-        if (!Storage::disk('local')->exists('inscriptions/pdf')) {
-            Storage::disk('local')->makeDirectory('inscriptions/pdf');
-        }
-
-        Storage::disk('local')->put($pdfPath, $pdfOutput);
-
-        // Envoi de l'email avec le PDF
+        // Envoyer l'e-mail
         try {
-            Log::info('Envoi de l’email avec PDF', ['email' => $candidat->email]);
+            Log::info('Envoi de l’email', ['email' => $candidat->email]);
             Mail::to($candidat->email)->send(new InscriptionConfirmation(
                 $candidatName,
-                $candidatEmail,
-                $personalInfo,
-                $diplomas,
-                $stages,
-                $experiences,
-                $attestations,
-                storage_path('app/' . $pdfPath)
+                $candidatEmail
             ));
             Log::info('Email envoyé avec succès', ['email' => $candidat->email]);
-            Storage::disk('local')->delete($pdfPath);
         } catch (\Exception $e) {
             Log::error('Erreur lors de l’envoi de l’email : ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Erreur lors de l’envoi de l’e-mail.']);
         }
-    }
-}
+
+  return true;    }}
