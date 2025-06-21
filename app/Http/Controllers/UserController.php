@@ -64,18 +64,26 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(User $user)
-    {
-        try {
-            $user->delete();
-            return redirect()->route('administrateurs.index')
-        ->with('toastr', [
+   public function destroy(User $user)
+{
+    // Prevent deletion of the main admin user
+    if ($user->email === 'adminfst20252@fsdm.ma') {
+        return redirect()->back()->with('toastr', [
+            'type' => 'error',
+            'message' => 'Impossible de supprimer cet utilisateur administrateur principal.'
+        ]);
+    }
+    try {
+        $user->delete();
+        return redirect()->route('administrateurs.index')->with('toastr', [
             'type' => 'success',
             'message' => 'Utilisateur supprimé avec succès'
         ]);
-        } catch (\Exception $e) {
-            Toastr::error('Erreur lors de la suppression: ' . $e->getMessage(), 'Erreur');
-            return back();
-        }
+    } catch (\Exception $e) {
+        return redirect()->back()->with('toastr', [
+            'type' => 'error',
+            'message' => 'Erreur lors de la suppression : ' . $e->getMessage()
+        ]);
     }
+}
 }

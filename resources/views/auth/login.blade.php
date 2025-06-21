@@ -31,7 +31,7 @@
     <div class="login-container">
         <div class="login-header">
             <img src="{{ asset('dist/assets/img/logo-fsdm-fes.png') }}" alt="FST Fès Logo" class="institution-logo">
-            <h1>Connexion <h1>Préinscription <span id="current-year"></span></h1></h1>
+            <h1>Connexion </h1><h1>Préinscription <span id="current-year"></span></h1>
             <p>Accédez à votre espace personnel</p>
         </div>
 
