@@ -67,7 +67,7 @@ class UserController extends Controller
    public function destroy(User $user)
 {
     // Prevent deletion of the main admin user
-    if ($user->email === 'adminfst20252@fsdm.ma') {
+    if ($user->id === 1) {
         return redirect()->back()->with('toastr', [
             'type' => 'error',
             'message' => 'Impossible de supprimer cet utilisateur administrateur principal.'
