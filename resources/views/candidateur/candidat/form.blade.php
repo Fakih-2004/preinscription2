@@ -57,8 +57,7 @@
                                     {{ $titre->titre }}
                                     @if($titre->datedebut && $titre->datefin)
                                         ({{ $titre->datedebut->format('d/m/Y') }} - {{ $titre->datefin->format('d/m/Y') }})
-                                    @else
-                                        (Dates non définies)
+                                    
                                     @endif
                                 </option>
                             @empty
@@ -137,7 +136,7 @@
                         @error('sex') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="telephone_mob">Téléphone mobile</label>
+                        <label for="telephone_mob">Téléphone mobile (ex:+212620041123)</label>
                         <input type="text" name="telephone_mob" class="form-control" id="telephone_mob" placeholder="Entrez votre téléphone mobile" value="{{ old('telephone_mob', $data['telephone_mob'] ?? '') }}" required>
                         @error('telephone_mob') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
@@ -148,8 +147,19 @@
                     </div>
                     
                     <div class="col-md-12 mb-3">
-                        <label for="email">Email</label>
+                        <label for="email">Email <span class="text-danger">*</span></label>
                         <input type="email" name="email" class="form-control" id="email" placeholder="Entrez votre email" value="{{ old('email', $data['email'] ?? '') }}" required>
+                        <div id="email-validation-status" class="mt-2" style="display: none;">
+                            <div id="email-loading" class="text-info">
+                                <i class="fas fa-spinner fa-spin"></i> Vérification de l'email...
+                            </div>
+                            <div id="email-valid" class="text-success" style="display: none;">
+                                <i class="fas fa-check-circle"></i> Email valide
+                            </div>
+                            <div id="email-invalid" class="text-danger" style="display: none;">
+                                <i class="fas fa-times-circle"></i> Email invalide ou inexistant
+                            </div>
+                        </div>
                         @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-md-12 mb-3">
@@ -729,7 +739,179 @@
         updateAddButtonState('stage', stageCount);
         updateAddButtonState('attestation', attestationCount);
         updateAddButtonState('experience', experienceCount);
+        
+        // Initialize email validation
+        initializeEmailValidation();
     };
+
+    // Email validation functionality
+    function initializeEmailValidation() {
+        const emailInput = document.getElementById('email');
+        
+        if (emailInput) {
+            // Check initial value
+            const initialEmail = emailInput.value.trim();
+            if (initialEmail !== '') {
+                validateEmail(initialEmail);
+            }
+            
+            emailInput.addEventListener('input', function() {
+                const email = this.value.trim();
+                
+                // Hide validation status initially
+                hideEmailValidationStatus();
+                
+                if (email === '') {
+                    updateSubmitButtonState(true); // Allow empty email (backend will validate)
+                    return;
+                }
+                
+                // Validate email immediately
+                validateEmail(email);
+            });
+        }
+    }
+
+    function isValidEmailFormat(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function validateEmail(email) {
+        // Check email format first
+        if (!isValidEmailFormat(email)) {
+            showEmailValidationStatus('invalid', 'Format d\'email invalide');
+            updateSubmitButtonState(false);
+            return;
+        }
+        
+        // Extract domain from email
+        const domain = email.split('@')[1];
+        
+        // List of common disposable email domains
+        const disposableDomains = [
+            '10minutemail.com', 'tempmail.org', 'guerrillamail.com', 'mailinator.com',
+            'yopmail.com', 'throwaway.email', 'temp-mail.org', 'fakeinbox.com',
+            'sharklasers.com', 'grr.la', 'guerrillamailblock.com', 'pokemail.net',
+            'spam4.me', 'bccto.me', 'chacuo.net', 'dispostable.com', 'mailnesia.com',
+            'maildrop.cc', 'mailmetrash.com', 'trashmail.com', 'getairmail.com',
+            'mailcatch.com', 'inboxalias.com', 'mailnull.com', 'getnada.com',
+            'mailinator.net', 'tempr.email', 'tmpeml.com', 'tmpmail.org',
+            'test.com', 'example.com', 'test.org', 'example.org'
+        ];
+        
+        // Check if it's a disposable email
+        if (disposableDomains.includes(domain.toLowerCase())) {
+            showEmailValidationStatus('invalid', 'Les emails temporaires ne sont pas acceptés');
+            updateSubmitButtonState(false);
+            return;
+        }
+        
+        // If format is valid and not disposable, accept
+        showEmailValidationStatus('valid', 'Email valide');
+        updateSubmitButtonState(true);
+    }
+
+    function showEmailValidationStatus(status, message = '') {
+        const statusDiv = document.getElementById('email-validation-status');
+        const loadingDiv = document.getElementById('email-loading');
+        const validDiv = document.getElementById('email-valid');
+        const invalidDiv = document.getElementById('email-invalid');
+        
+        if (statusDiv) {
+            statusDiv.style.display = 'block';
+            if (loadingDiv) loadingDiv.style.display = 'none';
+            if (validDiv) validDiv.style.display = 'none';
+            if (invalidDiv) invalidDiv.style.display = 'none';
+            
+            switch (status) {
+                case 'loading':
+                    if (loadingDiv) loadingDiv.style.display = 'block';
+                    break;
+                case 'valid':
+                    if (validDiv) {
+                        validDiv.style.display = 'block';
+                        if (message) {
+                            validDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                        }
+                    }
+                    break;
+                case 'invalid':
+                    if (invalidDiv) {
+                        invalidDiv.style.display = 'block';
+                        if (message) {
+                            invalidDiv.innerHTML = `<i class="fas fa-times-circle"></i> ${message}`;
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    function hideEmailValidationStatus() {
+        const statusDiv = document.getElementById('email-validation-status');
+        if (statusDiv) {
+            statusDiv.style.display = 'none';
+        }
+    }
+
+    function updateSubmitButtonState(isValid) {
+        const submitButton = document.querySelector('button[type="submit"]');
+        if (submitButton) {
+            if (isValid) {
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+                submitButton.style.cursor = 'pointer';
+            } else {
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.5';
+                submitButton.style.cursor = 'not-allowed';
+            }
+        }
+    }
+
+    // Override form submission to check email validity
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('candidat-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const emailInput = document.getElementById('email');
+                const email = emailInput ? emailInput.value.trim() : '';
+                
+                // If email field exists and has a value, check validation
+                if (emailInput && email !== '') {
+                    // Check format
+                    if (!isValidEmailFormat(email)) {
+                        e.preventDefault();
+                        alert('Veuillez entrer un email valide avant de continuer.');
+                        emailInput.focus();
+                        return false;
+                    }
+                    
+                    // Check disposable domains
+                    const domain = email.split('@')[1];
+                    const disposableDomains = [
+                        '10minutemail.com', 'tempmail.org', 'guerrillamail.com', 'mailinator.com',
+                        'yopmail.com', 'throwaway.email', 'temp-mail.org', 'fakeinbox.com',
+                        'sharklasers.com', 'grr.la', 'guerrillamailblock.com', 'pokemail.net',
+                        'spam4.me', 'bccto.me', 'chacuo.net', 'dispostable.com', 'mailnesia.com',
+                        'maildrop.cc', 'mailmetrash.com', 'trashmail.com', 'getairmail.com',
+                        'mailcatch.com', 'inboxalias.com', 'mailnull.com', 'getnada.com',
+                        'mailinator.net', 'tempr.email', 'tmpeml.com', 'tmpmail.org',
+                        'test.com', 'example.com', 'test.org', 'example.org'
+                    ];
+                    
+                    if (disposableDomains.includes(domain.toLowerCase())) {
+                        e.preventDefault();
+                        alert('Les emails temporaires ne sont pas acceptés.');
+                        emailInput.focus();
+                        return false;
+                    }
+                }
+                // Allow submission for valid emails or empty email (backend will handle validation)
+            });
+        }
+    });
 </script>
 
 

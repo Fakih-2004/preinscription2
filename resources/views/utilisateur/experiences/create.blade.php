@@ -1,9 +1,8 @@
-@extends('utilisateur.Layouts.app')
+@extends('utilisateur.layouts.app')
 @section('title', 'Ajouter une expérience')
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('dist/assets/css/form-styles.css') }}">
-<script src="{{ asset('dist/assets/js/form-validation.js') }}"></script>
 
 <div class="container-fluid py-4">
     <div class="row">

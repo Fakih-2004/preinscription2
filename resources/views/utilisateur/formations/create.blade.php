@@ -58,7 +58,7 @@
                             </div>
 
                             <div class="col-12 form-group">
-                                <label for="date_debut" class="form-label">Date début <span class="text-danger">*</span></label>
+                                <label for="date_debut" class="form-label">Date début de Pre Insciption<span class="text-danger">*</span></label>
                                 <input type="date" name="date_debut" id="date_debut" class="form-control @error('date_debut') is-invalid @enderror" value="{{ old('date_debut') }}" required>
                                 @error('date_debut')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="col-12 form-group">
-                                <label for="date_fin" class="form-label">Date fin <span class="text-danger">*</span></label>
+                                <label for="date_fin" class="form-label">Date fin de Pre Insciption<span class="text-danger">*</span></label>
                                 <input type="date" name="date_fin" id="date_fin" class="form-control @error('date_fin') is-invalid @enderror" value="{{ old('date_fin') }}" required>
                                 @error('date_fin')
                                     <div class="invalid-feedback">{{ $message }}</div>

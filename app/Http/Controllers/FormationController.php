@@ -33,12 +33,7 @@ class FormationController extends Controller
         ]); 
     }
 
-    public function show($id)
-    {
-        $formation = Formation::findOrFail($id);
-        return view('formations.show', compact('formation'));
-    }
-
+   
     public function edit($id)
 {
     $formation = Formation::findOrFail($id);

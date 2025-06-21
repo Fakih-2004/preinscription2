@@ -26,7 +26,7 @@ class UpdateCandidatRequest extends FormRequest
             'pay_naissance' => 'required|string|max:50',
             'nationalite' => 'required|string|max:50',
             'sexe' => 'required|in:M,F',
-            'telephone_mob' => ['required', 'regex:/^(\+212|0)([5-7])\d{8}$/'],
+            'telephone_mob' => ['required', 'regex:/^\+?\d{8,15}$/'],
             'telephone_fix' => ['nullable', 'regex:/^(\+212|0)([5-7])\d{8}$/'],
             'adresse' => 'required|string|max:255',
             'email' => 'required|email|max:100',
@@ -87,28 +87,28 @@ class UpdateCandidatRequest extends FormRequest
 
             // Téléphone
             'telephone_mob.required' => 'Le téléphone mobile est obligatoire.',
-            'telephone_mob.regex' => 'Le champ Téléphone doit être un numéro marocain valide sans espaces (ex: +2126******** ou 07********).',
+            'telephone_mob.regex' => 'Le champ Téléphone doit être un numéro de téléphone valide (8 à 15 chiffres, avec ou sans +).',
             'telephone_fix.regex' => 'Le champ Téléphone doit être un numéro marocain valide sans espaces (ex: +2126******** ou 07********).',
 
             // Adresse
-            'adresse.required' => 'L’adresse est obligatoire.',
+            'adresse.required' => "L'adresse est obligatoire.",
 
             // Email
-            'email.required' => 'L’email est obligatoire.',
-            'email.email' => 'L’email doit être une adresse valide.',
-            'email.max' => 'L’email ne doit pas dépasser 100 caractères.',
+            'email.required' => "L'email est obligatoire.",
+            'email.email' => "L'email doit être une adresse valide.",
+            'email.max' => "L'email ne doit pas dépasser 100 caractères.",
 
             // Bac
             'serie_bac.required' => 'La série du bac est obligatoire.',
-            'annee_bac.required' => 'L’année du bac est obligatoire.',
+            'annee_bac.required' => "L'année du bac est obligatoire.",
 
             // Fichiers
             'CV.mimes' => 'Le CV doit être un fichier de type : pdf, jpg, jpeg ou png.',
             'CV.max' => 'Le CV ne doit pas dépasser 10MB.',
             'demande.mimes' => 'La lettre de demande doit être un fichier de type : pdf, jpg, jpeg ou png.',
             'demande.max' => 'La lettre de demande ne doit pas dépasser 10MB.',
-            'scan_cartid.mimes' => 'Le fichier carte d\'identité doit être de type : pdf, jpg, jpeg ou png.',
-            'scan_cartid.max' => 'Le scan de la carte d\'identité ne doit pas dépasser 10MB.',
+            'scan_cartid.mimes' => "Le fichier carte d'identité doit être de type : pdf, jpg, jpeg ou png.",
+            'scan_cartid.max' => "Le scan de la carte d'identité ne doit pas dépasser 10MB.",
             'photo.mimes' => 'La photo doit être au format jpg, jpeg ou png.',
             'photo.max' => 'La photo ne doit pas dépasser 10MB.',
             'scan_bac.mimes' => 'Le scan du bac doit être un fichier de type : pdf, jpg, jpeg ou png.',

@@ -211,7 +211,7 @@
                             </div>
                             
                             <div class="col-md-6 form-group">
-                                <label for="telephone_mob" class="form-label">Téléphone mobile <span class="text-danger">*</span></label>
+                                <label for="telephone_mob" class="form-label">Téléphone mobile <span class="text-danger">*</span> <small class="text-muted">(ex: +212612345678 ou 0612345678)</small></label>
                                 <input type="text" name="telephone_mob" id="telephone_mob" class="form-control @error('telephone_mob') is-invalid @enderror" value="{{ old('telephone_mob') }}" placeholder="Entrez votre téléphone mobile" required>
                                 @error('telephone_mob')
                                     <div class="invalid-feedback">{{ $message }}</div>

@@ -11,7 +11,7 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Material Dashboard JS -->
-<script src="dist/assets/js/material-dashboard.min.js?v=3.2.0"></script>
+<script src="{{ asset('dist/assets/js/material-dashboard.min.js?v=3.2.0') }}"></script>
 
 {{-- toastr --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -175,12 +175,6 @@ document.getElementById('toggleSidebarBtn').addEventListener('click', function()
   });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="{{ asset('dist/assets/js/form-validation.js') }}"></script>
-
-
-
-
 
 {{-- copy le cnadidats email  --}}
 <script>

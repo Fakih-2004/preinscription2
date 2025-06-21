@@ -18,10 +18,6 @@ use App\Livewire\FormationStats;
 require __DIR__.'/auth.php';
 
 // Public routes
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
 Route::get('/', [CandidatformController::class, 'showForm'])->name('candidat.form');
 Route::post('/submit', [CandidatformController::class, 'submitStep'])->name('candidat.submit');
 Route::post('/previous', [CandidatformController::class, 'previousStep'])->name('candidat.previous');

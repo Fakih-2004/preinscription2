@@ -58,11 +58,7 @@ class DiplomeController extends Controller
             ]);
     }
 
-    public function show($id)
-    {
-        $diplome = Diplome::findOrFail($id);
-        return view('utilisateur.diplomes.show', compact('diplome'));
-    }
+
 
     public function edit($id)
     {

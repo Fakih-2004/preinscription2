@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
             [
                 'type_formation' => 'Master',
                 'titre' => 'Master en Génie Logiciel',
-                'date_debut' => '2025-09-15',
+                'date_debut' => '2024-09-15',
                 'date_fin' => '2027-06-30',
                 'user_id' => 1,
                 'created_at' => now(),

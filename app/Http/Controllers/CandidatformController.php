@@ -140,8 +140,9 @@ class CandidatformController extends Controller
                 // Return with toast message that will trigger the redirect
                 return redirect()->route('candidat.form')
                     ->with('toast', [
-                        'message' => 'Félicitations ! Votre inscription à la FST de l’Université Sidi Mohamed Ben Abdellah de Fès a été confirmée. Consultez notre site pour plus d’informations.',
-                        'redirect' => 'https://fst-usmba.ac.ma/'
+                        'message' => 'Félicitations ! Votre inscription à la FST de l Université Sidi Mohamed Ben Abdellah de Fès a été confirmée. Consultez notre site pour plus d\'informations.',
+                        'redirect' => 'https://fst-usmba.ac.ma/',
+                        'icon' => 'check'
                     ]);
             } catch (\Illuminate\Validation\ValidationException $e) {
                 Log::error('Validation error in final submission: ' . $e->getMessage());
@@ -178,7 +179,7 @@ class CandidatformController extends Controller
                 'pay_naissance' => 'required|string|max:50',
                 'nationalite' => 'required|string|max:50',
                 'sex' => 'required|in:Homme,Femme',
-                'telephone_mob' => ['required', 'regex:/^(\+212|0)([5-7])\d{8}$/'],
+                'telephone_mob' => ['required', 'regex:/^\+?\d{8,15}$/'],
                 'telephone_fix' => ['nullable', 'regex:/^(\+212|0)([5-7])\d{8}$/'],
                 'adresse' => 'required|string|max:255',
                 'email' => 'required|email|max:100',
@@ -224,7 +225,7 @@ class CandidatformController extends Controller
                 'attestations' => 'nullable|array|max:3',
                 'attestations.*.attestation' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
                 'attestations.*.type_attestation' => 'nullable|string',
-                'attestations.*.description' => 'nullable|string|max:500',
+                'attestations.*.description' => 'nullable|string',
             ];
         } elseif ($step == 6) {
             $rules = [
@@ -394,6 +395,15 @@ class CandidatformController extends Controller
             'scan_bac' => $formData['scan_bac'],
         ]);
 
+        // Send email verification
+        try {
+            $candidat->sendEmailVerificationNotification();
+            Log::info('Email de vérification envoyé', ['email' => $candidat->email]);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de l\'envoi de l\'email de vérification : ' . $e->getMessage());
+            // Continue with the process even if verification email fails
+        }
+
         Log::info('Données complètes du formulaire dans saveCandidat:', $formData);
         Inscription::create([
             'formation_id' => $formData['titre_id'],
@@ -517,7 +527,7 @@ class CandidatformController extends Controller
 
         if (!empty($formData['attestations']) && is_array($formData['attestations'])) {
             foreach (array_slice($formData['attestations'], 0, 3) as $attestation) {
-                Log::info('Données de l’attestation:', $attestation);
+                Log::info('Données de l\'attestation:', $attestation);
                 Attestation::create([
                     'candidat_id' => $candidat->id,
                     'type_attestation' => $attestation['type_attestation'] ?? null,
@@ -526,12 +536,12 @@ class CandidatformController extends Controller
                 ]);
             }
         } else {
-            Log::info('Aucune donnée d’attestations fournie dans formData');
+            Log::info('Aucune donnée d\'attestations fournie dans formData');
         }
 
         if (!empty($formData['experiences']) && is_array($formData['experiences'])) {
             foreach (array_slice($formData['experiences'], 0, 3) as $experience) {
-                Log::info('Données de l’expérience:', $experience);
+                Log::info('Données de l\'expérience:', $experience);
                 Experience::create([
                     'candidat_id' => $candidat->id,
                     'fonction' => $experience['fonction'] ?? null,
@@ -543,7 +553,7 @@ class CandidatformController extends Controller
                 ]);
             }
         } else {
-            Log::info('Aucune donnée d’expériences fournie dans formData');
+            Log::info('Aucune donnée d\'expériences fournie dans formData');
         }
 
     
@@ -556,17 +566,62 @@ class CandidatformController extends Controller
         $candidatName = trim($candidat->nom . ' ' . $candidat->prenom);
         $candidatEmail = $candidat->email;
 
+        // Préparer les données de formation
+        $formation = Formation::find($formData['titre_id']);
+        $formationData = [
+            'type_formation' => $formData['type_formation'],
+            'titre' => $formation ? $formation->titre : '',
+            'date_debut' => $formation ? $formation->date_debut : '',
+            'date_fin' => $formation ? $formation->date_fin : '',
+        ];
+
+        // Préparer les données des stages pour l'email
+        $stagesForEmail = [];
+        if (!empty($stages)) {
+            foreach ($stages as $stage) {
+                if (!empty(array_filter($stage))) {
+                    $stagesForEmail[] = $stage;
+                }
+            }
+        }
+
+        // Préparer les données des expériences pour l'email
+        $experiencesForEmail = [];
+        if (!empty($experiences)) {
+            foreach ($experiences as $experience) {
+                if (!empty(array_filter($experience))) {
+                    $experiencesForEmail[] = $experience;
+                }
+            }
+        }
+
+        // Préparer les données des attestations pour l'email
+        $attestationsForEmail = [];
+        if (!empty($attestations)) {
+            foreach ($attestations as $attestation) {
+                if (!empty(array_filter($attestation))) {
+                    $attestationsForEmail[] = $attestation;
+                }
+            }
+        }
+
         // Envoyer l'e-mail
         try {
-            Log::info('Envoi de l’email', ['email' => $candidat->email]);
+            Log::info('Envoi de l\'email', ['email' => $candidat->email]);
             Mail::to($candidat->email)->send(new InscriptionConfirmation(
                 $candidatName,
-                $candidatEmail
+                $candidatEmail,
+                $personalInfo,
+                $formationData,
+                $diplomas,
+                $stagesForEmail,
+                $experiencesForEmail,
+                $attestationsForEmail
             ));
             Log::info('Email envoyé avec succès', ['email' => $candidat->email]);
         } catch (\Exception $e) {
-            Log::error('Erreur lors de l’envoi de l’email : ' . $e->getMessage());
-            return redirect()->back()->withErrors(['error' => 'Erreur lors de l’envoi de l’e-mail.']);
+            Log::error('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Erreur lors de l\'envoi de l\'e-mail.']);
         }
 
   return true;    }}

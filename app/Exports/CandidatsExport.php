@@ -68,10 +68,11 @@ class CandidatsExport implements FromCollection, WithMapping, WithHeadings, With
         $candidat->province,
         $candidat->pay_naissance,
         $candidat->nationalite,
-$sexe = $candidat->sexe === 'M' ? 'Masculin' : ($candidat->sexe === 'F' ? 'Féminin' : $candidat->sexe),      !empty($candidat->telephone_mob) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_mob) . '", "' . $candidat->telephone_mob . '")' : 'Phone not provided',
-       !empty($candidat->telephone_fix) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_fix) . '", "' . $candidat->telephone_fix . '")' : 'Phone not provided',
+        $sexe = $candidat->sexe === 'M' ? 'Masculin' : ($candidat->sexe === 'F' ? 'Féminin' : $candidat->sexe),      
+        !empty($candidat->telephone_mob) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_mob) . '", "' . $candidat->telephone_mob . '")' : 'Phone not provided',
+        !empty($candidat->telephone_fix) ? '=HYPERLINK("tel:' . urlencode($candidat->telephone_fix) . '", "' . $candidat->telephone_fix . '")' : 'Phone not provided',
 
-       $candidat->telephone_fix,
+       
         $candidat->adresse,
         $candidat->ville,
         $candidat->pays,
@@ -88,18 +89,18 @@ $sexe = $candidat->sexe === 'M' ? 'Masculin' : ($candidat->sexe === 'F' ? 'Fémi
         $makeLink($candidat->scan_bac, 'Bac'),
 
         // Bac+2
-        $candidat->diplomes->pluck('type_diplome_bac2')->first() ?? '',
-        $candidat->diplomes->pluck('annee_bac2')->first() ?? '',
-        $candidat->diplomes->pluck('filiere_bac2')->first() ?? '',
-        $candidat->diplomes->pluck('etablissement_bac2')->first() ?? '',
-        $makeLink($candidat->diplomes->pluck('scan_bac2')->first(), 'Bac2'),
+        $candidat->diplomes->pluck('type_diplome_bac_2')->first() ?? '',
+        $candidat->diplomes->pluck('annee_diplome_bac_2')->first() ?? '',
+        $candidat->diplomes->pluck('filiere_diplome_bac_2')->first() ?? '',
+        $candidat->diplomes->pluck('etablissement_bac_2')->first() ?? '',
+        $makeLink($candidat->diplomes->pluck('scan_bac_2')->first(), 'Bac2'),
 
         // Bac3
-        $candidat->diplomes->pluck('type_bac3')->first() ?? '',
-        $candidat->diplomes->pluck('annee_bac3')->first() ?? '',
-        $candidat->diplomes->pluck('filiere_bac3')->first() ?? '',
-        $candidat->diplomes->pluck('etablissement_bac3')->first() ?? '',
-        $makeLink($candidat->diplomes->pluck('scan_bac3')->first(), 'Bac3'),
+        $candidat->diplomes->pluck('type_diplome_bac_3')->first() ?? '',
+        $candidat->diplomes->pluck('annee_diplome_bac_3')->first() ?? '',
+        $candidat->diplomes->pluck('filiere_diplome_bac_3')->first() ?? '',
+        $candidat->diplomes->pluck('etablissement_bac_3')->first() ?? '',
+        $makeLink($candidat->diplomes->pluck('scan_bac_3')->first(), 'Bac3'),
 
         // Stages (Internships)
         ...$this->getStageData($candidat->stages),

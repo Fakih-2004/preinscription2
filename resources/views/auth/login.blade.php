@@ -31,7 +31,7 @@
     <div class="login-container">
         <div class="login-header">
             <img src="{{ asset('dist/assets/img/logo-fsdm-fes.png') }}" alt="FST Fès Logo" class="institution-logo">
-            <h1>Connexion – Préinscription <span id="current-year"></span></h1>
+            <h1>Connexion <h1>Préinscription <span id="current-year"></span></h1></h1>
             <p>Accédez à votre espace personnel</p>
         </div>
 
@@ -57,9 +57,9 @@
 
             <button type="submit" class="btn-login">Se connecter</button>
 
-            <div class="forgot-password">
+          <div class="forgot-password">
                 <a href="{{ route('password.request') }}">Mot de passe oublié ?</a>
-            </div>
+            </div> 
         </form>
     </div>
 

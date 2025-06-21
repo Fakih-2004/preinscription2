@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('nationalite');
             $table->enum('sexe', ['M', 'F']);
             $table->string('telephone_mob');
-            $table->string('telephone_fix');
+            $table->string('telephone_fix')->nullable();
             $table->string('ville');
             $table->string('pays');            
             $table->text('adresse');

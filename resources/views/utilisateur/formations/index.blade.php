@@ -29,8 +29,8 @@
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Type</th>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Titre</th>
-                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Date Début</th>
-                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Date Fin</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Date Début de Pre Insciption</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Date Fin de Pre Insciption</th>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Responsable</th>
                                     <th class="text-secondary opacity-7 text-end pe-4">Actions</th>
                                 </tr>
