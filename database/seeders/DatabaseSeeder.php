@@ -21,23 +21,12 @@ class DatabaseSeeder extends Seeder
         DB::table('administrateurs')->delete();
 
         // Insert Administrateurs
-        DB::table('administrateurs')->insert([
-            [
-                'nom' => 'Smith',
-                'prenom' => 'John',
-                'email' => 'admin1@example.com',
-                'password' => Hash::make('admin123'),
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'nom' => 'Doe',
-                'prenom' => 'Jane',
-                'email' => 'admin2@example.com',
-                'password' => Hash::make('admin456'),
-                'created_at' => now(),
-                'updated_at' => now()
-            ]
+       DB::table('users')->insert([
+            'name'=>' FST Admin2',
+            'email'=>'adminfst2025N2@fsdm.ma',
+            'password'=>Hash::make('20255202'),          
+            'created_at' => now(),
+            'updated_at'=>now(),
         ]);
 
         // Insert Formations

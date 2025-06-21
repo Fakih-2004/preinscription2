@@ -24,9 +24,9 @@ return new class extends Migration
 
         });
         DB::table('users')->insert([
-            'name'=>' dd202',
-            'email'=>'yazaminr1123@gmail.com',
-            'password'=>Hash::make('12345678'),          
+            'name'=>' FST Admin',
+            'email'=>'adminfst20252@fsdm.ma',
+            'password'=>Hash::make('fst11231123'),          
             'created_at' => now(),
             'updated_at'=>now(),
         ]);
